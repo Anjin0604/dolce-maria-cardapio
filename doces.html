@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>🍰 Dolce Maria - Cardápio</title>
+  <style>
+    :root {
+      --rosa-claro: #ffb6c1;
+      --rosa-escuro: #ff69b4;
+      --azul-bebe: #87cefa;
+      --branco: #fff;
+      --cinza-escuro: #333;
+      --sombra: rgba(0, 0, 0, 0.1);
+      --borda-radius: 10px;
+      --fonte-principal: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: var(--branco);
+      font-family: var(--fonte-principal);
+      color: var(--cinza-escuro);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1rem;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+
+    h1 {
+      color: var(--rosa-escuro);
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+
+    /* Seletor tipo pedido */
+    #tipo-pedido-container {
+      margin-bottom: 2rem;
+      border: 1px solid var(--rosa-claro);
+      border-radius: var(--borda-radius);
+      padding: 1rem 1.5rem;
+      width: 100%;
+      max-width: 900px;
+      background: #fff0f5;
+      box-shadow: 0 2px 8px var(--sombra);
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    #tipo-pedido-container label {
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--rosa-escuro);
+      background: var(--rosa-claro);
+      padding: 0.6rem 1.2rem;
+      border-radius: 50px;
+      user-select: none;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.1rem;
+    }
+
+    #tipo-pedido-container input[type="radio"] {
+      display: none;
+    }
+
+    #tipo-pedido-container input[type="radio"]:checked + label {
+      background: var(--rosa-escuro);
+      color: var(--branco);
+      box-shadow: 0 2px 8px var(--sombra);
+    }
+
+    .produtos-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+      width: 100%;
+      max-width: 900px;
+      margin-bottom: 2rem;
+    }
+
+    .card-produto {
+      border: 1px solid var(--rosa-claro);
+      border-radius: var(--borda-radius);
+      box-shadow: 0 2px 8px var(--sombra);
+      padding: 1rem 1.2rem 1.6rem;
+      background: var(--branco);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .card-produto:hover {
+      box-shadow: 0 4px 12px var(--sombra);
+    }
+
+    .nome-produto {
+      font-weight: 700;
+      font-size: 1.2rem;
+      margin-bottom: 0.3rem;
+      color: var(--rosa-escuro);
+    }
+
+    .descricao-produto {
+      font-size: 0.9rem;
+      color: #555;
+      margin-bottom: 1rem;
+      line-height: 1.2em;
+      min-height: 2.4em;
+    }
+
+    .preco-produto {
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      color: var(--azul-bebe);
+    }
+
+    .controle-quantidade {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .controle-quantidade input[type="number"] {
+      width: 60px;
+      padding: 0.3rem 0.5rem;
+      font-size: 1rem;
+      border: 1px solid var(--rosa-claro);
+      border-radius: 5px;
+      text-align: center;
+      margin-left: 0.5rem;
+      outline-offset: 2px;
+    }
+
+    .btn-adicionar {
+      background: var(--rosa-escuro);
+      color: var(--branco);
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 6px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      align-self: flex-start;
+    }
+
+    .btn-adicionar:hover {
+      background: #e0528a;
+    }
+
+    #mensagem {
+      margin-top: 1rem;
+      font-weight: 600;
+      color: var(--rosa-escuro);
+      min-height: 1.2em;
+      text-align: center;
+    }
+
+    /* Botão WhatsApp fixo embaixo */
+    #btn-whatsapp {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      background: #25d366;
+      color: white;
+      border: none;
+      padding: 0.9rem 1.5rem;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(37, 211, 102, 0.4);
+      display: none;
+      transition: background-color 0.3s ease;
+      z-index: 1000;
+    }
+
+    #btn-whatsapp:hover {
+      background: #1ebe5a;
+    }
+
+    /* Resumo do carrinho */
+    #carrinho-resumo {
+      width: 100%;
+      max-width: 900px;
+      border: 1px solid var(--azul-bebe);
+      border-radius: var(--borda-radius);
+      padding: 1rem 1.5rem;
+      background: #f0faff;
+      box-shadow: 0 2px 8px var(--sombra);
+      margin-bottom: 3rem;
+      display: none;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    #carrinho-resumo h2 {
+      margin: 0 0 0.5rem 0;
+      color: var(--azul-bebe);
+    }
+
+    .item-carrinho {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--rosa-claro);
+      padding-bottom: 0.4rem;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .item-info {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .item-nome {
+      color: var(--rosa-escuro);
+      min-width: 140px;
+    }
+
+    .item-qtd {
+      font-weight: 500;
+      color: #555;
+    }
+
+    .item-subtotal {
+      font-weight: 700;
+      color: var(--azul-bebe);
+      min-width: 80px;
+      text-align: right;
+    }
+
+    .btn-remover {
+      background: transparent;
+      border: none;
+      color: var(--rosa-escuro);
+      font-weight: 700;
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 0 5px;
+      line-height: 1;
+      transition: color 0.3s ease;
+    }
+
+    .btn-remover:hover {
+      color: #b32f5a;
+    }
+
+    #total-carrinho {
+      font-size: 1.2rem;
+      font-weight: 700;
+      text-align: right;
+      color: var(--rosa-escuro);
+    }
+
+    #btn-limpar-carrinho {
+      align-self: flex-end;
+      background: var(--rosa-escuro);
+      color: var(--branco);
+      border: none;
+      padding: 0.5rem 1.1rem;
+      border-radius: 6px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 0.7rem;
+    }
+
+    #btn-limpar-carrinho:hover {
+      background: #e0528a;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🍰 Dolce Maria - Cardápio</h1>
+
+  <!-- Seletor de tipo de pedido -->
+  <form id="tipo-pedido-container" aria-label="Tipo do pedido">
+    <input type="radio" id="local" name="tipoPedido" value="Comer no local" />
+    <label for="local">🍽️ Comer no local</label>
+
+    <input type="radio" id="levar" name="tipoPedido" value="Levar para casa" />
+    <label for="levar">🛍️ Levar para casa</label>
+
+    <input type="radio" id="entrega" name="tipoPedido" value="Entrega" />
+    <label for="entrega">🛵 Entrega</label>
+  </form>
+
+  <div class="produtos-container" id="produtos">
+    <div class="card-produto" data-nome="Brigadeiro" data-preco="4.50">
+      <div class="nome-produto">Brigadeiro</div>
+      <div class="descricao-produto">Docinho de chocolate tradicional com granulado.</div>
+      <div class="preco-produto">R$ 4,50</div>
+      <div class="controle-quantidade">
+        <label for="qtd-brigadeiro">Quantidade:</label>
+        <input type="number" id="qtd-brigadeiro" min="1" value="1" />
+      </div>
+      <button class="btn-adicionar" onclick="adicionarAoCarrinho(this)">Adicionar</button>
+    </div>
+
+    <div class="card-produto" data-nome="Beijinho" data-preco="4.00">
+      <div class="nome-produto">Beijinho</div>
+      <div class="descricao-produto">Delicioso docinho de coco com açúcar cristal.</div>
+      <div class="preco-produto">R$ 4,00</div>
+      <div class="controle-quantidade">
+        <label for="qtd-beijinho">Quantidade:</label>
+        <input type="number" id="qtd-beijinho" min="1" value="1" />
+      </div>
+      <button class="btn-adicionar" onclick="adicionarAoCarrinho(this)">Adicionar</button>
+    </div>
+
+    <div class="card-produto" data-nome="Cajuzinho" data-preco="4.25">
+      <div class="nome-produto">Cajuzinho</div>
+      <div class="descricao-produto">Docinho com amendoim, açúcar e chocolate.</div>
+      <div class="preco-produto">R$ 4,25</div>
+      <div class="controle-quantidade">
+        <label for="qtd-cajuzinho">Quantidade:</label>
+        <input type="number" id="qtd-cajuzinho" min="1" value="1" />
+      </div>
+      <button class="btn-adicionar" onclick="adicionarAoCarrinho(this)">Adicionar</button>
+    </div>
+
+    <div class="card-produto" data-nome="Palha Italiana" data-preco="5.00">
+      <div class="nome-produto">Palha Italiana</div>
+      <div class="descricao-produto">Mistura de brigadeiro e bis crocante.</div>
+      <div class="preco-produto">R$ 5,00</div>
+      <div class="controle-quantidade">
+        <label for="qtd-palha-italiana">Quantidade:</label>
+        <input type="number" id="qtd-palha-italiana" min="1" value="1" />
+      </div>
+      <button class="btn-adicionar" onclick="adicionarAoCarrinho(this)">Adicionar</button>
+    </div>
+  </div>
+
+  <div id="mensagem" role="alert" aria-live="polite"></div>
+
+  <!-- Resumo visual do carrinho -->
+  <section id="carrinho-resumo" aria-label="Resumo do carrinho de compras">
+    <h2>Seu Carrinho</h2>
+    <div id="itens-carrinho"></div>
+    <div id="total-carrinho"></div>
+    <button id="btn-limpar-carrinho" onclick="limparCarrinho()">Limpar Carrinho</button>
+  </section>
+
+  <button id="btn-whatsapp" onclick="enviarPedidoWhatsApp()">Enviar pedido pelo WhatsApp</button>
+
+  <script>
+    const numeroWhatsApp = '5511999999999'; // Ajuste o número aqui
+
+    let carrinho = [];
+
+    function adicionarAoCarrinho(botao) {
+      const card = botao.closest('.card-produto');
+      const nome = card.getAttribute('data-nome');
+      const preco = parseFloat(card.getAttribute('data-preco'));
+      const inputQtd = card.querySelector('input[type="number"]');
+      let quantidade = parseInt(inputQtd.value);
+
+      if (quantidade < 1 || isNaN(quantidade)) {
+        quantidade = 1;
+        inputQtd.value = 1;
+      }
+
+      const index = carrinho.findIndex(item => item.nome === nome);
+      if (index > -1) {
+        carrinho[index].quantidade += quantidade;
+      } else {
+        carrinho.push({ nome, preco, quantidade });
+      }
+
+      mostrarMensagem(`✅ Adicionado ${quantidade} x ${nome} ao carrinho.`);
+
+      atualizarResumoCarrinho();
+      mostrarBotaoWhatsApp(true);
+
+      botao.disabled = true;
+      setTimeout(() => botao.disabled = false, 1200);
+    }
+
+    function mostrarMensagem(texto) {
+      const mensagemEl = document.getElementById('mensagem');
+      mensagemEl.textContent = texto;
+      setTimeout(() => {
+        if (mensagemEl.textContent === texto) mensagemEl.textContent = '';
+      }, 3500);
+    }
+
+    function atualizarResumoCarrinho() {
+      const resumo = document.getElementById('carrinho-resumo');
+      const itensContainer = document.getElementById('itens-carrinho');
+      const totalEl = document.getElementById('total-carrinho');
+
+      itensContainer.innerHTML = '';
+
+      if (carrinho.length === 0) {
+        resumo.style.display = 'none';
+        mostrarBotaoWhatsApp(false);
+        return;
+      }
+
+      resumo.style.display = 'flex';
+
+      let valorTotal = 0;
+
+      carrinho.forEach((item, idx) => {
+        const subtotal = item.preco * item.quantidade;
+        valorTotal += subtotal;
+
+        const itemDiv = document.createElement('div');
+        itemDiv.classList.add('item-carrinho');
+
+        itemDiv.innerHTML = `
+          <div class="item-info">
+            <div class="item-nome">${item.nome}</div>
+            <div class="item-qtd">Qtd: ${item.quantidade}</div>
+            <div class="item-subtotal">R$ ${subtotal.toFixed(2)}</div>
+          </div>
+          <button class="btn-remover" title="Remover item" aria-label="Remover ${item.nome}" onclick="removerItemCarrinho(${idx})">&times;</button>
+        `;
+
+        itensContainer.appendChild(itemDiv);
+      });
+
+      totalEl.textContent = `Total: R$ ${valorTotal.toFixed(2)}`;
+    }
+
+    function removerItemCarrinho(indice) {
+      if (indice >= 0 && indice < carrinho.length) {
+        const itemRemovido = carrinho.splice(indice, 1)[0];
+        mostrarMensagem(`❌ Removido ${itemRemovido.nome} do carrinho.`);
+        atualizarResumoCarrinho();
+      }
+    }
+
+    function limparCarrinho() {
+      carrinho = [];
+      atualizarResumoCarrinho();
+      mostrarMensagem('🗑️ Carrinho limpo.');
+    }
+
+    function mostrarBotaoWhatsApp(show) {
+      const btnWhats = document.getElementById('btn-whatsapp');
+      btnWhats.style.display = show ? 'block' : 'none';
+    }
+
+    function enviarPedidoWhatsApp() {
+      if (carrinho.length === 0) {
+        alert('O carrinho está vazio!');
+        return;
+      }
+
+      // Verifica se tipo de pedido foi escolhido
+      const tipoPedidoRadios = document.getElementsByName('tipoPedido');
+      let tipoPedidoSelecionado = null;
+      for (const radio of tipoPedidoRadios) {
+        if (radio.checked) {
+          tipoPedidoSelecionado = radio.value;
+          break;
+        }
+      }
+
+      if (!tipoPedidoSelecionado) {
+        alert('Por favor, selecione o tipo do pedido: Comer no local, Levar ou Entrega.');
+        return;
+      }
+
+      let textoPedido = `Olá, gostaria de fazer um pedido para *${tipoPedidoSelecionado}*:%0A`;
+
+      let valorTotal = 0;
+
+      carrinho.forEach(item => {
+        const subtotal = item.preco * item.quantidade;
+        valorTotal += subtotal;
+        textoPedido += `- ${item.quantidade} x ${item.nome} (R$ ${subtotal.toFixed(2)})%0A`;
+      });
+
+      textoPedido += `%0ATotal: R$ ${valorTotal.toFixed(2)}`;
+      textoPedido += `%0AObrigado!`;
+
+      const url = `https://wa.me/${numeroWhatsApp}?text=${textoPedido}`;
+      window.open(url, '_blank');
+    }
+  </script>
+
+</body>
+</html>
