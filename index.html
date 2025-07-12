@@ -507,7 +507,7 @@
       let taxaEntrega = 0;
       if (tipoPedido === 'entregar') {
         if (bairro && taxaEntregaPorBairro[bairro]) taxaEntrega = taxaEntregaPorBairro[bairro];
-        else if (bairro !== "Não informado") taxaEntrega = 12;
+        else if (bairro !== "Não informado") taxaEntrega = 5;
       }
       let total = subtotal - descontoValor + taxaEntrega;
 
@@ -516,7 +516,7 @@
       mensagem += `\nTaxa de entrega: R$ ${taxaEntrega.toFixed(2)}`;
       mensagem += `\n*Total: R$ ${total.toFixed(2)}*\n\nObrigado pelo seu pedido! 💗`;
 
-      const numeroWhats = '5511999999999'; // Coloque seu número real aqui (DDD+telefone)
+      const numeroWhats = '5521992083804'; // Coloque seu número real aqui (DDD+telefone)
 
       const url = `https://wa.me/${numeroWhats}?text=${encodeURIComponent(mensagem)}`;
 
