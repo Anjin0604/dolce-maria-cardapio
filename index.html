@@ -17,20 +17,22 @@
       color: #ff69b4;
     }
 
-    #tipo-pedido-container {
-      text-align: center;
-      margin-bottom: 20px;
+    section {
+      margin-bottom: 30px;
     }
 
-    #tipo-pedido-container input[type="radio"] {
-      margin-right: 5px;
+    h2 {
+      color: #ff69b4;
+      border-bottom: 2px solid #ffb6c1;
+      padding-bottom: 5px;
+      margin-bottom: 15px;
     }
 
     .produtos-container {
       display: flex;
       flex-wrap: wrap;
-      justify-content: center;
       gap: 20px;
+      justify-content: center;
     }
 
     .card-produto {
@@ -49,32 +51,21 @@
       color: #ff69b4;
     }
 
-    .descricao-produto {
-      font-size: 14px;
-      margin: 5px 0;
-      color: #555;
-    }
-
     .preco-produto {
-      color: #444;
-      font-size: 16px;
-      margin-bottom: 10px;
-    }
-
-    .controle-quantidade {
-      margin-bottom: 10px;
+      margin: 5px 0;
     }
 
     input[type="number"] {
       width: 50px;
       text-align: center;
+      margin-bottom: 10px;
     }
 
     .btn-adicionar {
       background-color: #ff69b4;
       color: white;
       border: none;
-      padding: 8px 12px;
+      padding: 6px 12px;
       border-radius: 6px;
       cursor: pointer;
     }
@@ -84,234 +75,151 @@
     }
 
     #carrinho {
-      margin-top: 30px;
-      background-color: #fff5fa;
+      margin-top: 40px;
+      background: #fff5fa;
       padding: 20px;
       border-radius: 10px;
       border: 2px dashed #ffb6c1;
     }
 
     #carrinho h2 {
-      color: #da70d6;
       text-align: center;
+      color: #da70d6;
     }
 
     #itens-carrinho {
       list-style: none;
       padding: 0;
-      margin-bottom: 10px;
     }
 
     #total {
       font-weight: bold;
       text-align: right;
-      margin-bottom: 10px;
+      margin: 10px 0;
     }
 
     #carrinho button {
-      display: block;
-      margin: 0 auto;
-      background-color: #87cefa;
+      background: #87cefa;
       color: #333;
       padding: 10px 20px;
       border: none;
       border-radius: 6px;
       cursor: pointer;
+      display: block;
+      margin: 0 auto;
     }
 
     #carrinho button:hover {
-      background-color: #00bfff;
+      background: #00bfff;
     }
   </style>
 </head>
 <body>
   <h1>🍰 Dolce Maria - Cardápio</h1>
 
-  <form id="tipo-pedido-container">
-    <input type="radio" id="local" name="tipoPedido" value="Comer no local" />
-    <label for="local">🍽️ Comer no local</label>
+  <section id="cafe-da-manha">
+    <h2>☕ Café da Manhã</h2>
+    <div class="produtos-container">
+      <div class="card-produto" data-nome="Misto Quente" data-preco="5.00">
+        <div class="nome-produto">Misto Quente</div>
+        <div class="preco-produto">R$ 5,00</div>
+        <input type="number" min="1" value="1">
+        <button class="btn-adicionar" onclick="adicionarAoCarrinho(this)">Adicionar</button>
+      </div>
 
-    <input type="radio" id="levar" name="tipoPedido" value="Levar para casa" />
-    <label for="levar">🛍️ Levar para casa</label>
+      <div class="card-produto" data-nome="Sanduíche Natural" data-preco="6.00">
+        <div class="nome-produto">Sanduíche Natural</div>
+        <div class="preco-produto">R$ 6,00</div>
+        <input type="number" min="1" value="1">
+        <button class="btn-adicionar" onclick="adicionarAoCarrinho(this)">Adicionar</button>
+      </div>
 
-    <input type="radio" id="entrega" name="tipoPedido" value="Entrega" />
-    <label for="entrega">🛵 Entrega</label>
-  </form>
+      <div class="card-produto" data-nome="Torta" data-preco="6.00">
+        <div class="nome-produto">Torta</div>
+        <div class="preco-produto">R$ 6,00</div>
+        <input type="number" min="1" value="1">
+        <button class="btn-adicionar" onclick="adicionarAoCarrinho(this)">Adicionar</button>
+      </div>
 
-  
-<div class="card-produto" data-nome="Café preto P" data-preco="2.50">
-      <div class="nome-produto">Café Preto</div>
-      <div class="descricao-produto">Café Preto com açúcar.</div>
-      <div class="preco-produto">R$ 2,50</div>
-      <div class="controle-quantidade">
-        <label>Quantidade:</label>
-        <input type="number" min="1" value="1" />
+      <div class="card-produto" data-nome="Café Pequeno" data-preco="2.00">
+        <div class="nome-produto">Café Pequeno</div>
+        <div class="preco-produto">R$ 2,00</div>
+        <input type="number" min="1" value="1">
+        <button class="btn-adicionar" onclick="adicionarAoCarrinho(this)">Adicionar</button>
       </div>
-      <button class="btn-adicionar" onclick="adicionarAoCarrinho(this)">Adicionar</button>
-    </div>
 
-<div class="card-produto" data-nome="Bolo de chocolate" data-preco="20,00">
-      <div class="nome-produto">Bolo de chocolate</div>
-      <div class="descricao-produto">Bolo de chocolate.</div>
-      <div class="preco-produto">R$ 20,00</div>
-      <div class="controle-quantidade">
-        <label>Quantidade:</label>
-        <input type="number" min="1" value="1" />
+      <div class="card-produto" data-nome="Café com Leite" data-preco="4.00">
+        <div class="nome-produto">Café com Leite</div>
+        <div class="preco-produto">R$ 4,00</div>
+        <input type="number" min="1" value="1">
+        <button class="btn-adicionar" onclick="adicionarAoCarrinho(this)">Adicionar</button>
       </div>
-      <button class="btn-adicionar" onclick="adicionarAoCarrinho(this)">Adicionar</button>
     </div>
+  </section>
+  <section id="doces">
+    <h2>🍰 Doces</h2>
+    <div class="produtos-container">
+      <div class="card-produto" data-nome="Brownie" data-preco="5.00">
+        <div class="nome-produto">Brownie</div>
+        <div class="preco-produto">R$ 5,00</div>
+        <input type="number" min="1" value="1">
+        <button class="btn-adicionar" onclick="adicionarAoCarrinho(this)">Adicionar</button>
+      </div>
 
-<div class="card-produto" data-nome="Misto quente" data-preco="5,00">
-      <div class="nome-produto">Misto quente</div>
-      <div class="descricao-produto">      </div>
-      <div class="preco-produto">R$ 5,00</div>
-      <div class="controle-quantidade">
-        <label>Quantidade:</label>
-        <input type="number" min="1" value="1" />
+      <div class="card-produto" data-nome="Bolo de Pote" data-preco="12.00">
+        <div class="nome-produto">Bolo de Pote</div>
+        <div class="preco-produto">R$ 12,00</div>
+        <input type="number" min="1" value="1">
+        <button class="btn-adicionar" onclick="adicionarAoCarrinho(this)">Adicionar</button>
       </div>
-      <button class="btn-adicionar" onclick="adicionarAoCarrinho(this)">Adicionar</button>
-    </div>
 
-<div class="card-produto" data-nome="Sanduiche natural" data-preco="6,00">
-      <div class="nome-produto">Sanduiche natural</div>
-      <div class="descricao-produto">      </div>
-      <div class="preco-produto">R$ 6,00</div>
-      <div class="controle-quantidade">
-        <label>Quantidade:</label>
-        <input type="number" min="1" value="1" />
+      <div class="card-produto" data-nome="Fatia de Bolo" data-preco="3.50">
+        <div class="nome-produto">Fatia de Bolo</div>
+        <div class="preco-produto">R$ 3,50</div>
+        <input type="number" min="1" value="1">
+        <button class="btn-adicionar" onclick="adicionarAoCarrinho(this)">Adicionar</button>
       </div>
-      <button class="btn-adicionar" onclick="adicionarAoCarrinho(this)">Adicionar</button>
-    </div>
 
+      <div class="card-produto" data-nome="Brigadeiro" data-preco="4.50">
+        <div class="nome-produto">Brigadeiro</div>
+        <div class="preco-produto">R$ 4,50</div>
+        <input type="number" min="1" value="1">
+        <button class="btn-adicionar" onclick="adicionarAoCarrinho(this)">Adicionar</button>
+      </div>
 
-<div class="card-produto" data-nome="Torta" data-preco="6,00">
-      <div class="nome-produto">Torta</div>
-      <div class="descricao-produto">      </div>
-      <div class="preco-produto">R$ 6,00</div>
-      <div class="controle-quantidade">
-        <label>Quantidade:</label>
-        <input type="number" min="1" value="1" />
+      <div class="card-produto" data-nome="Beijinho" data-preco="4.00">
+        <div class="nome-produto">Beijinho</div>
+        <div class="preco-produto">R$ 4,00</div>
+        <input type="number" min="1" value="1">
+        <button class="btn-adicionar" onclick="adicionarAoCarrinho(this)">Adicionar</button>
       </div>
-      <button class="btn-adicionar" onclick="adicionarAoCarrinho(this)">Adicionar</button>
     </div>
-<div class="card-produto" data-nome="Brownie" data-preco="5,00">
-      <div class="nome-produto">Brownie</div>
-      <div class="descricao-produto">      </div>
-      <div class="preco-produto">R$ 5,00</div>
-      <div class="controle-quantidade">
-        <label>Quantidade:</label>
-        <input type="number" min="1" value="1" />
+  </section>
+  <section id="batatas">
+    <h2>🍟 Batatas Fritas</h2>
+    <div class="produtos-container">
+      <div class="card-produto" data-nome="Batata Pequena" data-preco="5.00">
+        <div class="nome-produto">Batata Pequena</div>
+        <div class="preco-produto">R$ 5,00</div>
+        <input type="number" min="1" value="1">
+        <button class="btn-adicionar" onclick="adicionarAoCarrinho(this)">Adicionar</button>
       </div>
-      <button class="btn-adicionar" onclick="adicionarAoCarrinho(this)">Adicionar</button>
-    </div>
-<div class="card-produto" data-nome="Bolo de pote" data-preco="12,00">
-      <div class="nome-produto">Bolo de pote</div>
-      <div class="descricao-produto">      </div>
-      <div class="preco-produto">R$ 12,00</div>
-      <div class="controle-quantidade">
-        <label>Quantidade:</label>
-        <input type="number" min="1" value="1" />
-      </div>
-      <button class="btn-adicionar" onclick="adicionarAoCarrinho(this)">Adicionar</button>
-    </div>
-<div class="card-produto" data-nome="Café Médio" data-preco="4,00">
-      <div class="nome-produto">Café Médio</div>
-      <div class="descricao-produto">      </div>
-      <div class="preco-produto">R$ 4,00</div>
-      <div class="controle-quantidade">
-        <label>Quantidade:</label>
-        <input type="number" min="1" value="1" />
-      </div>
-      <button class="btn-adicionar" onclick="adicionarAoCarrinho(this)">Adicionar</button>
-    </div>
-<div class="card-produto" data-nome="Café Grande" data-preco="6,00">
-      <div class="nome-produto">Café Grande</div>
-      <div class="descricao-produto">      </div>
-      <div class="preco-produto">R$ 6,00</div>
-      <div class="controle-quantidade">
-        <label>Quantidade:</label>
-        <input type="number" min="1" value="1" />
-      </div>
-      <button class="btn-adicionar" onclick="adicionarAoCarrinho(this)">Adicionar</button>
-    </div>
-<div class="card-produto" data-nome="Vitamina de Banana" data-preco="4,00">
-      <div class="nome-produto">Vitamina de Banana</div>
-      <div class="descricao-produto">      </div>
-      <div class="preco-produto">R$ 4,00</div>
-      <div class="controle-quantidade">
-        <label>Quantidade:</label>
-        <input type="number" min="1" value="1" />
-      </div>
-      <button class="btn-adicionar" onclick="adicionarAoCarrinho(this)">Adicionar</button>
-    </div>
 
-<div class="card-produto" data-nome="Chá" data-preco="2,00">
-      <div class="nome-produto">Chá</div>
-      <div class="descricao-produto">      </div>
-      <div class="preco-produto">R$ 2,00</div>
-      <div class="controle-quantidade">
-        <label>Quantidade:</label>
-        <input type="number" min="1" value="1" />
+      <div class="card-produto" data-nome="Batata Média" data-preco="8.00">
+        <div class="nome-produto">Batata Média</div>
+        <div class="preco-produto">R$ 8,00</div>
+        <input type="number" min="1" value="1">
+        <button class="btn-adicionar" onclick="adicionarAoCarrinho(this)">Adicionar</button>
       </div>
-      <button class="btn-adicionar" onclick="adicionarAoCarrinho(this)">Adicionar</button>
-    </div>
-<div class="card-produto" data-nome="CAPUCCINO" data-preco="10,00">
-      <div class="nome-produto">CAPUCCINO</div>
-      <div class="descricao-produto">      </div>
-      <div class="preco-produto">R$ 10,00</div>
-      <div class="controle-quantidade">
-        <label>Quantidade:</label>
-        <input type="number" min="1" value="1" />
-      </div>
-      <button class="btn-adicionar" onclick="adicionarAoCarrinho(this)">Adicionar</button>
-    </div>
 
-<div class="card-produto" data-nome="TAPIOCA" data-preco="5,00">
-      <div class="nome-produto">TAPIOCA</div>
-      <div class="descricao-produto">Tapioca com manteiga R$ 5,00.
-Tapioca coim queijo e presunto R$ 8,00</div>
-      <div class="preco-produto">R$ 5,00</div>
-      <div class="controle-quantidade">
-        <label>Quantidade:</label>
-        <input type="number" min="1" value="1" />
+      <div class="card-produto" data-nome="Batata Grande" data-preco="12.00">
+        <div class="nome-produto">Batata Grande</div>
+        <div class="preco-produto">R$ 12,00</div>
+        <input type="number" min="1" value="1">
+        <button class="btn-adicionar" onclick="adicionarAoCarrinho(this)">Adicionar</button>
       </div>
-      <button class="btn-adicionar" onclick="adicionarAoCarrinho(this)">Adicionar</button>
     </div>
-
-<div class="card-produto" data-nome="Cuscuz com Manteiga" data-preco="6,00">
-      <div class="nome-produto">Cuscuz com Manteiga</div>
-      <div class="descricao-produto">      </div>
-      <div class="preco-produto">R$ 6,00</div>
-      <div class="controle-quantidade">
-        <label>Quantidade:</label>
-        <input type="number" min="1" value="1" />
-      </div>
-      <button class="btn-adicionar" onclick="adicionarAoCarrinho(this)">Adicionar</button>
-    </div>
-
-<div class="card-produto" data-nome="Pão na Chapa" data-preco="2,00">
-      <div class="nome-produto">Pão na Chapa </div>
-      <div class="descricao-produto">      </div>
-      <div class="preco-produto">R$ 2,00</div>
-      <div class="controle-quantidade">
-        <label>Quantidade:</label>
-        <input type="number" min="1" value="1" />
-      </div>
-      <button class="btn-adicionar" onclick="adicionarAoCarrinho(this)">Adicionar</button>
-    </div>
-<div class="card-produto" data-nome="Café com leite" data-preco="2,00">
-      <div class="nome-produto">Café com leite </div>
-      <div class="descricao-produto">      </div>
-      <div class="preco-produto">R$ 2,00</div>
-      <div class="controle-quantidade">
-        <label>Quantidade:</label>
-        <input type="number" min="1" value="1" />
-      </div>
-      <button class="btn-adicionar" onclick="adicionarAoCarrinho(this)">Adicionar</button>
-    </div>
-
-
-  </div>
+  </section>
 
   <div id="carrinho">
     <h2>🛒 Carrinho</h2>
@@ -319,7 +227,6 @@ Tapioca coim queijo e presunto R$ 8,00</div>
     <div id="total">Total: R$ 0,00</div>
     <button onclick="enviarPedidoWhatsApp()">Enviar Pedido via WhatsApp</button>
   </div>
-
   <script>
     const carrinho = [];
 
@@ -329,7 +236,7 @@ Tapioca coim queijo e presunto R$ 8,00</div>
       const preco = parseFloat(card.dataset.preco);
       const quantidade = parseInt(card.querySelector('input').value);
 
-      const itemExistente = carrinho.find(i => i.nome === nome);
+      const itemExistente = carrinho.find(item => item.nome === nome);
       if (itemExistente) {
         itemExistente.quantidade += quantidade;
       } else {
@@ -346,7 +253,7 @@ Tapioca coim queijo e presunto R$ 8,00</div>
 
       carrinho.forEach(item => {
         const li = document.createElement("li");
-        li.textContent = `${item.nome} x${item.quantidade} - R$ ${(item.preco * item.quantidade).toFixed(2)}`;
+        li.textContent = `${item.nome} x${item.quantidade} = R$ ${(item.preco * item.quantidade).toFixed(2)}`;
         lista.appendChild(li);
         total += item.preco * item.quantidade;
       });
@@ -355,22 +262,22 @@ Tapioca coim queijo e presunto R$ 8,00</div>
     }
 
     function enviarPedidoWhatsApp() {
-      const tipoSelecionado = document.querySelector('input[name="tipoPedido"]:checked');
-      if (!tipoSelecionado) {
-        alert("Selecione o tipo de pedido!");
+      if (carrinho.length === 0) {
+        alert("Seu carrinho está vazio.");
         return;
       }
 
-      let mensagem = `🍰 Pedido (${tipoSelecionado.value}):\n\n`;
+      let mensagem = "🍰 *Pedido Dolce Maria*:\n\n";
 
       carrinho.forEach(item => {
         mensagem += `• ${item.nome} x${item.quantidade} = R$ ${(item.preco * item.quantidade).toFixed(2)}\n`;
       });
 
-      const total = carrinho.reduce((soma, item) => soma + (item.preco * item.quantidade), 0);
-      mensagem += `\nTotal: R$ ${total.toFixed(2)}`;
+      const total = carrinho.reduce((soma, item) => soma + item.preco * item.quantidade, 0);
+      mensagem += `\n*Total:* R$ ${total.toFixed(2)}`;
 
-      const url = "https://wa.me/5521992083804?text=" + encodeURIComponent(mensagem);
+      const telefone = "5599999999999"; // Substitua pelo número da loja com DDD
+      const url = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
       window.open(url, "_blank");
     }
   </script>
