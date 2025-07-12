@@ -2,50 +2,226 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>🍰 Dolce Maria</title>
-  <link rel="stylesheet" href="assets/css/style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>🍰 Dolce Maria - Cardápio</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #fff0f5;
+      color: #333;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #ff69b4;
+    }
+
+    #tipo-pedido-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    #tipo-pedido-container input[type="radio"] {
+      margin-right: 5px;
+    }
+
+    .produtos-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .card-produto {
+      background: #f0f8ff;
+      border: 2px solid #ffb6c1;
+      border-radius: 12px;
+      padding: 15px;
+      width: 250px;
+      box-shadow: 2px 2px 10px #d8bfd8;
+      text-align: center;
+    }
+
+    .nome-produto {
+      font-weight: bold;
+      font-size: 18px;
+      color: #ff69b4;
+    }
+
+    .descricao-produto {
+      font-size: 14px;
+      margin: 5px 0;
+      color: #555;
+    }
+
+    .preco-produto {
+      color: #444;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .controle-quantidade {
+      margin-bottom: 10px;
+    }
+
+    input[type="number"] {
+      width: 50px;
+      text-align: center;
+    }
+
+    .btn-adicionar {
+      background-color: #ff69b4;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .btn-adicionar:hover {
+      background-color: #ff1493;
+    }
+
+    #carrinho {
+      margin-top: 30px;
+      background-color: #fff5fa;
+      padding: 20px;
+      border-radius: 10px;
+      border: 2px dashed #ffb6c1;
+    }
+
+    #carrinho h2 {
+      color: #da70d6;
+      text-align: center;
+    }
+
+    #itens-carrinho {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 10px;
+    }
+
+    #total {
+      font-weight: bold;
+      text-align: right;
+      margin-bottom: 10px;
+    }
+
+    #carrinho button {
+      display: block;
+      margin: 0 auto;
+      background-color: #87cefa;
+      color: #333;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #carrinho button:hover {
+      background-color: #00bfff;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1 class="logo">🍰 Dolce Maria</h1>
-    <nav>
-      <ul class="menu">
-        <li><a href="#" class="active">Home</a></li>
-        <li><a href="#">Doces</a></li>
-        <li><a href="#">Bebidas</a></li>
-        <li><a href="#">Café da Manhã</a></li>
-        <li><a href="#">Contato</a></li>
-      </ul>
-    </nav>
-  </header>
+  <h1>🍰 Dolce Maria - Cardápio</h1>
 
-  <main class="container">
-    <section class="apresentacao">
-      <h2>Bem-vindo ao nosso cardápio</h2>
-      <p>Escolha uma categoria e descubra nossas delícias preparadas com carinho 💖</p>
-    </section>
+  <form id="tipo-pedido-container">
+    <input type="radio" id="local" name="tipoPedido" value="Comer no local" />
+    <label for="local">🍽️ Comer no local</label>
 
-    <section class="categorias">
-      <div class="categoria">
-        <img src="assets/img/doces.png" alt="Doces">
-        <h3>Doces</h3>
+    <input type="radio" id="levar" name="tipoPedido" value="Levar para casa" />
+    <label for="levar">🛍️ Levar para casa</label>
+
+    <input type="radio" id="entrega" name="tipoPedido" value="Entrega" />
+    <label for="entrega">🛵 Entrega</label>
+  </form>
+
+  <div class="produtos-container" id="produtos">
+    <div class="card-produto" data-nome="Brigadeiro" data-preco="4.50">
+      <div class="nome-produto">Brigadeiro</div>
+      <div class="descricao-produto">Docinho de chocolate com granulado.</div>
+      <div class="preco-produto">R$ 4,50</div>
+      <div class="controle-quantidade">
+        <label>Quantidade:</label>
+        <input type="number" min="1" value="1" />
       </div>
-      <div class="categoria">
-        <img src="assets/img/bebidas.png" alt="Bebidas">
-        <h3>Bebidas</h3>
-      </div>
-      <div class="categoria">
-        <img src="assets/img/cafe.png" alt="Café da Manhã">
-        <h3>Café da Manhã</h3>
-      </div>
-    </section>
-  </main>
+      <button class="btn-adicionar" onclick="adicionarAoCarrinho(this)">Adicionar</button>
+    </div>
 
-  <footer>
-    <p>© 2025 Dolce Maria. Todos os direitos reservados.</p>
-  </footer>
+    <div class="card-produto" data-nome="Beijinho" data-preco="4.00">
+      <div class="nome-produto">Beijinho</div>
+      <div class="descricao-produto">Docinho de coco com açúcar cristal.</div>
+      <div class="preco-produto">R$ 4,00</div>
+      <div class="controle-quantidade">
+        <label>Quantidade:</label>
+        <input type="number" min="1" value="1" />
+      </div>
+      <button class="btn-adicionar" onclick="adicionarAoCarrinho(this)">Adicionar</button>
+    </div>
+  </div>
 
-  <script src="assets/js/script.js"></script>
+  <div id="carrinho">
+    <h2>🛒 Carrinho</h2>
+    <ul id="itens-carrinho"></ul>
+    <div id="total">Total: R$ 0,00</div>
+    <button onclick="enviarPedidoWhatsApp()">Enviar Pedido via WhatsApp</button>
+  </div>
+
+  <script>
+    const carrinho = [];
+
+    function adicionarAoCarrinho(botao) {
+      const card = botao.closest('.card-produto');
+      const nome = card.dataset.nome;
+      const preco = parseFloat(card.dataset.preco);
+      const quantidade = parseInt(card.querySelector('input').value);
+
+      const itemExistente = carrinho.find(i => i.nome === nome);
+      if (itemExistente) {
+        itemExistente.quantidade += quantidade;
+      } else {
+        carrinho.push({ nome, preco, quantidade });
+      }
+
+      atualizarCarrinho();
+    }
+
+    function atualizarCarrinho() {
+      const lista = document.getElementById("itens-carrinho");
+      lista.innerHTML = "";
+      let total = 0;
+
+      carrinho.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = `${item.nome} x${item.quantidade} - R$ ${(item.preco * item.quantidade).toFixed(2)}`;
+        lista.appendChild(li);
+        total += item.preco * item.quantidade;
+      });
+
+      document.getElementById("total").textContent = `Total: R$ ${total.toFixed(2)}`;
+    }
+
+    function enviarPedidoWhatsApp() {
+      const tipoSelecionado = document.querySelector('input[name="tipoPedido"]:checked');
+      if (!tipoSelecionado) {
+        alert("Selecione o tipo de pedido!");
+        return;
+      }
+
+      let mensagem = `🍰 Pedido (${tipoSelecionado.value}):\n\n`;
+
+      carrinho.forEach(item => {
+        mensagem += `• ${item.nome} x${item.quantidade} = R$ ${(item.preco * item.quantidade).toFixed(2)}\n`;
+      });
+
+      const total = carrinho.reduce((soma, item) => soma + (item.preco * item.quantidade), 0);
+      mensagem += `\nTotal: R$ ${total.toFixed(2)}`;
+
+      const url = "https://wa.me/5599999999999?text=" + encodeURIComponent(mensagem);
+      window.open(url, "_blank");
+    }
+  </script>
 </body>
 </html>
