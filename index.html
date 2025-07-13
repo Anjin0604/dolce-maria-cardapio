@@ -453,7 +453,7 @@
   <div class="conteudo-carrinho" style="display:none;">
     <h3>🛒 Seu Carrinho</h3>
     <ul id="itens-carrinho"></ul>
-    <input type="text" id="cupom-input" placeholder="Digite cupom (ex: DOCE10)" aria-label="Cupom de desconto" />
+    <input type="text" id="cupom-input" placeholder="Digite cupom (ex: CUPOM123)" aria-label="Cupom de desconto" />
     <div id="total-carrinho">Total: R$ 0,00</div>
     <button id="btn-enviar" disabled>Enviar pedido via WhatsApp</button>
   </div>
@@ -644,7 +644,7 @@
     }
     mensagem += "\nAguardo confirmação! 💖";
 
-    const numero = "5511999999999"; // Coloque seu número real aqui
+    const numero = "5521970372440"; // Coloque seu número real aqui
     const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
     window.open(url, "_blank");
   }
