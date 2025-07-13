@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>🍰 Dolce Maria - Cardápio Especial</title>
+<title>🍰 Dolce Maria - Cardápio com Carrinho Flutuante</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
@@ -18,7 +18,6 @@
     --cinza-escuro: #444;
   }
 
-  /* Reset básico */
   * {
     box-sizing: border-box;
   }
@@ -28,6 +27,7 @@
     background: var(--rosa-bebe);
     color: var(--preto);
     transition: background 0.3s, color 0.3s;
+    padding-bottom: 80px; /* Espaço para o carrinho flutuante */
   }
   body.escuro {
     background: #121212;
@@ -83,16 +83,6 @@
     max-width: 1200px;
     margin: 20px auto;
     padding: 0 1rem;
-    display: grid;
-    grid-template-columns: 1fr 350px;
-    gap: 30px;
-  }
-
-  /* RESPONSIVO: em telas pequenas fica só 1 coluna */
-  @media(max-width: 850px) {
-    .container-principal {
-      grid-template-columns: 1fr;
-    }
   }
 
   /* PRODUTOS */
@@ -101,8 +91,6 @@
     border-radius: 20px;
     padding: 25px 30px;
     box-shadow: 0 8px 15px rgba(255,105,180,0.2);
-    max-height: 80vh;
-    overflow-y: auto;
   }
   body.escuro .produtos-area {
     background: #222;
@@ -191,28 +179,54 @@
     cursor: not-allowed;
   }
 
-  /* CARRINHO */
-  .carrinho-area {
+  /* CARRINHO FLOUTANTE */
+  #carrinho-flutuante {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 320px;
+    max-height: 80vh;
     background: var(--branco);
     border-radius: 20px;
-    padding: 25px 30px;
-    box-shadow: 0 8px 15px rgba(255,105,180,0.25);
-    max-height: 80vh;
+    box-shadow: 0 10px 25px rgba(255, 105, 180, 0.5);
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    overflow: hidden;
+    z-index: 2000;
+    transition: transform 0.3s ease;
   }
-  body.escuro .carrinho-area {
+  body.escuro #carrinho-flutuante {
     background: #222;
-    box-shadow: 0 8px 15px rgba(62, 161, 247, 0.5);
+    box-shadow: 0 10px 25px rgba(62, 161, 247, 0.7);
+  }
+  #carrinho-flutuante.compacto {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(255, 105, 180, 0.4);
   }
 
-  .carrinho-area h3 {
+  #carrinho-flutuante.compacto .conteudo-carrinho {
+    display: none;
+  }
+  #carrinho-flutuante.compacto .contador-itens {
+    display: flex;
+  }
+
+  /* Conteúdo do carrinho */
+  .conteudo-carrinho {
+    padding: 20px;
+    flex-grow: 1;
+    overflow-y: auto;
+  }
+
+  .conteudo-carrinho h3 {
+    margin: 0 0 15px 0;
     color: var(--rosa-forte);
     font-size: 1.5rem;
-    margin: 0 0 15px 0;
   }
-  body.escuro .carrinho-area h3 {
+  body.escuro .conteudo-carrinho h3 {
     color: var(--azul-forte);
   }
 
@@ -220,10 +234,9 @@
     list-style: none;
     padding: 0;
     margin: 0 0 20px 0;
+    max-height: 300px;
     overflow-y: auto;
-    max-height: 50vh;
   }
-
   #itens-carrinho li {
     font-size: 1rem;
     padding: 8px 0;
@@ -239,14 +252,14 @@
     font-weight: 700;
     font-size: 1.2rem;
     color: var(--rosa-forte);
-    margin-bottom: 20px;
+    margin-bottom: 15px;
   }
   body.escuro #total-carrinho {
     color: var(--azul-forte);
   }
 
   #cupom-input {
-    padding: 12px;
+    padding: 10px;
     border-radius: 12px;
     border: 2px solid var(--azul-forte);
     width: 100%;
@@ -273,6 +286,7 @@
     font-weight: 700;
     cursor: pointer;
     font-size: 1.1rem;
+    width: 100%;
     transition: background-color 0.3s ease;
   }
   #btn-enviar:hover {
@@ -281,6 +295,39 @@
   #btn-enviar:disabled {
     background: #999;
     cursor: not-allowed;
+  }
+
+  /* Ícone e contador carrinho compacto */
+  #carrinho-flutuante.compacto .icone-carrinho {
+    width: 70px;
+    height: 70px;
+    font-size: 32px;
+    color: var(--rosa-forte);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+
+  #carrinho-flutuante.compacto .contador-itens {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: var(--azul-forte);
+    color: white;
+    width: 22px;
+    height: 22px;
+    font-size: 14px;
+    border-radius: 50%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+  }
+
+  /* Exibir contador se >0 */
+  #carrinho-flutuante.compacto .contador-itens.exibir {
+    display: flex;
   }
 
   /* Botão tema */
@@ -355,14 +402,14 @@
     }
   }
   .fumaça {
-    position: fixed;
-    pointer-events: none;
     width: 50px;
     height: 50px;
     background: radial-gradient(ellipse at center, rgba(255,255,255,0.6) 0%, transparent 70%);
     border-radius: 50%;
     animation: fumaça 1.2s ease forwards;
     filter: blur(8px);
+    pointer-events: none;
+    position: fixed;
     z-index: 1500;
   }
 
@@ -394,120 +441,121 @@
 </header>
 
 <div class="container-principal">
-
-  <div class="produtos-area" aria-label="Produtos disponíveis">
-
-    <section class="categoria" id="categoria-manha">
-      <h2>Café da Manhã ☀️</h2>
-      <div class="lista-produtos" id="produtos-manha"></div>
-    </section>
-
-    <section class="categoria" id="categoria-tarde">
-      <h2>Doces & Cafés ☕</h2>
-      <div class="lista-produtos" id="produtos-tarde"></div>
-    </section>
-
-    <section class="categoria" id="categoria-noite">
-      <h2>Batatas Fritas 🌙</h2>
-      <div class="lista-produtos" id="produtos-noite"></div>
-    </section>
-
-  </div>
-
-  <aside class="carrinho-area" aria-label="Carrinho de compras">
-    <h3>🛒 Carrinho</h3>
-    <ul id="itens-carrinho" tabindex="0"></ul>
-    <div id="total-carrinho">Total: R$ 0,00</div>
-    <input id="cupom-input" aria-label="Campo para cupom de desconto" placeholder="🎟️ Cupom (ex: DOCE10)" />
-    <button id="btn-enviar" disabled>Enviar via WhatsApp</button>
-  </aside>
-
+  <div class="produtos-area" id="produtos"></div>
 </div>
 
-<button id="btn-tema" aria-label="Alternar tema">🌙</button>
-<button id="btn-topo" aria-label="Voltar ao topo">⬆</button>
-<div id="feedback">✅ Item adicionado!</div>
+<!-- Carrinho flutuante -->
+<div id="carrinho-flutuante" class="compacto" title="Clique para abrir/fechar">
+  <div class="icone-carrinho" aria-label="Carrinho de compras" role="button" tabindex="0">
+    🛒
+    <div class="contador-itens" aria-live="polite" aria-atomic="true">0</div>
+  </div>
+  <div class="conteudo-carrinho" style="display:none;">
+    <h3>🛒 Seu Carrinho</h3>
+    <ul id="itens-carrinho"></ul>
+    <input type="text" id="cupom-input" placeholder="Digite cupom (ex: DOCE10)" aria-label="Cupom de desconto" />
+    <div id="total-carrinho">Total: R$ 0,00</div>
+    <button id="btn-enviar" disabled>Enviar pedido via WhatsApp</button>
+  </div>
+</div>
+
+<button id="btn-tema" aria-label="Alternar tema">🌓</button>
+<button id="btn-topo" aria-label="Voltar ao topo">🔝</button>
+
+<div id="feedback" role="alert" aria-live="assertive"></div>
 
 <script>
-  // Produtos e efeitos especiais associados
-  const produtosPorHorario = {
-    manha: [
-      { nome: "Café com Leite", preco: 4, efeito: null },
-      { nome: "Tapioca", preco: 5, efeito: null },
-      { nome: "Cuscuz com Manteiga", preco: 6, efeito: null },
-      { nome: "Misto Quente", preco: 5.5, efeito: null }
+  const produtos = {
+    "Café da Manhã": [
+      { nome: "Cappuccino", preco: 8.5, efeito: "fumaça" },
+      { nome: "Misto Quente", preco: 5.0, efeito: "brilho" },
+      { nome: "Pão de Queijo", preco: 4.5, efeito: "brilho" }
     ],
-    tarde: [
-      { nome: "Bolo de Pote", preco: 10, efeito: 'brilho' },
-      { nome: "Brownie", preco: 6, efeito: 'brilho' },
-      { nome: "Fatia de Bolo", preco: 4, efeito: 'brilho' },
-      { nome: "Capuccino", preco: 7, efeito: 'fumaça' }
+    "Doces e Cafés": [
+      { nome: "Bolo de Morango", preco: 12.0, efeito: "brilho" },
+      { nome: "Brownie", preco: 7.0, efeito: "brilho" },
+      { nome: "Café Expresso", preco: 6.0, efeito: "fumaça" }
     ],
-    noite: [
-      { nome: "Batata Pequena", preco: 5, efeito: 'explosao' },
-      { nome: "Batata Média", preco: 8, efeito: 'explosao' },
-      { nome: "Batata Grande", preco: 12, efeito: 'explosao' }
+    "Batatas Fritas": [
+      { nome: "Batata Pequena", preco: 5.0, efeito: "explosao" },
+      { nome: "Batata Média", preco: 8.0, efeito: "explosao" },
+      { nome: "Batata Grande", preco: 12.0, efeito: "explosao" }
     ]
   };
-
-  const horarioAbertura = 7;
-  const horarioFechamento = 20;
 
   let carrinho = [];
   let cupomAtivo = 0;
 
-  // Verifica status loja
-  function verificarStatusLoja() {
-    const agora = new Date();
-    const hora = agora.getHours();
-    const statusEl = document.getElementById("status-loja");
-    const aberta = hora >= horarioAbertura && hora < horarioFechamento;
-    statusEl.textContent = aberta ? "🟢 Loja Aberta" : "🔴 Loja Fechada";
-    statusEl.classList.toggle("fechado", !aberta);
-    return aberta;
+  const horarioCategorias = [
+    { nome: "Café da Manhã", inicio: 5, fim: 10 },
+    { nome: "Doces e Cafés", inicio: 11, fim: 17 },
+    { nome: "Batatas Fritas", inicio: 18, fim: 23 }
+  ];
+
+  function horarioAtual() {
+    const h = new Date().getHours();
+    for (const cat of horarioCategorias) {
+      if (h >= cat.inicio && h <= cat.fim) return cat.nome;
+    }
+    // Se não estiver em nenhum, retorna "Batatas Fritas" (período noturno)
+    return "Batatas Fritas";
   }
 
-  // Renderiza os produtos nas categorias
+  function verificarStatusLoja() {
+    // Loja aberta das 7h às 20h30
+    const agora = new Date();
+    const h = agora.getHours();
+    const m = agora.getMinutes();
+    const aberto = (h > 7 || (h === 7 && m >= 0)) && (h < 20 || (h === 20 && m <= 30));
+    const status = document.getElementById("status-loja");
+    if (aberto) {
+      status.textContent = "🟢 Loja Aberta";
+      status.classList.remove("fechado");
+      return true;
+    } else {
+      status.textContent = "🔴 Loja Fechada";
+      status.classList.add("fechado");
+      return false;
+    }
+  }
+
   function renderizarProdutos() {
-    const hora = new Date().getHours();
-    // Define horário para destaque
-    let horarioAtual = hora >= 5 && hora < 11 ? "manha" : (hora < 18 ? "tarde" : "noite");
+    const container = document.getElementById("produtos");
+    container.innerHTML = "";
+    const horaCat = horarioAtual();
 
-    // Para cada categoria
-    for (const periodo in produtosPorHorario) {
-      const container = document.getElementById(`produtos-${periodo}`);
-      const categoria = document.getElementById(`categoria-${periodo}`);
-      container.innerHTML = "";
+    for (const categoria in produtos) {
+      const catDiv = document.createElement("div");
+      catDiv.className = "categoria";
 
-      // Destacar categoria atual
-      if (periodo === horarioAtual) {
-        categoria.style.border = `3px solid var(--rosa-forte)`;
-        categoria.style.boxShadow = `0 0 15px var(--rosa-forte)`;
-      } else {
-        categoria.style.border = 'none';
-        categoria.style.boxShadow = 'none';
-      }
+      const destaque = categoria === horaCat ? "🌟 " : "";
+      const h2 = document.createElement("h2");
+      h2.textContent = destaque + categoria;
+      catDiv.appendChild(h2);
 
-      produtosPorHorario[periodo].forEach(prod => {
-        const prodDiv = document.createElement('div');
-        prodDiv.className = 'produto';
+      const listaProdutos = document.createElement("div");
+      listaProdutos.className = "lista-produtos";
+
+      produtos[categoria].forEach(prod => {
+        const prodDiv = document.createElement("div");
+        prodDiv.className = "produto";
         prodDiv.setAttribute('tabindex', '0');
         prodDiv.setAttribute('role', 'button');
         prodDiv.setAttribute('aria-pressed', 'false');
         prodDiv.innerHTML = `
           <strong>${prod.nome}</strong>
           <small>R$ ${prod.preco.toFixed(2)}</small>
-          <button class="btn-adicionar" ${verificarStatusLoja() ? '' : 'disabled'}>Adicionar</button>
+          <button class="btn-adicionar" ${verificarStatusLoja() ? '' : 'disabled'} aria-label="Adicionar ${prod.nome} ao carrinho">Adicionar</button>
         `;
 
         // Evento clique no botão
         const btn = prodDiv.querySelector('button');
         btn.addEventListener('click', (e) => {
-          e.stopPropagation(); // Para evitar disparar evento da div
+          e.stopPropagation();
           adicionarAoCarrinho(prod, btn);
         });
 
-        // Também permitir adicionar ao clicar na div do produto (acessibilidade)
+        // Adicionar acessibilidade ao clicar na div
         prodDiv.addEventListener('keypress', (e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
@@ -515,47 +563,45 @@
           }
         });
 
-        container.appendChild(prodDiv);
+        listaProdutos.appendChild(prodDiv);
       });
+
+      catDiv.appendChild(listaProdutos);
+      container.appendChild(catDiv);
     }
   }
 
-  // Função para criar efeitos especiais animados
   function criarEfeito(efeito, elemBotao) {
     if (!efeito) return;
     const rect = elemBotao.getBoundingClientRect();
-    const efeitoDiv = document.createElement('div');
+    const efeitoDiv = document.createElement("div");
     efeitoDiv.className = efeito;
-    // Posiciona a animação no centro do botão
-    efeitoDiv.style.position = 'fixed';
-    efeitoDiv.style.left = (rect.left + rect.width / 2 - 25) + 'px';
-    efeitoDiv.style.top = (rect.top - 40) + 'px';
-    efeitoDiv.style.pointerEvents = 'none';
+    efeitoDiv.style.position = "fixed";
+    efeitoDiv.style.left = rect.left + rect.width / 2 - 25 + "px";
+    efeitoDiv.style.top = rect.top - 50 + "px";
+    efeitoDiv.style.pointerEvents = "none";
     document.body.appendChild(efeitoDiv);
-
-    setTimeout(() => {
-      efeitoDiv.remove();
-    }, efeito === 'fumaça' ? 1200 : 1000);
+    setTimeout(() => efeitoDiv.remove(), 1200);
   }
 
-  // Adiciona item ao carrinho
   function adicionarAoCarrinho(prod, btn) {
     carrinho.push({ nome: prod.nome, preco: prod.preco });
     atualizarCarrinho();
     criarEfeito(prod.efeito, btn);
-    mostrarFeedback("✅ " + prod.nome + " adicionado!");
+    mostrarFeedback(`✅ ${prod.nome} adicionado!`);
   }
 
-  // Atualiza visual do carrinho
   function atualizarCarrinho() {
     const lista = document.getElementById("itens-carrinho");
     const totalEl = document.getElementById("total-carrinho");
-    lista.innerHTML = "";
+    const contador = document.querySelector("#carrinho-flutuante .contador-itens");
 
+    lista.innerHTML = "";
     let total = 0;
+
     carrinho.forEach(item => {
       total += item.preco;
-      const li = document.createElement('li');
+      const li = document.createElement("li");
       li.textContent = `${item.nome} - R$ ${item.preco.toFixed(2)}`;
       lista.appendChild(li);
     });
@@ -568,9 +614,17 @@
     }
 
     document.getElementById("btn-enviar").disabled = carrinho.length === 0;
+
+    // Atualiza contador no ícone do carrinho
+    if (carrinho.length > 0) {
+      contador.textContent = carrinho.length;
+      contador.classList.add("exibir");
+    } else {
+      contador.textContent = "0";
+      contador.classList.remove("exibir");
+    }
   }
 
-  // Envia pedido via WhatsApp
   function enviarPedidoWhatsApp() {
     if (carrinho.length === 0) {
       alert("Seu carrinho está vazio!");
@@ -588,43 +642,38 @@
     } else {
       mensagem += `\n*Total: R$ ${total.toFixed(2)}*\n`;
     }
-    mensagem += "Aguardo confirmação! 💖";
+    mensagem += "\nAguardo confirmação! 💖";
 
-    const numero = "5511999999999"; // Coloque seu número real
+    const numero = "5511999999999"; // Coloque seu número real aqui
     const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
     window.open(url, "_blank");
   }
 
-  // Feedback visual temporário
   function mostrarFeedback(msg) {
     const feedback = document.getElementById("feedback");
     feedback.textContent = msg;
     feedback.style.opacity = 1;
     setTimeout(() => {
       feedback.style.opacity = 0;
-    }, 2200);
+    }, 2000);
   }
 
-  // Scroll para topo
-  function scrollParaTopo() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  // Alternar tema claro/escuro
   function alternarTema() {
-    document.body.classList.toggle('escuro');
+    document.body.classList.toggle("escuro");
   }
 
-  // Verifica exibição do botão topo
+  function scrollParaTopo() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
   function verificarBtnTopo() {
     const btn = document.getElementById("btn-topo");
-    if (window.scrollY > 250) btn.style.display = 'block';
-    else btn.style.display = 'none';
+    if (window.scrollY > 250) btn.style.display = "block";
+    else btn.style.display = "none";
   }
 
-  // Verifica cupom válido
   function verificarCupom() {
-    const cupom = document.getElementById('cupom-input').value.trim().toUpperCase();
+    const cupom = document.getElementById("cupom-input").value.trim().toUpperCase();
     if (cupom === "DOCE10") {
       cupomAtivo = 0.10;
       mostrarFeedback("🎉 Cupom DOCE10 aplicado: 10% OFF!");
@@ -634,18 +683,44 @@
     atualizarCarrinho();
   }
 
-  // Inicialização
+  // Toggle carrinho compacto/expandido
+  const carrinhoFlutuante = document.getElementById("carrinho-flutuante");
+  const iconeCarrinho = carrinhoFlutuante.querySelector(".icone-carrinho");
+  const conteudoCarrinho = carrinhoFlutuante.querySelector(".conteudo-carrinho");
+
+  function toggleCarrinho() {
+    if (carrinhoFlutuante.classList.contains("compacto")) {
+      carrinhoFlutuante.classList.remove("compacto");
+      conteudoCarrinho.style.display = "block";
+      carrinhoFlutuante.style.width = "320px";
+      carrinhoFlutuante.style.height = "auto";
+    } else {
+      carrinhoFlutuante.classList.add("compacto");
+      conteudoCarrinho.style.display = "none";
+      carrinhoFlutuante.style.width = "70px";
+      carrinhoFlutuante.style.height = "70px";
+    }
+  }
+
+  iconeCarrinho.addEventListener("click", toggleCarrinho);
+  iconeCarrinho.addEventListener("keypress", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      toggleCarrinho();
+    }
+  });
+
   window.onload = () => {
     verificarStatusLoja();
     renderizarProdutos();
 
     document.getElementById("btn-enviar").addEventListener("click", enviarPedidoWhatsApp);
-    document.getElementById("btn-topo").addEventListener("click", scrollParaTopo);
     document.getElementById("btn-tema").addEventListener("click", alternarTema);
+    document.getElementById("btn-topo").addEventListener("click", scrollParaTopo);
     document.getElementById("cupom-input").addEventListener("input", verificarCupom);
 
     window.addEventListener("scroll", verificarBtnTopo);
-  }
+  };
 </script>
 
 </body>
