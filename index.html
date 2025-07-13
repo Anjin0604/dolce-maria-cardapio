@@ -1,563 +1,749 @@
-<!DOCTYPE html>
+<from zipfile import ZipFile
+from pathlib import Path
+
+# Conteúdo completo do index.html com todas as partes montadas
+html_content = '''<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>🍰 Dolce Maria - Cardápio Completo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🍰 Dolce Maria</title>
   <style>
     :root {
-      --rosa: #ff69b4;
-      --azul: #87cefa;
-      --bg-claro: #fff0f5;
-      --bg-escuro: #2d2d2d;
-      --texto-claro: #333;
-      --texto-escuro: #fff;
+      --rosa-bebe: #ffdde4;
+      --rosa-forte: #ff69b4;
+      --azul-bebe: #d0f0fd;
+      --azul-forte: #87cefa;
+      --branco: #fff;
+      --preto: #222;
+      --cinza: #f9f9f9;
     }
 
     body {
-      font-family: Arial, sans-serif;
       margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: var(--rosa-bebe);
+      color: var(--preto);
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      background: var(--branco);
       padding: 20px;
-      background: var(--bg-claro);
-      color: var(--texto-claro);
-      transition: background-color 0.3s, color 0.3s;
-    }
-
-    body.dark {
-      background: var(--bg-escuro);
-      color: var(--texto-escuro);
-    }
-
-    h1 {
-      text-align: center;
-      color: var(--rosa);
-      margin-bottom: 1rem;
-    }
-
-    .topo {
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-      margin-bottom: 20px;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
     }
 
-    .topo input, .topo select, .topo button {
-      padding: 8px 12px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 1rem;
-      min-width: 150px;
+    header h1 {
+      font-size: 1.8em;
+      color: var(--rosa-forte);
+      margin: 0;
     }
 
-    #bairro {
-      min-width: 180px;
-    }
-
-    .toggle-tema {
-      background: var(--rosa);
-      color: white;
-      cursor: pointer;
-      border: none;
-      min-width: 90px;
-      transition: background-color 0.3s;
-    }
-
-    .toggle-tema:hover {
-      background: #ff1493;
-    }
-
-    #produtos section {
-      margin-bottom: 30px;
-    }
-
-    #produtos h2 {
-      border-bottom: 2px solid var(--rosa);
-      padding-bottom: 5px;
-      margin-bottom: 10px;
-      color: var(--rosa);
-    }
-
-    #produtos div.produto-card {
-      border: 2px solid var(--rosa);
-      padding: 10px;
-      border-radius: 10px;
-      background: white;
-      display: inline-block;
-      margin: 5px;
-      width: 180px;
-      vertical-align: top;
-      box-shadow: 0 2px 8px rgba(255,105,180,0.3);
-      transition: transform 0.3s ease;
-    }
-
-    #produtos div.produto-card:hover {
-      transform: scale(1.05);
-      box-shadow: 0 4px 15px rgba(255,105,180,0.6);
-    }
-
-    #produtos div.produto-card strong {
-      font-size: 1.1rem;
-      display: block;
-      margin-bottom: 5px;
-      color: var(--rosa);
-    }
-
-    #produtos div.produto-card small {
-      color: #666;
-      display: block;
-      margin-bottom: 10px;
-      font-weight: 600;
-    }
-
-    #produtos div.produto-card input[type=number] {
-      width: 50px;
-      padding: 5px;
-      font-size: 1rem;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      margin-bottom: 8px;
-    }
-
-    #produtos div.produto-card button {
-      background: var(--rosa);
-      border: none;
-      color: white;
-      padding: 8px 12px;
-      border-radius: 6px;
-      cursor: pointer;
+    #status-loja {
       font-weight: bold;
-      width: 100%;
-      transition: background-color 0.3s;
+      font-size: 1em;
+      padding: 8px 14px;
+      border-radius: 12px;
+      background: var(--azul-bebe);
+      color: var(--preto);
     }
 
-    #produtos div.produto-card button:hover {
-      background: #ff1493;
+    #status-loja.fechado {
+      background: #ffcccc;
+      color: #900;
+    }
+
+    .secao {
+      padding: 40px 20px;
+    }
+
+    .secao h2 {
+      text-align: center;
+      color: var(--rosa-forte);
+      margin-bottom: 30px;
+      font-size: 1.6em;
+    }
+
+    .produtos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+      padding: 0 10px;
+    }
+
+    .card-produto {
+      background: var(--branco);
+      border-radius: 16px;
+      padding: 16px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(255, 105, 180, 0.2);
+      transition: transform 0.2s ease;
+    }
+
+    .card-produto:hover {
+      transform: scale(1.03);
+      box-shadow: 0 6px 20px rgba(255, 105, 180, 0.25);
+    }
+
+    .card-produto button {
+      margin-top: 10px;
+      padding: 8px 14px;
+      border: none;
+      background: var(--azul-forte);
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .card-produto button:hover {
+      background: #00bfff;
+    }
+
+    .destaque-horario {
+      border: 2px solid var(--rosa-forte);
+      box-shadow: 0 0 12px rgba(255, 105, 180, 0.4);
     }
 
     #carrinho {
-      background: white;
-      border-radius: 12px;
-      padding: 15px 20px;
-      box-shadow: 0 3px 15px rgba(255,105,180,0.4);
-      max-width: 600px;
-      margin: 0 auto 40px auto;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--branco);
+      border: 2px solid var(--rosa-forte);
+      border-radius: 16px;
+      padding: 16px;
+      max-width: 280px;
+      box-shadow: 0 0 20px rgba(255, 105, 180, 0.2);
+      z-index: 999;
     }
 
-    #carrinho h2 {
-      color: var(--azul);
+    #carrinho h3 {
       margin-top: 0;
-      margin-bottom: 15px;
-      text-align: center;
+      font-size: 1.2em;
+      color: var(--rosa-forte);
     }
 
     #itens-carrinho {
       list-style: none;
-      padding-left: 0;
-      max-height: 250px;
+      padding: 0;
+      margin: 10px 0;
+      max-height: 150px;
       overflow-y: auto;
-      margin-bottom: 10px;
     }
 
     #itens-carrinho li {
-      display: flex;
-      justify-content: space-between;
-      border-bottom: 1px solid #eee;
-      padding: 6px 0;
-      font-weight: 600;
+      font-size: 0.9em;
+      padding: 4px 0;
+      border-bottom: 1px dashed #ddd;
     }
 
-    #itens-carrinho li button {
-      background: transparent;
-      border: none;
-      color: #ff4d6d;
+    #total-carrinho {
+      margin: 10px 0;
       font-weight: bold;
-      cursor: pointer;
-      font-size: 1.1rem;
-      transition: color 0.3s;
+      font-size: 1em;
     }
 
-    #itens-carrinho li button:hover {
-      color: #ff1493;
-    }
-
-    #total {
-      font-weight: bold;
-      text-align: right;
-      font-size: 1.2rem;
-      margin-top: 10px;
-      color: var(--azul);
-    }
-
-    #carrinho button#enviar-whatsapp {
-      background: var(--azul);
-      color: white;
-      border: none;
-      padding: 12px;
+    #carrinho button {
       width: 100%;
-      font-size: 1.1rem;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-      margin-top: 15px;
-    }
-
-    #carrinho button#enviar-whatsapp:hover {
-      background: #00aaff;
-    }
-
-    #feedback-msg {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: var(--rosa);
+      padding: 10px;
+      border: none;
+      background: #25d366;
       color: white;
-      padding: 12px 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 12px rgba(255,105,180,0.8);
+      font-weight: bold;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    #carrinho button:hover {
+      background: #20c65a;
+    }
+
+    #topo {
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      background: var(--rosa-forte);
+      color: white;
+      padding: 12px;
+      border-radius: 50%;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      display: none;
+      z-index: 900;
+    }
+
+    #topo:hover {
+      background: #ff1493;
+    }
+
+    #feedback {
+      position: fixed;
+      top: 80px;
+      right: 30px;
+      background: var(--azul-forte);
+      color: white;
+      padding: 10px 16px;
+      border-radius: 10px;
       opacity: 0;
       transition: opacity 0.3s ease;
-      z-index: 10000;
-      pointer-events: none;
+      z-index: 1000;
     }
 
-    /* Botão voltar ao topo */
-    #btn-voltar-topo {
+    body.escuro {
+      background: #1a1a1a;
+      color: #fff;
+    }
+
+    body.escuro header {
+      background: #333;
+      color: #fff;
+    }
+
+    body.escuro .card-produto {
+      background: #292929;
+      color: #fff;
+    }
+
+    .tema-btn {
       position: fixed;
-      bottom: 30px;
-      right: 30px;
-      background: var(--rosa);
+      top: 20px;
+      left: 20px;
+      background: var(--azul-forte);
       color: white;
       border: none;
-      padding: 12px 16px;
-      border-radius: 50%;
+      padding: 8px 14px;
+      border-radius: 10px;
       cursor: pointer;
-      font-size: 1.5rem;
-      box-shadow: 0 4px 15px rgba(255,105,180,0.6);
-      display: none;
-      z-index: 9999;
-      transition: background-color 0.3s;
-    }
-
-    #btn-voltar-topo:hover {
-      background: #ff1493;
-    }
-
-    /* Dark mode ajustes */
-    body.dark #produtos div.produto-card {
-      background: #3b3b3b;
-      border-color: #ff69b4;
-      color: #eee;
-      box-shadow: 0 2px 8px rgba(255,105,180,0.6);
-    }
-    body.dark #produtos div.produto-card small {
-      color: #ccc;
-    }
-    body.dark #carrinho {
-      background: #444;
-      color: #eee;
-      box-shadow: 0 3px 15px rgba(255,105,180,0.8);
-    }
-    body.dark #carrinho h2 {
-      color: #87cefa;
-    }
-    body.dark #itens-carrinho li {
-      border-color: #666;
-    }
-    body.dark #itens-carrinho li button {
-      color: #ff99c8;
-    }
-    body.dark #itens-carrinho li button:hover {
-      color: #ff66b2;
-    }
-    body.dark #total {
-      color: #87cefa;
-    }
-    body.dark #carrinho button#enviar-whatsapp {
-      background: #00aaff;
-    }
-    body.dark #carrinho button#enviar-whatsapp:hover {
-      background: #0088cc;
-    }
-    body.dark #btn-voltar-topo {
-      background: #ff69b4;
-    }
-    body.dark #btn-voltar-topo:hover {
-      background: #ff1493;
+      z-index: 999;
     }
   </style>
 </head>
 <body>
+  <header>
+    <h1>🍰 Dolce Maria</h1>
+    <div id="status-loja">Verificando...</div>
+  </header>
 
-  <h1>🍰 Dolce Maria</h1>
+  <button class="tema-btn" onclick="alternarTema()">🌙 Tema</button>
+  <div id="feedback">✅ Item adicionado!</div>
+  <button id="topo" onclick="scrollToTop()">⬆</button>
 
-  <div class="topo">
-    <input type="text" id="busca" placeholder="🔍 Buscar produto..." oninput="filtrarProdutos()" />
-    <select id="tipo-pedido" aria-label="Tipo de pedido">
-      <option value="local">Comer no Local</option>
-      <option value="levar">Para Levar</option>
-      <option value="entregar">Entregar</option>
-    </select>
-    <input type="text" id="bairro" placeholder="Bairro (para entrega)" aria-label="Bairro para entrega" />
-    <input type="text" id="cupom" placeholder="Cupom de desconto" aria-label="Cupom de desconto" />
-    <button class="toggle-tema" onclick="alternarTema()" aria-label="Alternar tema">🌓 Tema</button>
+  <div class="secao" id="secao-manha">
+    <h2>Café da Manhã ☀️</h2>
+    <div class="produtos" id="produtos-manha"></div>
+  </div>
+  <div class="secao" id="secao-tarde">
+    <h2>Doces & Cafés ☕</h2>
+    <div class="produtos" id="produtos-tarde"></div>
+  </div>
+  <div class="secao" id="secao-noite">
+    <h2>Batatas Fritas 🌙</h2>
+    <div class="produtos" id="produtos-noite"></div>
   </div>
 
-  <main id="produtos"></main>
-
-  <section id="carrinho">
-    <h2>🛒 Seu Carrinho</h2>
+  <div id="carrinho">
+    <h3>🛒 Carrinho</h3>
     <ul id="itens-carrinho"></ul>
-    <div id="total">Total: R$ 0,00</div>
-    <button id="enviar-whatsapp" onclick="enviarPedidoWhatsApp()">Enviar via WhatsApp</button>
-  </section>
-
-  <button id="btn-voltar-topo" title="Voltar ao Topo" onclick="window.scrollTo({top:0, behavior:'smooth'})">🔝</button>
-
-  <div id="feedback-msg" role="alert" aria-live="assertive"></div>
+    <div id="total-carrinho">Total: R$ 0,00</div>
+    <button onclick="enviarPedidoWhatsApp()">Enviar via WhatsApp</button>
+  </div>
 
   <script>
-    // Dados dos produtos por categoria e horário
-    const produtos = {
-      "Café da Manhã": [
-        { nome: "Misto Quente", preco: 5 },
+    const produtosPorHorario = {
+      manha: [
         { nome: "Café com Leite", preco: 4 },
         { nome: "Tapioca", preco: 5 },
-        { nome: "Cuscuz com Manteiga", preco: 6 }
+        { nome: "Cuscuz com Manteiga", preco: 6 },
+        { nome: "Misto Quente", preco: 5.5 }
       ],
-      "Doces": [
-        { nome: "Bolo de Pote", preco: 12 },
-        { nome: "Brownie", preco: 5 },
-        { nome: "Fatia de Bolo", preco: 3.5 }
+      tarde: [
+        { nome: "Bolo de Pote", preco: 10 },
+        { nome: "Brownie", preco: 6 },
+        { nome: "Fatia de Bolo", preco: 4 },
+        { nome: "Capuccino", preco: 7 }
       ],
-      "Batatas Fritas": [
+      noite: [
         { nome: "Batata Pequena", preco: 5 },
         { nome: "Batata Média", preco: 8 },
         { nome: "Batata Grande", preco: 12 }
       ]
     };
 
-    // Estado
+    const horarioAbertura = 7;
+    const horarioFechamento = 20;
     let carrinho = [];
-    let descontoPercentual = 0;
+    let cupomAtivo = 0;
 
-    const taxaEntregaPorBairro = {
-      "Centro": 5.00,
-      "Zona Norte": 7.50,
-      "Zona Sul": 6.00,
-      "Zona Leste": 8.00,
-      "Zona Oeste": 9.00
-    };
-
-    // Formatar preço para Real
-    function formatarPreco(valor) {
-      return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    function verificarStatusLoja() {
+      const agora = new Date();
+      const hora = agora.getHours();
+      const statusEl = document.getElementById("status-loja");
+      const aberta = hora >= horarioAbertura && hora < horarioFechamento;
+      statusEl.textContent = aberta ? "🟢 Loja Aberta" : "🔴 Loja Fechada";
+      statusEl.classList.toggle("fechado", !aberta);
+      return aberta;
     }
 
-    // Detecta o horário atual e retorna categoria com destaque
-    function horarioAtual() {
-      const h = new Date().getHours();
-      if (h >= 5 && h < 11) return "Café da Manhã";
-      if (h >= 11 && h < 15) return "Almoço";
-      if (h >= 15 && h < 18) return "Café da Tarde";
-      return "Jantar / Noite";
-    }
-
-    // Renderiza os produtos na tela, filtrando por busca
     function renderizarProdutos() {
-      const container = document.getElementById('produtos');
-      container.innerHTML = '';
-      const destaque = horarioAtual();
-      const termoBusca = document.getElementById('busca').value.trim().toLowerCase();
+      const hora = new Date().getHours();
+      let horarioAtual = hora >= 5 && hora < 11 ? "manha" : hora < 18 ? "tarde" : "noite";
 
-      for (const categoria in produtos) {
-        // Filtra produtos pela busca
-        const produtosFiltrados = produtos[categoria].filter(p =>
-          p.nome.toLowerCase().includes(termoBusca)
-        );
+      for (const periodo in produtosPorHorario) {
+        const container = document.getElementById("produtos-" + periodo);
+        const secao = document.getElementById("secao-" + periodo);
+        container.innerHTML = "";
+        secao.classList.toggle("destaque-horario", periodo === horarioAtual);
 
-        if (produtosFiltrados.length === 0) continue;
-
-        const secao = document.createElement('section');
-        const titulo = document.createElement('h2');
-        titulo.textContent = categoria + (categoria === destaque ? " 🌟" : "");
-        secao.appendChild(titulo);
-
-        produtosFiltrados.forEach(produto => {
-          const card = document.createElement('div');
-          card.className = 'produto-card';
+        produtosPorHorario[periodo].forEach(prod => {
+          const card = document.createElement("div");
+          card.className = "card-produto";
           card.innerHTML = `
-            <strong>${produto.nome}</strong>
-            <small>${formatarPreco(produto.preco)}</small>
-            <input type="number" min="1" value="1" aria-label="Quantidade para ${produto.nome}" />
-            <button onclick="adicionarAoCarrinho('${produto.nome}', ${produto.preco}, this)">Adicionar</button>
-          `;
-          secao.appendChild(card);
+            <strong>${prod.nome}</strong><br>
+            <small>R$ ${prod.preco.toFixed(2)}</small><br>
+            <button ${verificarStatusLoja() ? "" : "disabled"}>Adicionar</button>`;
+          container.appendChild(card);
         });
-
-        container.appendChild(secao);
-      }
-
-      if (container.innerHTML === '') {
-        container.innerHTML = '<p style="text-align:center; color:#888;">Nenhum produto encontrado.</p>';
       }
     }
 
-    // Adiciona produto ao carrinho
-    function adicionarAoCarrinho(nome, preco, botao) {
-      const inputQtd = botao.previousElementSibling;
-      let qtd = parseInt(inputQtd.value);
-      if (isNaN(qtd) || qtd < 1) qtd = 1;
-
-      const indice = carrinho.findIndex(item => item.nome === nome);
-      if (indice > -1) {
-        carrinho[indice].quantidade += qtd;
-      } else {
-        carrinho.push({ nome, preco, quantidade: qtd });
-      }
+    function adicionarAoCarrinho(nome, preco) {
+      carrinho.push({ nome, preco });
       atualizarCarrinho();
-      mostrarFeedback(`+${qtd}x ${nome} adicionado!`);
+      mostrarFeedback();
     }
 
-    // Atualiza carrinho na tela e cálculo de total, desconto e entrega
     function atualizarCarrinho() {
-      const lista = document.getElementById('itens-carrinho');
-      lista.innerHTML = '';
+      const lista = document.getElementById("itens-carrinho");
+      const total = document.getElementById("total-carrinho");
+      lista.innerHTML = "";
+      let valorTotal = 0;
 
-      const bairro = document.getElementById('bairro').value.trim();
-      const tipoPedido = document.getElementById('tipo-pedido').value;
-
-      let subtotal = 0;
-
-      if (carrinho.length === 0) {
-        lista.innerHTML = '<li>Seu carrinho está vazio.</li>';
-      } else {
-        carrinho.forEach((item, i) => {
-          subtotal += item.preco * item.quantidade;
-          const li = document.createElement('li');
-          li.innerHTML = `
-            ${item.quantidade}x ${item.nome} - ${formatarPreco(item.preco * item.quantidade)}
-            <button onclick="removerItem(${i})" aria-label="Remover ${item.nome} do carrinho">✕</button>
-          `;
-          lista.appendChild(li);
-        });
-      }
-
-      let taxaEntrega = 0;
-      if (tipoPedido === 'entregar') {
-        if (bairro && taxaEntregaPorBairro[bairro]) {
-          taxaEntrega = taxaEntregaPorBairro[bairro];
-        } else if (bairro) {
-          taxaEntrega = 5;
-        }
-      }
-
-      const descontoValor = subtotal * (descontoPercentual / 100);
-      const total = subtotal - descontoValor + taxaEntrega;
-
-      document.getElementById('total').textContent =
-        `Subtotal: ${formatarPreco(subtotal)} | Desconto: -${formatarPreco(descontoValor)} | Entrega: ${formatarPreco(taxaEntrega)} | Total: ${formatarPreco(total)}`;
-    }
-
-    // Remove item do carrinho
-    function removerItem(indice) {
-      carrinho.splice(indice, 1);
-      atualizarCarrinho();
-    }
-
-    // Aplica cupom de desconto ao mudar o campo
-    document.getElementById('cupom').addEventListener('change', () => {
-      const cupom = document.getElementById('cupom').value.trim().toUpperCase();
-      switch(cupom) {
-        case 'DOLCE10':
-          descontoPercentual = 10;
-          mostrarFeedback("Cupom DOLCE10 aplicado: 10% de desconto!");
-          break;
-        case 'BOLO5':
-          descontoPercentual = 5;
-          mostrarFeedback("Cupom BOLO5 aplicado: 5% de desconto!");
-          break;
-        default:
-          descontoPercentual = 0;
-          if (cupom !== '') mostrarFeedback("Cupom inválido!");
-      }
-      atualizarCarrinho();
-    });
-
-    // Atualiza carrinho se mudar bairro ou tipo de pedido
-    document.getElementById('bairro').addEventListener('input', atualizarCarrinho);
-    document.getElementById('tipo-pedido').addEventListener('change', atualizarCarrinho);
-
-    // Envia pedido via WhatsApp
-    function enviarPedidoWhatsApp() {
-      if (carrinho.length === 0) {
-        alert("Seu carrinho está vazio!");
-        return;
-      }
-      const tipoPedido = document.getElementById('tipo-pedido').value;
-      const bairro = document.getElementById('bairro').value.trim() || "Não informado";
-
-      let mensagem = `*Pedido Dolce Maria*\n\nTipo de pedido: ${tipoPedido}\nBairro: ${bairro}\n\nItens:\n`;
       carrinho.forEach(item => {
-        mensagem += `- ${item.quantidade}x ${item.nome} (R$ ${item.preco.toFixed(2)})\n`;
+        valorTotal += item.preco;
+        const li = document.createElement("li");
+        li.textContent = `${item.nome} - R$ ${item.preco.toFixed(2)}`;
+        lista.appendChild(li);
       });
 
-      let subtotal = carrinho.reduce((acc, i) => acc + i.preco * i.quantidade, 0);
-      let descontoValor = subtotal * (descontoPercentual / 100);
-      let taxaEntrega = 0;
-      if (tipoPedido === 'entregar') {
-        if (bairro && taxaEntregaPorBairro[bairro]) taxaEntrega = taxaEntregaPorBairro[bairro];
-        else if (bairro !== "Não informado") taxaEntrega = 5;
-      }
-      let total = subtotal - descontoValor + taxaEntrega;
-
-      mensagem += `\nSubtotal: R$ ${subtotal.toFixed(2)}`;
-      mensagem += `\nDesconto: R$ ${descontoValor.toFixed(2)}`;
-      mensagem += `\nTaxa de entrega: R$ ${taxaEntrega.toFixed(2)}`;
-      mensagem += `\n*Total: R$ ${total.toFixed(2)}*\n\nObrigado pelo seu pedido! 💗`;
-
-      const numeroWhats = '5521992083804'; // Coloque seu número real aqui (DDD+telefone)
-
-      const url = `https://wa.me/${numeroWhats}?text=${encodeURIComponent(mensagem)}`;
-
-      window.open(url, '_blank');
-    }
-
-    // Feedback visual simples
-    function mostrarFeedback(texto) {
-      const feedback = document.getElementById('feedback-msg');
-      feedback.textContent = texto;
-      feedback.style.opacity = '1';
-      setTimeout(() => {
-        feedback.style.opacity = '0';
-      }, 2500);
-    }
-
-    // Alterna tema claro/escuro
-    function alternarTema() {
-      document.body.classList.toggle('dark');
-    }
-
-    // Filtra produtos ao digitar na busca
-    function filtrarProdutos() {
-      renderizarProdutos();
-    }
-
-    // Mostrar botão voltar topo ao rolar a página
-    const btnTopo = document.getElementById('btn-voltar-topo');
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 200) {
-        btnTopo.style.display = 'block';
+      if (cupomAtivo > 0) {
+        const desconto = valorTotal * cupomAtivo;
+        total.textContent = `Total: R$ ${(valorTotal - desconto).toFixed(2)} (desc. R$ ${desconto.toFixed(2)})`;
       } else {
-        btnTopo.style.display = 'none';
+        total.textContent = `Total: R$ ${valorTotal.toFixed(2)}`;
+      }
+    }
+
+    function enviarPedidoWhatsApp() {
+      if (carrinho.length === 0) return alert("Carrinho vazio!");
+      let mensagem = "*Pedido Dolce Maria 🍰*\n\n", total = 0;
+      carrinho.forEach(item => {
+        mensagem += `• ${item.nome} - R$ ${item.preco.toFixed(2)}\n`;
+        total += item.preco;
+      });
+      mensagem += `\n*Total: R$ ${total.toFixed(2)}*\nAguardo confirmação 💖`;
+      const numero = "5511999999999";
+      const link = `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
+      window.open(link, "_blank");
+    }
+
+    function mostrarFeedback(msg = "✅ Item adicionado!") {
+      const box = document.getElementById("feedback");
+      box.textContent = msg;
+      box.style.opacity = 1;
+      setTimeout(() => { box.style.opacity = 0; }, 2000);
+    }
+
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function alternarTema() {
+      document.body.classList.toggle('escuro');
+    }
+
+    window.addEventListener('scroll', () => {
+      document.getElementById("topo").style.display = window.scrollY > 150 ? 'block' : 'none';
+    });
+
+    document.addEventListener('click', function (e) {
+      if (e.target.tagName === 'BUTTON' && e.target.textContent === 'Adicionar') {
+        const nome = e.target.parentNode.querySelector('strong').textContent;
+        const preco = parseFloat(e.target.parentNode.querySelector('small').textContent.replace('R$ ', '').replace(',', '.'));
+        adicionarAoCarrinho(nome, preco);
       }
     });
 
-    // Inicializa página
     window.onload = () => {
+      verificarStatusLoja();
       renderizarProdutos();
-      atualizarCarrinho();
     };
+
+    const cupomInput = document.createElement("input");
+    cupomInput.placeholder = "🎟️ Cupom (ex: DOCE10)";
+    cupomInput.style = "margin-top: 10px; width: 100%; padding: 6px; border-radius: 8px; border: 1px solid #ccc;";
+    document.getElementById("carrinho").insertBefore(cupomInput, document.getElementById("total-carrinho"));
+
+    cupomInput.addEventListener("input", () => {
+      const val = cupomInput.value.toUpperCase();
+      cupomAtivo = val === "DOCE10" ? 0.1 : 0;
+      if (cupomAtivo) mostrarFeedback("🎉 Cupom aplicado: 10% OFF!");
+      atualizarCarrinho();
+    });
   </script>
 </body>
+</html>'''
+
+# Salva o HTML em um arquivo e cria um zip
+html_path = Path("/mnt/data/index.html")
+html_path.write_text(html_content, encoding="utf-8")
+
+zip_path = Path("/mnt/data/dolce_maria_cardapio.zip")
+with ZipFile(zip_path, "w") as zipf:
+    zipf.write(html_path, arcname="index.html")
+
+zip_path.name  # Nome do arquivo zip gerado para envio ao usuário
+ html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🍰 Dolce Maria</title>
+  <style>
+    :root {
+      --rosa-bebe: #ffdde4;
+      --rosa-forte: #ff69b4;
+      --azul-bebe: #d0f0fd;
+      --azul-forte: #87cefa;
+      --branco: #fff;
+      --preto: #222;
+      --cinza: #f9f9f9;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: var(--rosa-bebe);
+      color: var(--preto);
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      background: var(--branco);
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    header h1 {
+      font-size: 1.8em;
+      color: var(--rosa-forte);
+      margin: 0;
+    }
+
+    #status-loja {
+      font-weight: bold;
+      font-size: 1em;
+      padding: 8px 14px;
+      border-radius: 12px;
+      background: var(--azul-bebe);
+      color: var(--preto);
+    }
+
+    #status-loja.fechado {
+      background: #ffcccc;
+      color: #900;
+    }
+
+    .secao {
+      padding: 40px 20px;
+    }
+
+    .secao h2 {
+      text-align: center;
+      color: var(--rosa-forte);
+      margin-bottom: 30px;
+      font-size: 1.6em;
+    }
+
+    .produtos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+      padding: 0 10px;
+    }
+
+    .card-produto {
+      background: var(--branco);
+      border-radius: 16px;
+      padding: 16px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(255, 105, 180, 0.2);
+      transition: transform 0.2s ease;
+    }
+
+    .card-produto:hover {
+      transform: scale(1.03);
+      box-shadow: 0 6px 20px rgba(255, 105, 180, 0.25);
+    }
+
+    .card-produto button {
+      margin-top: 10px;
+      padding: 8px 14px;
+      border: none;
+      background: var(--azul-forte);
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .card-produto button:hover {
+      background: #00bfff;
+    }
+
+    .destaque-horario {
+      border: 2px solid var(--rosa-forte);
+      box-shadow: 0 0 12px rgba(255, 105, 180, 0.4);
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.4em;
+      }
+      .secao h2 {
+        font-size: 1.3em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🍰 Dolce Maria</h1>
+    <div id="status-loja">Verificando...</div>
+  </header>
+
+  <!-- Aqui virão as seções de produtos por horário -->
+  <div class="secao" id="secao-manha">
+    <h2>Café da Manhã ☀️</h2>
+    <div class="produtos" id="produtos-manha"></div>
+  </div>
+
+  <div class="secao" id="secao-tarde">
+    <h2>Doces & Cafés ☕</h2>
+    <div class="produtos" id="produtos-tarde"></div>
+  </div>
+
+  <div class="secao" id="secao-noite">
+    <h2>Batatas Fritas 🌙</h2>
+    <div class="produtos" id="produtos-noite"></div>
+  </div>
+<script>
+  // Produtos separados por horário
+  const produtosPorHorario = {
+    manha: [
+      { nome: "Café com Leite", preco: 4 },
+      { nome: "Tapioca", preco: 5 },
+      { nome: "Cuscuz com Manteiga", preco: 6 },
+      { nome: "Misto Quente", preco: 5.5 }
+    ],
+    tarde: [
+      { nome: "Bolo de Pote", preco: 10 },
+      { nome: "Brownie", preco: 6 },
+      { nome: "Fatia de Bolo", preco: 4 },
+      { nome: "Capuccino", preco: 7 }
+    ],
+    noite: [
+      { nome: "Batata Pequena", preco: 5 },
+      { nome: "Batata Média", preco: 8 },
+      { nome: "Batata Grande", preco: 12 }
+    ]
+  };
+
+  // Define os horários da loja (24h)
+  const horarioAbertura = 7;   // abre às 07:00
+  const horarioFechamento = 20; // fecha às 20:00
+
+  // Verifica status da loja
+  function verificarStatusLoja() {
+    const agora = new Date();
+    const hora = agora.getHours();
+    const statusEl = document.getElementById("status-loja");
+
+    if (hora >= horarioAbertura && hora < horarioFechamento) {
+      statusEl.textContent = "🟢 Loja Aberta";
+      statusEl.classList.remove("fechado");
+      return true;
+    } else {
+      statusEl.textContent = "🔴 Loja Fechada";
+      statusEl.classList.add("fechado");
+      return false;
+    }
+  }
+
+  // Renderiza produtos na seção certa
+  function renderizarProdutos() {
+    const hora = new Date().getHours();
+    let horarioAtual = "";
+
+    if (hora >= 5 && hora < 11) horarioAtual = "manha";
+    else if (hora >= 11 && hora < 18) horarioAtual = "tarde";
+    else horarioAtual = "noite";
+
+    for (const periodo in produtosPorHorario) {
+      const container = document.getElementById("produtos-" + periodo);
+      const secao = document.getElementById("secao-" + periodo);
+
+      container.innerHTML = "";
+      if (periodo === horarioAtual) {
+        secao.classList.add("destaque-horario");
+      } else {
+        secao.classList.remove("destaque-horario");
+      }
+
+      produtosPorHorario[periodo].forEach(prod => {
+        const card = document.createElement("div");
+        card.className = "card-produto";
+        card.innerHTML = `
+          <strong>${prod.nome}</strong><br>
+          <small>R$ ${prod.preco.toFixed(2)}</small><br>
+          <button ${verificarStatusLoja() ? "" : "disabled"}>Adicionar</button>
+        `;
+        container.appendChild(card);
+      });
+    }
+  }
+
+  // Inicializa
+  window.onload = () => {
+    verificarStatusLoja();
+    renderizarProdutos();
+  };
+</script>
+</body>
 </html>
+<style>
+  #carrinho {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--branco);
+    border: 2px solid var(--rosa-forte);
+    border-radius: 16px;
+    padding: 16px;
+    max-width: 280px;
+    box-shadow: 0 0 20px rgba(255, 105, 180, 0.2);
+    z-index: 999;
+  }
+
+  #carrinho h3 {
+    margin-top: 0;
+    font-size: 1.2em;
+    color: var(--rosa-forte);
+  }
+
+  #itens-carrinho {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+    max-height: 150px;
+    overflow-y: auto;
+  }
+
+  #itens-carrinho li {
+    font-size: 0.9em;
+    padding: 4px 0;
+    border-bottom: 1px dashed #ddd;
+  }
+
+  #total-carrinho {
+    margin: 10px 0;
+    font-weight: bold;
+    font-size: 1em;
+  }
+
+  #carrinho button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background: #25d366;
+    color: white;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
+  #carrinho button:hover {
+    background: #20c65a;
+  }
+</style>
+
+<div id="carrinho">
+  <h3>🛒 Carrinho</h3>
+  <ul id="itens-carrinho"></ul>
+  <div id="total-carrinho">Total: R$ 0,00</div>
+  <button onclick="enviarPedidoWhatsApp()">Enviar via WhatsApp</button>
+</div>
+
+<script>
+  let carrinho = [];
+
+  document.addEventListener('click', function (e) {
+    if (e.target.tagName === 'BUTTON' && e.target.textContent === 'Adicionar') {
+      const nome = e.target.parentNode.querySelector('strong').textContent;
+      const preco = parseFloat(e.target.parentNode.querySelector('small').textContent.replace('R$ ', '').replace(',', '.'));
+      adicionarAoCarrinho(nome, preco);
+    }
+  });
+
+  function adicionarAoCarrinho(nome, preco) {
+    carrinho.push({ nome, preco });
+    atualizarCarrinho();
+  }
+
+  function atualizarCarrinho() {
+    const lista = document.getElementById("itens-carrinho");
+    const total = document.getElementById("total-carrinho");
+    lista.innerHTML = "";
+
+    let valorTotal = 0;
+    carrinho.forEach(item => {
+      valorTotal += item.preco;
+      const li = document.createElement("li");
+      li.textContent = `${item.nome} - R$ ${item.preco.toFixed(2)}`;
+      lista.appendChild(li);
+    });
+
+    total.textContent = `Total: R$ ${valorTotal.toFixed(2)}`;
+  }
+
+  function enviarPedidoWhatsApp() {
+    if (carrinho.length === 0) return alert("Carrinho vazio!");
+
+    let mensagem = "*Pedido Dolce Maria 🍰*\n\n";
+    let total = 0;
+
+    carrinho.forEach(item => {
+      mensagem += `• ${item.nome} - R$ ${item.preco.toFixed(2)}\n`;
+      total += item.preco;
+    });
+
+    mensagem += `\n*Total: R$ ${total.toFixed(2)}*\n`;
+    mensagem += "Aguardo confirmação 💖";
+
+    const numero = "5511999999999"; // Substitua pelo seu número
+    const link = `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
+    window.open(link, "_blank");
+  }
+</script>
