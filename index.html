@@ -827,7 +827,7 @@
     
     <div class="grupo-input">
       <label for="cupom-input">Cupom de desconto</label>
-      <input type="text" id="cupom-input" placeholder="Ex: CUPOM123" />
+      <input type="text" id="cupom-input" placeholder="Ex: DOLCE10, BOLO3" />
       <small id="mensagem-cupom"></small>
     </div>
     
@@ -846,10 +846,10 @@
       <label for="bairro-input">Seu bairro</label>
       <select id="bairro-input">
         <option value="">Selecione seu bairro</option>
-        <option value="Icurana">Icurana(R$ 3,00)</option>
-        <option value="Vilar_carioca">Vilar carioca(R$ 5,00)</option>
-        <option value="Inhoaíba">Inhoaíba(R$ 8,00)</option>
-        <option value="Cosmos">Cosmos (R$ 10,00)</option>
+        <option value="centro">Centro (R$ 3,00)</option>
+        <option value="vila_nova">Vila Nova (R$ 5,00)</option>
+        <option value="jardim">Jardim (R$ 8,00)</option>
+        <option value="santa_rita">Santa Rita (R$ 10,00)</option>
       </select>
     </div>
     
@@ -880,13 +880,10 @@
     "Café da Manhã": [
       { nome: "Cappuccino", preco: 8.5, efeito: "fumaça", descricao: "Café cremoso com leite vaporizado e chocolate" },
       { nome: "Misto Quente", preco: 5.0, efeito: "brilho", descricao: "Pão de forma com queijo e presunto gratinado" },
-      { nome: "Sanduíche Natural", preco: 6.0, efeito: "brilho", descricao: "Sanduíche Natural tradicional" },
-      { nome: "Café pequeno", preco: 2.5, efeito: "funaça", descricao: "Café pequeno" },
+      { nome: "Pão de Queijo", preco: 4.5, efeito: "brilho", descricao: "Pão de queijo mineiro tradicional" },
+      { nome: "Croissant", preco: 6.5, efeito: "brilho", descricao: "Croissant folhado com manteiga" },
       { nome: "Suco Natural", preco: 7.0, efeito: "brilho", descricao: "Suco de laranja, morango ou abacaxi" }
-      { nome: "Suco Natural", preco: 7.0, efeito: "brilho", descricao: "Suco de laranja," },
-      { nome: "Suco Natural", preco: 7.0, efeito: "brilho", descricao: "Suco de laranja," },
-      { nome: "Suco Natural", preco: 7.0, efeito: "brilho", descricao: "Suco de laranja," }
-],
+    ],
     "Doces e Cafés": [
       { nome: "Bolo de Morango", preco: 12.0, efeito: "brilho", descricao: "Bolo de morango com chantilly" },
       { nome: "Brownie", preco: 7.0, efeito: "brilho", descricao: "Brownie de chocolate com nozes" },
@@ -905,10 +902,10 @@
 
   // Taxas de entrega por bairro
   const taxasEntrega = {
-    "Icurana": 3.00,
-    "vilar_carioca": 5.00,
-    "Inhoaíba": 8.00,
-    "Cosmos": 10.00
+    "centro": 3.00,
+    "vila_nova": 5.00,
+    "jardim": 8.00,
+    "santa_rita": 10.00
   };
 
   // Cupons de desconto
@@ -980,7 +977,7 @@
     const agora = new Date();
     const h = agora.getHours();
     const m = agora.getMinutes();
-    lojaAberta = (h > 7 || (h === 00 && m >= 0)) && (h < 20 || (h === 20 && m <= 30));
+    lojaAberta = (h > 7 || (h === 7 && m >= 0)) && (h < 20 || (h === 20 && m <= 30));
     
     const status = document.getElementById("status-loja");
     if (lojaAberta) {
@@ -1353,7 +1350,7 @@
     mensagem += "Aguardo confirmação! 💖";
     
     // Número do WhatsApp (substitua pelo seu número real)
-    const numero = "5521992083804";
+    const numero = "5521970372440";
     const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
     
     // Abrir WhatsApp
