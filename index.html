@@ -977,7 +977,7 @@
     const agora = new Date();
     const h = agora.getHours();
     const m = agora.getMinutes();
-    lojaAberta = (h > 00 || (h === 7 && m >= 0)) && (h < 20 || (h === 20 && m <= 30));
+    lojaAberta = (h > 7 || (h === 00 && m >= 0)) && (h < 20 || (h === 20 && m <= 30));
     
     const status = document.getElementById("status-loja");
     if (lojaAberta) {
