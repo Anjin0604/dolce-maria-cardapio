@@ -827,7 +827,7 @@
     
     <div class="grupo-input">
       <label for="cupom-input">Cupom de desconto</label>
-      <input type="text" id="cupom-input" placeholder="Ex: DOLCE10, BOLO3" />
+      <input type="text" id="cupom-input" placeholder="Ex: CUPOM123" />
       <small id="mensagem-cupom"></small>
     </div>
     
@@ -846,10 +846,10 @@
       <label for="bairro-input">Seu bairro</label>
       <select id="bairro-input">
         <option value="">Selecione seu bairro</option>
-        <option value="centro">Centro (R$ 3,00)</option>
-        <option value="vila_nova">Vila Nova (R$ 5,00)</option>
-        <option value="jardim">Jardim (R$ 8,00)</option>
-        <option value="santa_rita">Santa Rita (R$ 10,00)</option>
+        <option value="Icurana">Icurana(R$ 3,00)</option>
+        <option value="Vilar_carioca">Vilar carioca(R$ 5,00)</option>
+        <option value="Inhoaíba">Inhoaíba(R$ 8,00)</option>
+        <option value="Cosmos">Cosmos (R$ 10,00)</option>
       </select>
     </div>
     
@@ -902,10 +902,10 @@
 
   // Taxas de entrega por bairro
   const taxasEntrega = {
-    "centro": 3.00,
-    "vila_nova": 5.00,
-    "jardim": 8.00,
-    "santa_rita": 10.00
+    "Icurana": 3.00,
+    "vilar_carioca": 5.00,
+    "Inhoaíba": 8.00,
+    "Cosmos": 10.00
   };
 
   // Cupons de desconto
@@ -977,7 +977,7 @@
     const agora = new Date();
     const h = agora.getHours();
     const m = agora.getMinutes();
-    lojaAberta = (h > 7 || (h === 7 && m >= 0)) && (h < 20 || (h === 20 && m <= 30));
+    lojaAberta = (h > 00 || (h === 7 && m >= 0)) && (h < 20 || (h === 20 && m <= 30));
     
     const status = document.getElementById("status-loja");
     if (lojaAberta) {
