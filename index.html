@@ -5,16 +5,461 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>🍰 Dolce Maria - Cardápio Digital Completo</title>
 <style>
-  /* [Manter todos os estilos anteriores] */
-  
-  /* Adicionar novos estilos para opção de retirada */
-  .opcao-entrega {
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+  :root {
+    --rosa-bebe: #ffd9e8;
+    --rosa-forte: #ff69b4;
+    --azul-bebe: #d0f7ff;
+    --azul-forte: #3ea1f7;
+    --branco: #fff;
+    --preto: #222;
+    --cinza-claro: #f7f7f7;
+    --cinza-escuro: #444;
+    --verde: #25d366;
+    --verde-escuro: #1ebe57;
+    --roxo: #9c27b0;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: var(--rosa-bebe);
+    color: var(--preto);
+    transition: background 0.3s, color 0.3s;
+    padding-bottom: 80px;
+  }
+  body.escuro {
+    background: #121212;
+    color: #eee;
+  }
+
+  header {
+    background: var(--branco);
+    padding: 1rem 2rem;
+    box-shadow: 0 4px 8px rgba(255,105,180,0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  body.escuro header {
+    background: #222;
+    box-shadow: 0 4px 8px rgba(62, 161, 247, 0.4);
+  }
+
+  header h1 {
+    font-weight: 700;
+    font-size: 2rem;
+    color: var(--rosa-forte);
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  #status-loja {
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 1rem;
+    background: var(--azul-bebe);
+    color: var(--preto);
+    user-select: none;
+    transition: all 0.3s;
+  }
+  #status-loja.fechado {
+    background: #ffc8c8;
+    color: #900;
+  }
+  body.escuro #status-loja {
+    background: var(--azul-forte);
+    color: #fff;
+  }
+  body.escuro #status-loja.fechado {
+    background: #aa4444;
+    color: #fff;
+  }
+
+  .container-principal {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 1rem;
+  }
+
+  /* DESTAQUES */
+  .destaques-container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 30px;
+    border-radius: 20px;
+    box-shadow: 0 8px 15px rgba(255,105,180,0.2);
+    height: 300px;
+  }
+  body.escuro .destaques-container {
+    box-shadow: 0 8px 15px rgba(62, 161, 247, 0.4);
+  }
+
+  .slides-destaque {
+    display: flex;
+    transition: transform 0.5s ease;
+    height: 100%;
+  }
+
+  .slide-destaque {
+    min-width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-size: cover;
+    background-position: center;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    position: relative;
+  }
+  .slide-destaque::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.4);
+  }
+
+  .slide-destaque h2 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  }
+
+  .slide-destaque p {
+    font-size: 1.2rem;
+    max-width: 80%;
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  }
+
+  .controle-slide {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.3);
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    padding: 10px 15px;
+    cursor: pointer;
+    z-index: 10;
+    border-radius: 50%;
+    backdrop-filter: blur(5px);
+    transition: all 0.3s;
+  }
+  .controle-slide:hover {
+    background: rgba(255,255,255,0.5);
+  }
+
+  #prev-slide {
+    left: 15px;
+  }
+
+  #next-slide {
+    right: 15px;
+  }
+
+  .indicadores-slide {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    z-index: 10;
+  }
+
+  .indicador {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.5);
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .indicador.ativo {
+    background: var(--rosa-forte);
+    transform: scale(1.2);
+  }
+
+  /* PRODUTOS */
+  .produtos-area {
+    background: var(--branco);
+    border-radius: 20px;
+    padding: 25px 30px;
+    box-shadow: 0 8px 15px rgba(255,105,180,0.2);
+  }
+  body.escuro .produtos-area {
+    background: #222;
+    box-shadow: 0 8px 15px rgba(62, 161, 247, 0.4);
+  }
+
+  .categoria {
+    margin-bottom: 2.5rem;
+  }
+
+  .categoria h2 {
+    font-size: 1.8rem;
+    color: var(--rosa-forte);
+    margin-bottom: 20px;
+    border-bottom: 3px solid var(--azul-forte);
+    padding-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  body.escuro .categoria h2 {
+    color: var(--azul-forte);
+    border-color: var(--rosa-forte);
+  }
+
+  .lista-produtos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(220px,1fr));
+    gap: 20px;
+  }
+
+  .produto {
+    background: var(--rosa-bebe);
+    border-radius: 15px;
+    padding: 20px 15px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(255, 105, 180, 0.15);
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .produto:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 20px rgba(255, 105, 180, 0.3);
+  }
+  body.escuro .produto {
+    background: #2c2c2c;
+    box-shadow: 0 4px 8px rgba(62, 161, 247, 0.15);
+  }
+  body.escuro .produto:hover {
+    box-shadow: 0 10px 20px rgba(62, 161, 247, 0.3);
+  }
+
+  .produto.destaque {
+    border: 2px solid var(--rosa-forte);
+    animation: pulse 2s infinite;
+  }
+  body.escuro .produto.destaque {
+    border-color: var(--azul-forte);
+  }
+
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255,105,180,0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(255,105,180,0); }
+    100% { box-shadow: 0 0 0 0 rgba(255,105,180,0); }
+  }
+
+  .produto strong {
+    display: block;
+    font-size: 1.2rem;
+    margin-bottom: 6px;
+    color: var(--rosa-forte);
+  }
+  body.escuro .produto strong {
+    color: var(--azul-forte);
+  }
+
+  .produto small {
+    font-size: 0.9rem;
+    color: #555;
+  }
+  body.escuro .produto small {
+    color: #ccc;
+  }
+
+  /* BOTÃO */
+  .btn-adicionar {
+    margin-top: 12px;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 12px;
+    background: var(--azul-forte);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-adicionar:hover {
+    background: #2a8de0;
+    transform: translateY(-2px);
+  }
+  .btn-adicionar:disabled {
+    background: #aaa;
+    cursor: not-allowed;
+    transform: none;
+  }
+  .btn-adicionar:active {
+    transform: translateY(0);
+  }
+
+  /* CARRINHO FLOUTANTE */
+  #carrinho-flutuante {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 320px;
+    max-height: 80vh;
+    background: var(--branco);
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(255, 105, 180, 0.5);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 2000;
+    transition: all 0.3s ease;
+  }
+  body.escuro #carrinho-flutuante {
+    background: #222;
+    box-shadow: 0 10px 25px rgba(62, 161, 247, 0.7);
+  }
+  #carrinho-flutuante.compacto {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(255, 105, 180, 0.4);
+  }
+
+  #carrinho-flutuante.compacto .conteudo-carrinho {
+    display: none;
+  }
+  #carrinho-flutuante.compacto .contador-itens {
+    display: flex;
+  }
+
+  /* Conteúdo do carrinho */
+  .conteudo-carrinho {
+    padding: 20px;
+    flex-grow: 1;
+    overflow-y: auto;
+  }
+
+  .conteudo-carrinho h3 {
+    margin: 0 0 15px 0;
+    color: var(--rosa-forte);
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  body.escuro .conteudo-carrinho h3 {
+    color: var(--azul-forte);
+  }
+
+  #itens-carrinho {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  #itens-carrinho li {
+    font-size: 1rem;
+    padding: 8px 0;
+    border-bottom: 1px dashed #e8b3d6;
+    color: var(--preto);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  #itens-carrinho li .remover-item {
+    color: #ff4444;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 0 5px;
+  }
+  body.escuro #itens-carrinho li {
+    color: #ddd;
+    border-color: #3ea1f7;
+  }
+
+  #total-carrinho {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--rosa-forte);
+    margin-bottom: 15px;
+  }
+  body.escuro #total-carrinho {
+    color: var(--azul-forte);
+  }
+
+  .grupo-input {
+    margin-bottom: 15px;
+  }
+
+  .grupo-input label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: var(--preto);
+  }
+  body.escuro .grupo-input label {
+    color: #ddd;
+  }
+
+  .grupo-input input, 
+  .grupo-input select {
+    padding: 10px;
+    border-radius: 12px;
+    border: 2px solid var(--azul-forte);
+    width: 100%;
+    font-size: 1rem;
+    outline-offset: 0;
+    transition: border-color 0.3s ease;
+    background: var(--branco);
+  }
+  .grupo-input input:focus,
+  .grupo-input select:focus {
+    border-color: var(--rosa-forte);
+  }
+  body.escuro .grupo-input input,
+  body.escuro .grupo-input select {
+    background: #333;
+    border-color: var(--rosa-forte);
+    color: #eee;
+  }
+
+  #cupom-input {
+    margin-bottom: 5px;
+  }
+
+  .metodo-pagamento {
     display: flex;
     gap: 10px;
     margin-bottom: 15px;
   }
-  
-  .opcao-entrega label {
+
+  .metodo-pagamento label {
     flex: 1;
     padding: 10px;
     border: 2px solid var(--azul-forte);
@@ -23,35 +468,352 @@
     cursor: pointer;
     transition: all 0.3s;
   }
-  
-  .opcao-entrega input:checked + label {
+  .metodo-pagamento input:checked + label {
     background: var(--azul-forte);
     color: white;
     border-color: var(--azul-forte);
   }
-  
-  body.escuro .opcao-entrega label {
+  body.escuro .metodo-pagamento label {
     border-color: var(--rosa-forte);
   }
-  
-  body.escuro .opcao-entrega input:checked + label {
+  body.escuro .metodo-pagamento input:checked + label {
     background: var(--rosa-forte);
     border-color: var(--rosa-forte);
   }
-  
-  .grupo-bairro {
+
+  #btn-enviar {
+    background: var(--verde);
+    border: none;
+    padding: 14px;
+    border-radius: 20px;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 1.1rem;
+    width: 100%;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  #btn-enviar:hover {
+    background: var(--verde-escuro);
+  }
+  #btn-enviar:disabled {
+    background: #999;
+    cursor: not-allowed;
+  }
+
+  /* Ícone e contador carrinho compacto */
+  #carrinho-flutuante.compacto .icone-carrinho {
+    width: 70px;
+    height: 70px;
+    font-size: 32px;
+    color: var(--rosa-forte);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+
+  #carrinho-flutuante.compacto .contador-itens {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: var(--azul-forte);
+    color: white;
+    width: 22px;
+    height: 22px;
+    font-size: 14px;
+    border-radius: 50%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+  }
+
+  /* Exibir contador se >0 */
+  #carrinho-flutuante.compacto .contador-itens.exibir {
+    display: flex;
+  }
+
+  /* Botão tema */
+  #btn-tema {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 40px;
+    background: var(--azul-forte);
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(62, 161, 247, 0.5);
+    z-index: 1100;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  #btn-tema:hover {
+    background: var(--rosa-forte);
+    transform: translateY(-2px);
+  }
+
+  /* Botão voltar ao topo */
+  #btn-topo {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    background: var(--rosa-forte);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(255, 105, 180, 0.6);
+    display: none;
+    z-index: 1100;
+    transition: all 0.3s ease;
+  }
+  #btn-topo:hover {
+    background: #ff1493;
+    transform: translateY(-2px);
+  }
+
+  /* Feedback */
+  #feedback {
+    position: fixed;
+    top: 80px;
+    right: 30px;
+    background: var(--azul-forte);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 12px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1200;
+    font-weight: 600;
+    user-select: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  body.escuro #feedback {
+    background: var(--rosa-forte);
+  }
+
+  /* Modal de confirmação */
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 3000;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .modal-conteudo {
+    background: var(--branco);
+    padding: 25px;
+    border-radius: 20px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    position: relative;
+    animation: modalEntrada 0.4s ease;
+  }
+  body.escuro .modal-conteudo {
+    background: #222;
+  }
+
+  @keyframes modalEntrada {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  .modal-titulo {
+    font-size: 1.8rem;
+    color: var(--rosa-forte);
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  body.escuro .modal-titulo {
+    color: var(--azul-forte);
+  }
+
+  .modal-mensagem {
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+    text-align: center;
+  }
+
+  .modal-botoes {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+  }
+
+  .modal-btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
     transition: all 0.3s;
   }
-  
-  .grupo-bairro.oculto {
-    opacity: 0.5;
+
+  .modal-btn-primario {
+    background: var(--verde);
+    color: white;
+  }
+  .modal-btn-primario:hover {
+    background: var(--verde-escuro);
+  }
+
+  .modal-btn-secundario {
+    background: #ddd;
+    color: #333;
+  }
+  .modal-btn-secundario:hover {
+    background: #ccc;
+  }
+
+  /* Animações especiais para os produtos */
+  @keyframes fumaça {
+    0% {
+      opacity: 0.6;
+      transform: translateY(0) scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-40px) scale(1.3);
+    }
+  }
+  .fumaça {
+    width: 50px;
+    height: 50px;
+    background: radial-gradient(ellipse at center, rgba(255,255,255,0.6) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: fumaça 1.2s ease forwards;
+    filter: blur(8px);
     pointer-events: none;
+    position: fixed;
+    z-index: 1500;
+  }
+
+  /* Brilho doce */
+  @keyframes brilho {
+    0%, 100% { filter: drop-shadow(0 0 0 white); }
+    50% { filter: drop-shadow(0 0 8px #ff69b4); }
+  }
+  .brilho {
+    animation: brilho 1s ease infinite;
+  }
+
+  /* Explosão batata */
+  @keyframes explosao {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.3) rotate(5deg); opacity: 0.8;}
+    100% { transform: scale(1) rotate(0deg); opacity: 1;}
+  }
+  .explosao {
+    animation: explosao 0.5s ease forwards;
+  }
+
+  /* Confete */
+  @keyframes confete {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+  }
+  .confete {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: var(--rosa-forte);
+    animation: confete 2s ease forwards;
+    z-index: 2000;
+  }
+  body.escuro .confete {
+    background: var(--azul-forte);
+  }
+
+  /* Responsividade */
+  @media (max-width: 768px) {
+    .lista-produtos {
+      grid-template-columns: repeat(auto-fill,minmax(160px,1fr));
+    }
+    
+    .destaques-container {
+      height: 250px;
+    }
+    
+    .slide-destaque h2 {
+      font-size: 2rem;
+    }
+    
+    #carrinho-flutuante {
+      width: 280px;
+    }
+    
+    header h1 {
+      font-size: 1.5rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .lista-produtos {
+      grid-template-columns: 1fr;
+    }
+    
+    .destaques-container {
+      height: 200px;
+    }
+    
+    .slide-destaque h2 {
+      font-size: 1.6rem;
+    }
+    
+    .slide-destaque p {
+      font-size: 1rem;
+    }
+    
+    #carrinho-flutuante {
+      width: 90%;
+      right: 5%;
+    }
   }
 </style>
 </head>
 <body>
 
-<!-- [Manter todo o HTML anterior até o carrinho flutuante] -->
+<header>
+  <h1>🍰 Dolce Maria</h1>
+  <div id="status-loja">Verificando...</div>
+</header>
+
+<div class="container-principal">
+  <!-- Área de destaques -->
+  <div class="destaques-container">
+    <button class="controle-slide" id="prev-slide">❮</button>
+    <div class="slides-destaque" id="slides-destaque"></div>
+    <button class="controle-slide" id="next-slide">❯</button>
+    <div class="indicadores-slide" id="indicadores-slide"></div>
+  </div>
+
+  <!-- Área de produtos -->
+  <div class="produtos-area" id="produtos"></div>
+</div>
 
 <!-- Carrinho flutuante -->
 <div id="carrinho-flutuante" class="compacto" title="Clique para abrir/fechar">
@@ -65,30 +827,8 @@
     
     <div class="grupo-input">
       <label for="cupom-input">Cupom de desconto</label>
-      <input type="text" id="cupom-input" placeholder="Ex: DOLCE10, BOLO3" />
+      <input type="text" id="cupom-input" placeholder="Ex: CUPOM123" />
       <small id="mensagem-cupom"></small>
-    </div>
-    
-    <div class="grupo-input">
-      <label>Opção de consumo</label>
-      <div class="opcao-entrega">
-        <input type="radio" id="consumo-local" name="entrega" value="local" checked>
-        <label for="consumo-local">Comer no Local</label>
-        
-        <input type="radio" id="entrega-domicilio" name="entrega" value="entrega">
-        <label for="entrega-domicilio">Entrega</label>
-      </div>
-    </div>
-    
-    <div class="grupo-input grupo-bairro" id="grupo-bairro">
-      <label for="bairro-input">Seu bairro</label>
-      <select id="bairro-input">
-        <option value="">Selecione seu bairro</option>
-        <option value="Icurana">Icurana (R$ 3,00)</option>
-        <option value="Vilar_carioca">Vilar Carioca (R$ 5,00)</option>
-        <option value="Inhoaiba">Inhoaíba (R$ 8,00)</option>
-        <option value="Cosmos">Cosmos (R$ 10,00)</option>
-      </select>
     </div>
     
     <div class="grupo-input">
@@ -102,35 +842,373 @@
       </div>
     </div>
     
+    <div class="grupo-input">
+      <label for="bairro-input">Seu bairro</label>
+      <select id="bairro-input">
+        <option value="">Selecione seu bairro</option>
+        <option value="Icurana">Icurana (R$ 3,00)</option>
+        <option value="Vilar_carioca">Vilar_carioca (R$ 5,00)</option>
+        <option value="Inhoaiba">Inhoaiba (R$ 8,00)</option>
+        <option value="Cosmos">Cosmos (R$ 10,00)</option>
+      </select>
+    </div>
+    
     <div id="total-carrinho">Total: R$ 0,00</div>
     <button id="btn-enviar" disabled>💬 Enviar pedido via WhatsApp</button>
   </div>
 </div>
 
-<!-- [Manter o restante do HTML] -->
+<button id="btn-tema" aria-label="Alternar tema">🌓 Tema</button>
+<button id="btn-topo" aria-label="Voltar ao topo">🔝</button>
+
+<div id="feedback" role="alert" aria-live="assertive"></div>
+
+<!-- Modal de confirmação -->
+<div class="modal" id="modal-confirmacao">
+  <div class="modal-conteudo">
+    <h2 class="modal-titulo">Pedido Enviado!</h2>
+    <p class="modal-mensagem">Seu pedido foi enviado com sucesso para o WhatsApp da Dolce Maria. Aguarde a confirmação!</p>
+    <div class="modal-botoes">
+      <button class="modal-btn modal-btn-primario" id="btn-modal-ok">OK</button>
+    </div>
+  </div>
+</div>
 
 <script>
-  // [Manter todas as variáveis e funções anteriores]
+  // Dados dos produtos
+  const produtos = {
+    "Café da Manhã": [
+      { nome: "Cappuccino", preco: 8.5, efeito: "fumaça", descricao: "Café cremoso com leite vaporizado e chocolate" },
+      { nome: "Misto Quente", preco: 5.0, efeito: "brilho", descricao: "Pão de forma com queijo e presunto gratinado" },
+      { nome: "Pão de Queijo", preco: 4.5, efeito: "brilho", descricao: "Pão de queijo mineiro tradicional" },
+      { nome: "Croissant", preco: 6.5, efeito: "brilho", descricao: "Croissant folhado com manteiga" },
+      { nome: "Suco Natural", preco: 7.0, efeito: "brilho", descricao: "Suco de laranja, morango ou abacaxi" }
+    ],
+    "Doces e Cafés": [
+      { nome: "Bolo de Morango", preco: 12.0, efeito: "brilho", descricao: "Bolo de morango com chantilly" },
+      { nome: "Brownie", preco: 7.0, efeito: "brilho", descricao: "Brownie de chocolate com nozes" },
+      { nome: "Café Expresso", preco: 6.0, efeito: "fumaça", descricao: "Café expresso tradicional" },
+      { nome: "Torta de Limão", preco: 10.0, efeito: "brilho", descricao: "Torta de limão com merengue" },
+      { nome: "Cheesecake", preco: 14.0, efeito: "brilho", descricao: "Cheesecake de frutas vermelhas" }
+    ],
+    "Batatas Fritas": [
+      { nome: "Batata Pequena", preco: 5.0, efeito: "explosao", descricao: "Porção individual de batata frita" },
+      { nome: "Batata Média", preco: 8.0, efeito: "explosao", descricao: "Porção para 2 pessoas" },
+      { nome: "Batata Grande", preco: 12.0, efeito: "explosao", descricao: "Porção família com molhos" },
+      { nome: "Batata Especial", preco: 15.0, efeito: "explosao", descricao: "Batata com cheddar e bacon" },
+      { nome: "Batata Doce", preco: 10.0, efeito: "explosao", descricao: "Porção de batata doce frita" }
+    ]
+  };
+
+  // Taxas de entrega por bairro
+  const taxasEntrega = {
+    "Icurana": 3.00,
+    "vilar_carioca": 5.00,
+    "Inhoaiba": 8.00,
+    "Cosmos": 10.00
+  };
+
+  // Cupons de desconto
+  const cupons = {
+    "DOLCE10": 0.10,  // 10% de desconto
+    "BOLO3": 0.03     // 3% de desconto
+  };
+
+  // Dados para os slides de destaque
+  const destaques = [
+    {
+      titulo: "Café da Manhã Especial",
+      descricao: "Comece seu dia com nossos deliciosos cafés e pães fresquinhos!",
+      categoria: "Café da Manhã",
+      corFundo: "linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%)"
+    },
+    {
+      titulo: "Doces Artesanais",
+      descricao: "Nossos doces são feitos com ingredientes selecionados e muito carinho!",
+      categoria: "Doces e Cafés",
+      corFundo: "linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)"
+    },
+    {
+      titulo: "Batatas Crocantes",
+      descricao: "As melhores batatas fritas da região, perfeitas para qualquer hora!",
+      categoria: "Batatas Fritas",
+      corFundo: "linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)"
+    }
+  ];
+
+  let carrinho = [];
+  let cupomAtivo = null;
+  let slideAtual = 0;
+  let intervaloSlides;
+  let lojaAberta = false;
+
+  // Inicialização
+  window.onload = () => {
+    verificarStatusLoja();
+    renderizarDestaques();
+    renderizarProdutos();
+    iniciarSliderAutomatico();
+
+    // Event listeners
+    document.getElementById("btn-enviar").addEventListener("click", enviarPedidoWhatsApp);
+    document.getElementById("btn-tema").addEventListener("click", alternarTema);
+    document.getElementById("btn-topo").addEventListener("click", scrollParaTopo);
+    document.getElementById("cupom-input").addEventListener("input", verificarCupom);
+    document.getElementById("bairro-input").addEventListener("change", atualizarCarrinho);
+    document.getElementById("prev-slide").addEventListener("click", () => mudarSlide(-1));
+    document.getElementById("next-slide").addEventListener("click", () => mudarSlide(1));
+    document.getElementById("btn-modal-ok").addEventListener("click", fecharModal);
+    window.addEventListener("scroll", verificarBtnTopo);
+
+    // Toggle carrinho
+    const iconeCarrinho = document.querySelector(".icone-carrinho");
+    iconeCarrinho.addEventListener("click", toggleCarrinho);
+    iconeCarrinho.addEventListener("keypress", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        toggleCarrinho();
+      }
+    });
+  };
+
+  // Verificar status da loja
+  function verificarStatusLoja() {
+    // Loja aberta das 7h às 20h30
+    const agora = new Date();
+    const h = agora.getHours();
+    const m = agora.getMinutes();
+    lojaAberta = (h > 7 || (h === 7 && m >= 0)) && (h < 20 || (h === 18 && m <= 35));
+    
+    const status = document.getElementById("status-loja");
+    if (lojaAberta) {
+      status.textContent = "🟢 Loja Aberta";
+      status.classList.remove("fechado");
+    } else {
+      status.textContent = "🔴 Loja Fechada - Obrigada pela preferência!";
+      status.classList.add("fechado");
+    }
+    
+    // Atualiza botões de adicionar
+    document.querySelectorAll(".btn-adicionar").forEach(btn => {
+      btn.disabled = !lojaAberta;
+    });
+    
+    return lojaAberta;
+  }
+
+  // Renderizar slides de destaque
+  function renderizarDestaques() {
+    const slidesContainer = document.getElementById("slides-destaque");
+    const indicadoresContainer = document.getElementById("indicadores-slide");
+    
+    slidesContainer.innerHTML = "";
+    indicadoresContainer.innerHTML = "";
+    
+    destaques.forEach((destaque, index) => {
+      // Criar slide
+      const slide = document.createElement("div");
+      slide.className = "slide-destaque";
+      slide.style.background = destaque.corFundo;
+      slide.innerHTML = `
+        <h2>${destaque.titulo}</h2>
+        <p>${destaque.descricao}</p>
+      `;
+      slidesContainer.appendChild(slide);
+      
+      // Criar indicador
+      const indicador = document.createElement("div");
+      indicador.className = "indicador";
+      if (index === 0) indicador.classList.add("ativo");
+      indicador.addEventListener("click", () => irParaSlide(index));
+      indicadoresContainer.appendChild(indicador);
+    });
+    
+    // Atualizar posição
+    atualizarPosicaoSlides();
+  }
+
+  // Iniciar slider automático
+  function iniciarSliderAutomatico() {
+    clearInterval(intervaloSlides);
+    intervaloSlides = setInterval(() => mudarSlide(1), 5000);
+  }
+
+  // Mudar slide
+  function mudarSlide(direcao) {
+    slideAtual += direcao;
+    
+    if (slideAtual < 0) {
+      slideAtual = destaques.length - 1;
+    } else if (slideAtual >= destaques.length) {
+      slideAtual = 0;
+    }
+    
+    atualizarPosicaoSlides();
+    reiniciarIntervaloSlides();
+  }
+
+  // Ir para slide específico
+  function irParaSlide(index) {
+    slideAtual = index;
+    atualizarPosicaoSlides();
+    reiniciarIntervaloSlides();
+  }
+
+  // Atualizar posição dos slides
+  function atualizarPosicaoSlides() {
+    const slidesContainer = document.getElementById("slides-destaque");
+    const indicadores = document.querySelectorAll(".indicador");
+    
+    slidesContainer.style.transform = `translateX(-${slideAtual * 100}%)`;
+    
+    indicadores.forEach((indicador, index) => {
+      if (index === slideAtual) {
+        indicador.classList.add("ativo");
+      } else {
+        indicador.classList.remove("ativo");
+      }
+    });
+  }
+
+  // Reiniciar intervalo dos slides
+  function reiniciarIntervaloSlides() {
+    clearInterval(intervaloSlides);
+    intervaloSlides = setInterval(() => mudarSlide(1), 5000);
+  }
+
+  // Renderizar produtos
+  function renderizarProdutos() {
+    const container = document.getElementById("produtos");
+    container.innerHTML = "";
+    
+    // Destacar categoria atual baseada no horário
+    const horaCat = horarioAtual();
+    
+    for (const categoria in produtos) {
+      const catDiv = document.createElement("div");
+      catDiv.className = "categoria";
+      
+      // Adicionar emoji de destaque se for a categoria do horário
+      const destaque = categoria === horaCat ? "🌟 " : "";
+      const h2 = document.createElement("h2");
+      h2.textContent = destaque + categoria;
+      catDiv.appendChild(h2);
+      
+      const listaProdutos = document.createElement("div");
+      listaProdutos.className = "lista-produtos";
+      
+      produtos[categoria].forEach(prod => {
+        const prodDiv = document.createElement("div");
+        prodDiv.className = `produto ${categoria === horaCat ? 'destaque' : ''}`;
+        prodDiv.setAttribute('tabindex', '0');
+        prodDiv.setAttribute('role', 'button');
+        prodDiv.setAttribute('aria-pressed', 'false');
+        prodDiv.innerHTML = `
+          <strong>${prod.nome}</strong>
+          <small>${prod.descricao}</small>
+          <small>R$ ${prod.preco.toFixed(2)}</small>
+          <button class="btn-adicionar" ${lojaAberta ? '' : 'disabled'} aria-label="Adicionar ${prod.nome} ao carrinho">Adicionar</button>
+        `;
+        
+        // Evento clique no botão
+        const btn = prodDiv.querySelector('button');
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          adicionarAoCarrinho(prod, btn);
+        });
+        
+        // Adicionar acessibilidade ao clicar na div
+        prodDiv.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            adicionarAoCarrinho(prod, prodDiv.querySelector('button'));
+          }
+        });
+        
+        listaProdutos.appendChild(prodDiv);
+      });
+      
+      catDiv.appendChild(listaProdutos);
+      container.appendChild(catDiv);
+    }
+  }
+
+  // Determinar categoria baseada no horário
+  function horarioAtual() {
+    const h = new Date().getHours();
+    if (h >= 5 && h <= 10) return "Café da Manhã";
+    if (h >= 11 && h <= 17) return "Doces e Cafés";
+    return "Batatas Fritas";
+  }
+
+  // Criar efeitos visuais
+  function criarEfeito(efeito, elemBotao) {
+    if (!efeito) return;
+    
+    const rect = elemBotao.getBoundingClientRect();
+    const efeitoDiv = document.createElement("div");
+    efeitoDiv.className = efeito;
+    efeitoDiv.style.position = "fixed";
+    efeitoDiv.style.left = rect.left + rect.width / 2 - 25 + "px";
+    efeitoDiv.style.top = rect.top - 50 + "px";
+    efeitoDiv.style.pointerEvents = "none";
+    document.body.appendChild(efeitoDiv);
+    
+    setTimeout(() => efeitoDiv.remove(), 1200);
+  }
+
+  // Adicionar item ao carrinho
+  function adicionarAoCarrinho(prod, btn) {
+    carrinho.push({ 
+      nome: prod.nome, 
+      preco: prod.preco,
+      categoria: Object.keys(produtos).find(cat => produtos[cat].some(p => p.nome === prod.nome))
+    });
+    
+    atualizarCarrinho();
+    criarEfeito(prod.efeito, btn);
+    mostrarFeedback(`✅ ${prod.nome} adicionado!`);
+    
+    // Criar confetes para itens especiais
+    if (prod.nome.includes("Especial") || prod.nome.includes("Bolo")) {
+      criarConfetes(20);
+    }
+  }
+
+  // Criar efeito de confete
+  function criarConfetes(quantidade) {
+    for (let i = 0; i < quantidade; i++) {
+      const confete = document.createElement("div");
+      confete.className = "confete";
+      confete.style.left = Math.random() * 100 + "vw";
+      confete.style.backgroundColor = getRandomColor();
+      confete.style.animationDuration = (Math.random() * 2 + 1) + "s";
+      document.body.appendChild(confete);
+      
+      setTimeout(() => confete.remove(), 2000);
+    }
+  }
+
+  // Gerar cor aleatória para confetes
+  function getRandomColor() {
+    const colors = ["#ff69b4", "#3ea1f7", "#25d366", "#9c27b0", "#ff9800", "#e91e63"];
+    return colors[Math.floor(Math.random() * colors.length)];
+  }
+
+  // Remover item do carrinho
+  function removerDoCarrinho(index) {
+    carrinho.splice(index, 1);
+    atualizarCarrinho();
+    mostrarFeedback("❌ Item removido do carrinho");
+  }
 
   // Atualizar carrinho
   function atualizarCarrinho() {
     const lista = document.getElementById("itens-carrinho");
     const totalEl = document.getElementById("total-carrinho");
     const contador = document.querySelector("#carrinho-flutuante .contador-itens");
-    const opcaoEntrega = document.querySelector('input[name="entrega"]:checked').value;
     const bairroSelecionado = document.getElementById("bairro-input").value;
-    
-    // Mostrar/ocultar seleção de bairro conforme opção de entrega
-    const grupoBairro = document.getElementById("grupo-bairro");
-    if (opcaoEntrega === "local") {
-      grupoBairro.classList.add("oculto");
-    } else {
-      grupoBairro.classList.remove("oculto");
-    }
-    
-    // Calcular taxa de entrega (zero se for consumo no local)
-    const taxaEntrega = opcaoEntrega === "entrega" && bairroSelecionado ? 
-                        taxasEntrega[bairroSelecionado] || 0 : 0;
+    const taxaEntrega = bairroSelecionado ? taxasEntrega[bairroSelecionado] || 0 : 0;
 
     lista.innerHTML = "";
     let subtotal = 0;
@@ -163,22 +1241,19 @@
       totalEl.innerHTML = `
         Subtotal: R$ ${subtotal.toFixed(2)}<br>
         Desconto (${cupomAtivo.codigo}): -R$ ${desconto.toFixed(2)}<br>
-        ${opcaoEntrega === "entrega" && taxaEntrega > 0 ? 
-          `Taxa de entrega: R$ ${taxaEntrega.toFixed(2)}<br>` : ''}
+        ${taxaEntrega > 0 ? `Taxa de entrega: R$ ${taxaEntrega.toFixed(2)}<br>` : ''}
         <strong>Total: R$ ${total.toFixed(2)}</strong>
       `;
     } else {
       totalEl.innerHTML = `
         Subtotal: R$ ${subtotal.toFixed(2)}<br>
-        ${opcaoEntrega === "entrega" && taxaEntrega > 0 ? 
-          `Taxa de entrega: R$ ${taxaEntrega.toFixed(2)}<br>` : ''}
+        ${taxaEntrega > 0 ? `Taxa de entrega: R$ ${taxaEntrega.toFixed(2)}<br>` : ''}
         <strong>Total: R$ ${total.toFixed(2)}</strong>
       `;
     }
 
     // Atualizar botão de envio
-    const precisaBairro = opcaoEntrega === "entrega" && !bairroSelecionado;
-    document.getElementById("btn-enviar").disabled = carrinho.length === 0 || precisaBairro;
+    document.getElementById("btn-enviar").disabled = carrinho.length === 0 || !bairroSelecionado;
 
     // Atualizar contador no ícone do carrinho
     if (carrinho.length > 0) {
@@ -190,6 +1265,30 @@
     }
   }
 
+  // Verificar cupom
+  function verificarCupom() {
+    const cupomInput = document.getElementById("cupom-input").value.trim().toUpperCase();
+    const mensagemCupom = document.getElementById("mensagem-cupom");
+    
+    if (cupomInput in cupons) {
+      cupomAtivo = {
+        codigo: cupomInput,
+        valor: cupons[cupomInput]
+      };
+      mensagemCupom.textContent = `🎉 Cupom ${cupomInput} aplicado! ${cupons[cupomInput] * 100}% de desconto`;
+      mensagemCupom.style.color = "#25d366";
+    } else if (cupomInput === "") {
+      cupomAtivo = null;
+      mensagemCupom.textContent = "";
+    } else {
+      cupomAtivo = null;
+      mensagemCupom.textContent = "❌ Cupom inválido";
+      mensagemCupom.style.color = "#ff4444";
+    }
+    
+    atualizarCarrinho();
+  }
+
   // Enviar pedido por WhatsApp
   function enviarPedidoWhatsApp() {
     if (carrinho.length === 0) {
@@ -197,16 +1296,14 @@
       return;
     }
     
-    const opcaoEntrega = document.querySelector('input[name="entrega"]:checked').value;
     const bairro = document.getElementById("bairro-input").value;
-    
-    if (opcaoEntrega === "entrega" && !bairro) {
-      mostrarFeedback("❌ Selecione seu bairro para entrega!");
+    if (!bairro) {
+      mostrarFeedback("❌ Selecione seu bairro!");
       return;
     }
     
     const metodoPagamento = document.querySelector('input[name="pagamento"]:checked').value;
-    const taxaEntrega = opcaoEntrega === "entrega" ? taxasEntrega[bairro] || 0 : 0;
+    const taxaEntrega = taxasEntrega[bairro] || 0;
     
     let subtotal = 0;
     carrinho.forEach(item => subtotal += item.preco);
@@ -220,13 +1317,7 @@
     
     // Criar mensagem
     let mensagem = "*🍰 PEDIDO DOLCE MARIA 🍰*\n\n";
-    mensagem += "*Tipo:* " + (opcaoEntrega === "local" ? "Consumo no Local" : "Entrega") + "\n";
-    
-    if (opcaoEntrega === "entrega") {
-      mensagem += `*Bairro:* ${document.getElementById("bairro-input").options[document.getElementById("bairro-input").selectedIndex].text}\n`;
-    }
-    
-    mensagem += "\n*Itens:*\n";
+    mensagem += "*Itens:*\n";
     
     // Agrupar itens por categoria
     const itensPorCategoria = {};
@@ -252,12 +1343,10 @@
       mensagem += `Desconto (${cupomAtivo.codigo}): -R$ ${desconto.toFixed(2)}\n`;
     }
     
-    if (opcaoEntrega === "entrega") {
-      mensagem += `Taxa de entrega: R$ ${taxaEntrega.toFixed(2)}\n`;
-    }
-    
+    mensagem += `Taxa de entrega: R$ ${taxaEntrega.toFixed(2)}\n`;
     mensagem += `*Total: R$ ${total.toFixed(2)}*\n\n`;
-    mensagem += `*Forma de pagamento:* ${metodoPagamento === 'dinheiro' ? 'Dinheiro' : 'PIX'}\n\n`;
+    mensagem += `*Forma de pagamento:* ${metodoPagamento === 'dinheiro' ? 'Dinheiro' : 'PIX'}\n`;
+    mensagem += `*Bairro:* ${document.getElementById("bairro-input").options[document.getElementById("bairro-input").selectedIndex].text}\n\n`;
     mensagem += "Aguardo confirmação! 💖";
     
     // Número do WhatsApp (substitua pelo seu número real)
@@ -282,18 +1371,73 @@
     criarConfetes(50);
   }
 
-  // [Manter o restante do JavaScript]
+  // Mostrar modal de confirmação
+  function mostrarModalConfirmacao() {
+    const modal = document.getElementById("modal-confirmacao");
+    modal.style.display = "flex";
+  }
 
-  // Adicionar evento para opção de entrega
-  window.onload = () => {
-    // [Manter todas as inicializações anteriores]
+  // Fechar modal
+  function fecharModal() {
+    const modal = document.getElementById("modal-confirmacao");
+    modal.style.display = "none";
+  }
+
+  // Mostrar feedback
+  function mostrarFeedback(msg) {
+    const feedback = document.getElementById("feedback");
+    feedback.innerHTML = msg;
+    feedback.style.opacity = 1;
     
-    // Adicionar listener para opção de entrega
-    document.querySelectorAll('input[name="entrega"]').forEach(radio => {
-      radio.addEventListener('change', atualizarCarrinho);
-    });
-  };
+    setTimeout(() => {
+      feedback.style.opacity = 0;
+    }, 3000);
+  }
+
+  // Alternar tema claro/escuro
+  function alternarTema() {
+    document.body.classList.toggle("escuro");
+    
+    // Atualizar texto do botão
+    const btnTema = document.getElementById("btn-tema");
+    if (document.body.classList.contains("escuro")) {
+      btnTema.innerHTML = "🌞 Tema";
+    } else {
+      btnTema.innerHTML = "🌓 Tema";
+    }
+  }
+
+  // Scroll para o topo
+  function scrollParaTopo() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  // Verificar se deve mostrar botão de voltar ao topo
+  function verificarBtnTopo() {
+    const btn = document.getElementById("btn-topo");
+    if (window.scrollY > 250) btn.style.display = "block";
+    else btn.style.display = "none";
+  }
+
+  // Toggle carrinho compacto/expandido
+  function toggleCarrinho() {
+    const carrinhoFlutuante = document.getElementById("carrinho-flutuante");
+    const conteudoCarrinho = carrinhoFlutuante.querySelector(".conteudo-carrinho");
+    
+    if (carrinhoFlutuante.classList.contains("compacto")) {
+      carrinhoFlutuante.classList.remove("compacto");
+      conteudoCarrinho.style.display = "block";
+      carrinhoFlutuante.style.width = "320px";
+      carrinhoFlutuante.style.height = "auto";
+    } else {
+      carrinhoFlutuante.classList.add("compacto");
+      conteudoCarrinho.style.display = "none";
+      carrinhoFlutuante.style.width = "70px";
+      carrinhoFlutuante.style.height = "70px";
+    }
+  }
 </script>
 
 </body>
 </html>
+eu quero vc adicione neste codigo
