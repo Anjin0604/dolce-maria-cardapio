@@ -3,976 +3,491 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diário de Gravidez - Acompanhamento Completo</title>
+    <title>TechSolutions - Criação de Sites e Serviços de TI</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        /* Estilos CSS */
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #2ecc71;
+        }
         
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
-        :root {
-            --primary: #e11d48;
-            --primary-light: #fecdd3;
-            --primary-dark: #be123c;
-            --secondary: #f1f5f9;
-            --text: #1e293b;
-            --text-light: #64748b;
-            --border: #e2e8f0;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --bg-gradient: linear-gradient(135deg, #fef7f0 0%, #fecdd3 100%);
-        }
-
+        
         body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg-gradient);
-            color: var(--text);
             line-height: 1.6;
-            min-height: 100vh;
+            color: #333;
         }
-
+        
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        
+        .logo span {
+            color: var(--secondary);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: var(--secondary);
+        }
+        
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 0 2rem;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin-bottom: 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        
+        section {
+            padding: 4rem 2rem;
+        }
+        
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
         }
-
-        .header {
+        
+        .section-title {
             text-align: center;
-            margin-bottom: 30px;
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            margin-bottom: 3rem;
+            color: var(--dark);
         }
-
-        .header h1 {
-            color: var(--primary);
+        
+        .section-title h2 {
             font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
+            margin-bottom: 1rem;
         }
-
-        .header p {
-            color: var(--text-light);
+        
+        .section-title p {
             font-size: 1.1rem;
+            color: #666;
         }
-
-        .baby-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--primary);
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 20px;
-        }
-
-        .tabs {
-            display: flex;
-            background: white;
-            border-radius: 15px;
-            padding: 8px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            overflow-x: auto;
-        }
-
-        .tab-btn {
-            flex: 1;
-            padding: 12px 20px;
-            border: none;
-            background: transparent;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .tab-btn:hover {
-            background: var(--primary-light);
-        }
-
-        .tab-btn.active {
-            background: var(--primary);
-            color: white;
-            box-shadow: 0 5px 15px rgba(225, 29, 72, 0.4);
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        .card {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            border: 1px solid var(--border);
-        }
-
-        .card-header {
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid var(--secondary);
-        }
-
-        .card-title {
-            font-size: 1.4rem;
-            font-weight: 600;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: var(--text);
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid var(--border);
-            border-radius: 10px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.1);
-        }
-
-        .form-textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
-
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 10px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            text-decoration: none;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(225, 29, 72, 0.4);
-        }
-
-        .btn-secondary {
-            background: var(--secondary);
-            color: var(--text);
-        }
-
-        .btn-secondary:hover {
-            background: var(--border);
-        }
-
-        .btn-danger {
-            background: var(--danger);
-            color: white;
-            padding: 6px 12px;
-            font-size: 0.9rem;
-        }
-
-        .btn-danger:hover {
-            background: #dc2626;
-        }
-
-        .progress-container {
-            margin: 20px 0;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 12px;
-            background: var(--secondary);
-            border-radius: 6px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
-            border-radius: 6px;
-            transition: width 0.5s ease;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin: 20px 0;
-        }
-
-        .stat-card {
-            background: var(--primary-light);
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 5px;
-        }
-
-        .stat-label {
-            color: var(--text-light);
-            font-weight: 500;
-        }
-
-        .alert {
-            padding: 15px 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .alert-warning {
-            background: #fef3c7;
-            color: #92400e;
-            border: 1px solid #fcd34d;
-        }
-
-        .alert-info {
-            background: #dbeafe;
-            color: #1e40af;
-            border: 1px solid #93c5fd;
-        }
-
-        .notes-list, .consultas-list {
-            max-height: 400px;
-            overflow-y: auto;
-            margin-top: 20px;
-        }
-
-        .note-item, .consulta-item {
-            background: var(--secondary);
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            border-left: 4px solid var(--primary);
-        }
-
-        .note-date, .consulta-date {
-            font-size: 0.9rem;
-            color: var(--text-light);
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-
-        .consulta-item {
-            position: relative;
-        }
-
-        .consulta-actions {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-        }
-
-        .marco-item {
-            background: #f0f9ff;
-            border: 1px solid #0ea5e9;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-        }
-
-        .marco-item.completed {
-            background: #f0fdf4;
-            border-color: var(--success);
-        }
-
-        .marco-week {
-            background: var(--primary);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            display: inline-block;
-            margin-bottom: 8px;
-        }
-
-        .marco-week.completed {
-            background: var(--success);
-        }
-
-        .exames-list {
-            margin-top: 10px;
-        }
-
-        .exame-tag {
-            background: var(--primary-light);
-            color: var(--primary-dark);
-            padding: 4px 8px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            margin-right: 8px;
-            margin-bottom: 5px;
-            display: inline-block;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: var(--text-light);
-            font-style: italic;
-        }
-
-        .grid-2 {
+        
+        .services {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+            gap: 2rem;
         }
-
-        .icon {
-            width: 20px;
-            height: 20px;
-            display: inline-block;
+        
+        .service-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
         }
-
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .service-img {
+            height: 200px;
+            background-color: #ddd;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .service-content {
+            padding: 1.5rem;
+        }
+        
+        .service-content h3 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        .service-content ul {
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--secondary);
+            margin: 1rem 0;
+        }
+        
+        .why-us {
+            background-color: var(--light);
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature {
+            text-align: center;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .feature i {
+            font-size: 3rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .feature h3 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        .contact {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .contact .section-title h2,
+        .contact .section-title p {
+            color: white;
+        }
+        
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .contact-item i {
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            color: var(--secondary);
+        }
+        
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        form label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        
+        form input,
+        form textarea,
+        form select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        form textarea {
+            height: 150px;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+        
         @media (max-width: 768px) {
-            .container {
-                padding: 15px;
+            header {
+                flex-direction: column;
+                padding: 1rem;
             }
             
-            .header h1 {
+            nav ul {
+                margin-top: 1rem;
+            }
+            
+            .hero h1 {
                 font-size: 2rem;
             }
-            
-            .tabs {
-                flex-direction: column;
-                gap: 5px;
-            }
-            
-            .tab-btn {
-                justify-content: flex-start;
-            }
-            
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Scrollbar personalizada */
-        .notes-list::-webkit-scrollbar,
-        .consultas-list::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .notes-list::-webkit-scrollbar-track,
-        .consultas-list::-webkit-scrollbar-track {
-            background: var(--secondary);
-            border-radius: 4px;
-        }
-
-        .notes-list::-webkit-scrollbar-thumb,
-        .consultas-list::-webkit-scrollbar-thumb {
-            background: var(--primary);
-            border-radius: 4px;
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>
-                <span class="baby-icon">👶</span>
-                Diário de Gravidez
-            </h1>
-            <p>Acompanhe cada momento especial da sua gestação</p>
-        </div>
+    <!-- Cabeçalho -->
+    <header>
+        <div class="logo">Tech<span>Solutions</span></div>
+        <nav>
+            <ul>
+                <li><a href="#servicos">Serviços</a></li>
+                <li><a href="#sobre">Sobre Nós</a></li>
+                <li><a href="#contato">Contato</a></li>
+            </ul>
+        </nav>
+    </header>
 
-        <div class="tabs">
-            <button class="tab-btn active" onclick="showTab('acompanhamento')">
-                <span class="icon">📊</span>
-                Acompanhamento
-            </button>
-            <button class="tab-btn" onclick="showTab('diario')">
-                <span class="icon">📝</span>
-                Diário
-            </button>
-            <button class="tab-btn" onclick="showTab('consultas')">
-                <span class="icon">🏥</span>
-                Consultas
-            </button>
-            <button class="tab-btn" onclick="showTab('marcos')">
-                <span class="icon">🎯</span>
-                Marcos
-            </button>
-        </div>
+    <!-- Banner Principal -->
+    <section class="hero">
+        <h1>Seu Negócio Online com Qualidade e Tecnologia</h1>
+        <p>Oferecemos soluções digitais personalizadas para alavancar sua presença na internet. Desde criação de sites até consultoria em TI, estamos prontos para transformar suas ideias em realidade.</p>
+        <a href="#contato" class="btn">Solicite um Orçamento</a>
+    </section>
 
-        <!-- Alertas -->
-        <div id="alertas"></div>
-
-        <!-- Aba Acompanhamento -->
-        <div id="acompanhamento" class="tab-content active">
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title">
-                        <span class="icon">📅</span>
-                        Calcular Gestação
-                    </h2>
-                </div>
-                <div class="form-group">
-                    <label class="form-label" for="inputDUM">Data da Última Menstruação (DUM):</label>
-                    <input type="date" id="inputDUM" class="form-input" max="">
-                </div>
-                <button id="btnCalcular" class="btn btn-primary">
-                    <span class="icon">🧮</span>
-                    Calcular Semana Atual
-                </button>
+    <!-- Seção de Serviços -->
+    <section id="servicos" class="services-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>O Que Oferecemos</h2>
+                <p>Soluções completas para sua presença digital</p>
             </div>
-
-            <div id="resultados" style="display: none;">
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-number" id="semanaAtual">0</div>
-                        <div class="stat-label">Semanas</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number" id="diasAdicionais">0</div>
-                        <div class="stat-label">Dias adicionais</div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            <span class="icon">📈</span>
-                            Progresso da Gestação
-                        </h3>
-                    </div>
-                    <div class="progress-container">
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="progressoGestacao" style="width: 0%"></div>
-                        </div>
-                        <p style="text-align: center; margin-top: 10px; color: var(--text-light);">
-                            <span id="porcentagemProgresso">0</span>% concluído
-                        </p>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            <span class="icon">📋</span>
-                            Datas Importantes
-                        </h3>
-                    </div>
-                    <div class="grid-2">
-                        <div>
-                            <strong>Data Provável do Parto (DPP):</strong>
-                            <div id="dpp" style="color: var(--primary); font-weight: 600; margin-top: 5px;"></div>
-                        </div>
-                        <div>
-                            <strong>Início do termo (37 semanas):</strong>
-                            <div id="termo37" style="color: var(--success); font-weight: 600; margin-top: 5px;"></div>
-                        </div>
-                        <div>
-                            <strong>Fim do termo (42 semanas):</strong>
-                            <div id="termo42" style="color: var(--warning); font-weight: 600; margin-top: 5px;"></div>
-                        </div>
-                        <div>
-                            <strong>Dias restantes:</strong>
-                            <div id="diasRestantes" style="color: var(--text-light); font-weight: 600; margin-top: 5px;"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Aba Diário -->
-        <div id="diario" class="tab-content">
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title">
-                        <span class="icon">✍️</span>
-                        Minhas Anotações
-                    </h2>
-                </div>
-                <div class="form-group">
-                    <label class="form-label" for="notes">Nova Anotação:</label>
-                    <textarea id="notes" class="form-input form-textarea" placeholder="Escreva aqui seus sentimentos, sintomas ou qualquer observação..."></textarea>
-                </div>
-                <button id="btnSalvarNotas" class="btn btn-primary">
-                    <span class="icon">💾</span>
-                    Salvar Anotação
-                </button>
-                <div class="notes-list" id="notesList">
-                    <div class="empty-state">
-                        <p>Nenhuma anotação ainda. Comece escrevendo seus primeiros pensamentos! 💭</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Aba Consultas -->
-        <div id="consultas" class="tab-content">
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title">
-                        <span class="icon">➕</span>
-                        Agendar Nova Consulta
-                    </h2>
-                </div>
-                <div class="grid-2">
-                    <div class="form-group">
-                        <label class="form-label" for="consultaData">Data:</label>
-                        <input type="date" id="consultaData" class="form-input">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="consultaHora">Hora:</label>
-                        <input type="time" id="consultaHora" class="form-input">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label" for="consultaMedico">Médico/Profissional:</label>
-                    <input type="text" id="consultaMedico" class="form-input" placeholder="Nome do médico ou profissional">
-                </div>
-                <div class="form-group">
-                    <label class="form-label" for="consultaLocal">Local:</label>
-                    <input type="text" id="consultaLocal" class="form-input" placeholder="Hospital, clínica, etc.">
-                </div>
-                <div class="form-group">
-                    <label class="form-label" for="consultaObs">Observações:</label>
-                    <textarea id="consultaObs" class="form-input form-textarea" placeholder="Detalhes da consulta, exames, etc."></textarea>
-                </div>
-                <button id="btnAdicionarConsulta" class="btn btn-primary">
-                    <span class="icon">📅</span>
-                    Agendar Consulta
-                </button>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title">
-                        <span class="icon">📋</span>
-                        Consultas Agendadas
-                    </h2>
-                </div>
-                <div class="consultas-list" id="consultasList">
-                    <div class="empty-state">
-                        <p>Nenhuma consulta agendada ainda. 🏥</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Aba Marcos -->
-        <div id="marcos" class="tab-content">
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title">
-                        <span class="icon">🎯</span>
-                        Marcos Gestacionais
-                    </h2>
-                </div>
-                <div id="marcosList">
-                    <div class="empty-state">
-                        <p>Calcule sua gestação para ver os marcos importantes! 🌟</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Dados dos marcos gestacionais
-        const marcosGestacionais = [
-            {
-                semana: 6,
-                titulo: "Primeira Consulta",
-                descricao: "Confirmação da gravidez e início do pré-natal",
-                exames: ["Beta HCG", "Hemograma", "Tipagem sanguínea"]
-            },
-            {
-                semana: 12,
-                titulo: "Fim do 1º Trimestre",
-                descricao: "Redução significativa do risco de aborto espontâneo",
-                exames: ["Ultrassom morfológico", "Translucência nucal"]
-            },
-            {
-                semana: 16,
-                titulo: "Descoberta do Sexo",
-                descricao: "Possível identificação do sexo do bebê",
-                exames: ["Ultrassom obstétrico"]
-            },
-            {
-                semana: 20,
-                titulo: "Ultrassom Morfológico",
-                descricao: "Avaliação detalhada da anatomia fetal",
-                exames: ["Ultrassom morfológico de 2º trimestre"]
-            },
-            {
-                semana: 24,
-                titulo: "Teste de Diabetes Gestacional",
-                descricao: "Rastreamento para diabetes gestacional",
-                exames: ["Curva glicêmica", "TOTG 75g"]
-            },
-            {
-                semana: 28,
-                titulo: "3º Trimestre",
-                descricao: "Início da reta final da gestação",
-                exames: ["Hemograma", "Anti-HIV", "VDRL"]
-            },
-            {
-                semana: 32,
-                titulo: "Consultas Quinzenais",
-                descricao: "Aumento da frequência das consultas",
-                exames: ["Ultrassom com Doppler"]
-            },
-            {
-                semana: 36,
-                titulo: "Consultas Semanais",
-                descricao: "Preparação para o parto",
-                exames: ["Cultura para Streptococcus B", "Cardiotocografia"]
-            }
-        ];
-
-        // Variáveis globais
-        let dumAtual = null;
-        let gestacaoAtual = null;
-
-        // Inicialização
-        document.addEventListener('DOMContentLoaded', function() {
-            // Configurar data máxima para DUM
-            document.getElementById('inputDUM').max = new Date().toISOString().split('T')[0];
-            document.getElementById('consultaData').min = new Date().toISOString().split('T')[0];
-
-            // Carregar dados salvos
-            const dumSalva = localStorage.getItem('dumSalva');
-            if (dumSalva) {
-                document.getElementById('inputDUM').value = dumSalva;
-                calcularGestacao();
-            }
-
-            // Event listeners
-            document.getElementById('btnCalcular').addEventListener('click', calcularGestacao);
-            document.getElementById('btnSalvarNotas').addEventListener('click', salvarAnotacao);
-            document.getElementById('btnAdicionarConsulta').addEventListener('click', salvarConsulta);
-        });
-
-        // Funções de navegação
-        function showTab(tabName) {
-            // Remover classe active de todos os botões e conteúdos
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-
-            // Adicionar classe active ao botão e conteúdo selecionado
-            event.target.classList.add('active');
-            document.getElementById(tabName).classList.add('active');
-        }
-
-        // Funções utilitárias
-        function formatarData(date) {
-            return new Date(date).toLocaleDateString('pt-BR');
-        }
-
-        function calcularSemanasEDias(dataInicio, dataFim) {
-            const msPorDia = 1000 * 60 * 60 * 24;
-            const diffMs = dataFim - dataInicio;
-            const diffDias = Math.floor(diffMs / msPorDia);
-            const semanas = Math.floor(diffDias / 7);
-            const dias = diffDias % 7;
-            return { semanas, dias };
-        }
-
-        // Função principal de cálculo
-        function calcularGestacao() {
-            const dumValue = document.getElementById('inputDUM').value;
-            if (!dumValue) {
-                alert('Por favor, informe a data da última menstruação (DUM).');
-                return;
-            }
-
-            const dataDUM = new Date(dumValue);
-            const hoje = new Date();
-
-            if (dataDUM > hoje) {
-                alert('A data da DUM não pode ser no futuro.');
-                return;
-            }
-
-            dumAtual = dumValue;
-            gestacaoAtual = calcularSemanasEDias(dataDUM, hoje);
-
-            // Calcular datas importantes
-            const dpp = new Date(dataDUM);
-            dpp.setDate(dpp.getDate() + 280);
-
-            const termo37 = new Date(dataDUM);
-            termo37.setDate(termo37.getDate() + 37 * 7);
-
-            const termo42 = new Date(dataDUM);
-            termo42.setDate(termo42.getDate() + 42 * 7);
-
-            const diasRestantes = Math.ceil((dpp - hoje) / (1000 * 60 * 60 * 24));
-
-            // Atualizar interface
-            document.getElementById('semanaAtual').textContent = gestacaoAtual.semanas;
-            document.getElementById('diasAdicionais').textContent = gestacaoAtual.dias;
-            document.getElementById('dpp').textContent = formatarData(dpp);
-            document.getElementById('termo37').textContent = formatarData(termo37);
-            document.getElementById('termo42').textContent = formatarData(termo42);
-            document.getElementById('diasRestantes').textContent = diasRestantes > 0 ? `${diasRestantes} dias` : 'Nascimento previsto!';
-
-            // Calcular e mostrar progresso
-            const totalSemanas = gestacaoAtual.semanas + gestacaoAtual.dias / 7;
-            const progresso = Math.min((totalSemanas / 40) * 100, 100);
-            document.getElementById('progressoGestacao').style.width = progresso + '%';
-            document.getElementById('porcentagemProgresso').textContent = progresso.toFixed(1);
-
-            // Mostrar resultados
-            document.getElementById('resultados').style.display = 'block';
-
-            // Salvar DUM
-            localStorage.setItem('dumSalva', dumValue);
-
-            // Carregar dados relacionados
-            carregarAnotacoes();
-            carregarConsultas();
-            carregarMarcos();
-            atualizarAlertas();
-        }
-
-        // Funções do diário
-        function salvarAnotacao() {
-            if (!dumAtual) {
-                alert('Informe e calcule a DUM antes de salvar anotações.');
-                return;
-            }
-
-            const texto = document.getElementById('notes').value.trim();
-            if (!texto) {
-                alert('Digite alguma anotação antes de salvar.');
-                return;
-            }
-
-            const chave = `anotacoes_${dumAtual}`;
-            const dados = JSON.parse(localStorage.getItem(chave) || '[]');
-            const agora = new Date().toISOString();
-
-            dados.push({ texto, data: agora });
-            localStorage.setItem(chave, JSON.stringify(dados));
-
-            document.getElementById('notes').value = '';
-            carregarAnotacoes();
-        }
-
-        function carregarAnotacoes() {
-            if (!dumAtual) return;
-
-            const chave = `anotacoes_${dumAtual}`;
-            const dados = JSON.parse(localStorage.getItem(chave) || '[]');
-            const container = document.getElementById('notesList');
-
-            if (dados.length === 0) {
-                container.innerHTML = '<div class="empty-state"><p>Nenhuma anotação ainda. Comece escrevendo seus primeiros pensamentos! 💭</p></div>';
-                return;
-            }
-
-            container.innerHTML = dados.map(item => `
-                <div class="note-item">
-                    <div class="note-date">${formatarData(item.data)}</div>
-                    <div>${item.texto}</div>
-                </div>
-            `).join('');
-        }
-
-        // Funções de consultas
-        function salvarConsulta() {
-            if (!dumAtual) {
-                alert('Informe e calcule a DUM antes de adicionar consultas.');
-                return;
-            }
-
-            const data = document.getElementById('consultaData').value;
-            const hora = document.getElementById('consultaHora').value;
-            const medico = document.getElementById('consultaMedico').value.trim();
-            const local = document.getElementById('consultaLocal').value.trim();
-            const obs = document.getElementById('consultaObs').value.trim();
-
-            if (!data || !hora || !medico || !local) {
-                alert('Por favor, preencha todos os campos obrigatórios (data, hora, médico e local).');
-                return;
-            }
-
-            if (new Date(data) < new Date()) {
-                alert('A data da consulta não pode ser no passado.');
-                return;
-            }
-
-            const chave = `consultas_${dumAtual}`;
-            const dados = JSON.parse(localStorage.getItem(chave) || '[]');
-
-            dados.push({ data, hora, medico, local, obs });
-            localStorage.setItem(chave, JSON.stringify(dados));
-
-            // Limpar formulário
-            document.getElementById('consultaData').value = '';
-            document.getElementById('consultaHora').value = '';
-            document.getElementById('consultaMedico').value = '';
-            document.getElementById('consultaLocal').value = '';
-            document.getElementById('consultaObs').value = '';
-
-            carregarConsultas();
-            atualizarAlertas();
-        }
-
-        function carregarConsultas() {
-            if (!dumAtual) return;
-
-            const chave = `consultas_${dumAtual}`;
-            const dados = JSON.parse(localStorage.getItem(chave) || '[]');
-            const container = document.getElementById('consultasList');
-
-            if (dados.length === 0) {
-                container.innerHTML = '<div class="empty-state"><p>Nenhuma consulta agendada ainda. 🏥</p></div>';
-                return;
-            }
-
-            container.innerHTML = dados.map((consulta, index) => `
-                <div class="consulta-item">
-                    <div class="consulta-actions">
-                        <button class="btn btn-danger" onclick="removerConsulta(${index})">
-                            <span class="icon">🗑️</span>
-                        </button>
-                    </div>
-                    <div class="consulta-date">
-                        <strong>📅 ${formatarData(consulta.data)} às ${consulta.hora}</strong>
-                    </div>
-                    <div><strong>👨‍⚕️ Médico:</strong> ${consulta.medico}</div>
-                    <div><strong>📍 Local:</strong> ${consulta.local}</div>
-                    ${consulta.obs ? `<div><strong>📝 Observações:</strong> ${consulta.obs}</div>` : ''}
-                </div>
-            `).join('');
-        }
-
-        function removerConsulta(index) {
-            if (!confirm('Tem certeza que deseja remover esta consulta?')) return;
-
-            const chave = `consultas_${dumAtual}`;
-            const dados = JSON.parse(localStorage.getItem(chave) || '[]');
-            dados.splice(index, 1);
-            localStorage.setItem(chave, JSON.stringify(dados));
-
-            carregarConsultas();
-            atualizarAlertas();
-        }
-
-        // Funções de marcos
-        function carregarMarcos() {
-            if (!gestacaoAtual) return;
-
-            const container = document.getElementById('marcosList');
             
-            container.innerHTML = marcosGestacionais.map(marco => {
-                const completed = marco.semana <= gestacaoAtual.semanas;
-                const isNext = marco.semana >= gestacaoAtual.semanas && marco.semana <= gestacaoAtual.semanas + 4;
-                
-                return `
-                    <div class="marco-item ${completed ? 'completed' : ''}">
-                        <div class="marco-week ${completed ? 'completed' : ''}">${marco.semana}ª semana</div>
-                        <h3 style="margin: 8px 0; color: ${completed ? 'var(--success)' : 'var(--primary)'};">
-                            ${completed ? '✅' : isNext ? '🔜' : '⏳'} ${marco.titulo}
-                        </h3>
-                        <p style="margin-bottom: 10px; color: var(--text-light);">${marco.descricao}</p>
-                        ${marco.exames ? `
-                            <div class="exames-list">
-                                <strong>Exames recomendados:</strong><br>
-                                ${marco.exames.map(exame => `<span class="exame-tag">${exame}</span>`).join('')}
-                            </div>
-                        ` : ''}
+            <div class="services">
+                <!-- Serviço 1 -->
+                <div class="service-card">
+                    <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');"></div>
+                    <div class="service-content">
+                        <h3>Criação de Sites Profissionais</h3>
+                        <ul>
+                            <li>Sites Institucionais</li>
+                            <li>Landing Pages</li>
+                            <li>Lojas Virtuais (E-commerce)</li>
+                            <li>Blogs Personalizados</li>
+                            <li>Sites Responsivos</li>
+                        </ul>
+                        <p><strong>Tecnologias:</strong> HTML5, CSS3, JavaScript, WordPress, React</p>
+                        <div class="price">A partir de R$ 1.500</div>
+                        <a href="#contato" class="btn">Quero meu site</a>
                     </div>
-                `;
-            }).join('');
-        }
-
-        // Função de alertas
-        function atualizarAlertas() {
-            if (!dumAtual) {
-                document.getElementById('alertas').innerHTML = '';
-                return;
-            }
-
-            const chave = `consultas_${dumAtual}`;
-            const consultas = JSON.parse(localStorage.getItem(chave) || '[]');
-            
-            if (consultas.length === 0) {
-                document.getElementById('alertas').innerHTML = '';
-                return;
-            }
-
-            const agora = new Date();
-            const umDiaMs = 24 * 60 * 60 * 1000;
-            const alerts = [];
-
-            consultas.forEach(c => {
-                const dtConsulta = new Date(c.data + 'T' + c.hora);
-                const diff = dtConsulta - agora;
+                </div>
                 
-                if (diff > 0 && diff <= umDiaMs) {
-                    alerts.push(`
-                        <div class="alert alert-warning">
-                            <span class="icon">⚠️</span>
-                            <strong>Consulta próxima:</strong> ${formatarData(c.data)} às ${c.hora} com ${c.medico}
-                        </div>
-                    `);
-                }
-            });
+                <!-- Serviço 2 -->
+                <div class="service-card">
+                    <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');"></div>
+                    <div class="service-content">
+                        <h3>Manutenção e Suporte em TI</h3>
+                        <ul>
+                            <li>Atualizações de segurança</li>
+                            <li>Backup e recuperação de dados</li>
+                            <li>Hospedagem e domínio</li>
+                            <li>Suporte técnico remoto</li>
+                        </ul>
+                        <div class="price">A partir de R$ 200/mês</div>
+                        <a href="#contato" class="btn">Contratar suporte</a>
+                    </div>
+                </div>
+                
+                <!-- Serviço 3 -->
+                <div class="service-card">
+                    <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');"></div>
+                    <div class="service-content">
+                        <h3>Marketing Digital</h3>
+                        <ul>
+                            <li>SEO (Otimização para Google)</li>
+                            <li>Gestão de Redes Sociais</li>
+                            <li>Google Ads e Meta Ads</li>
+                            <li>Conteúdo para redes sociais</li>
+                        </ul>
+                        <div class="price">A partir de R$ 500/mês</div>
+                        <a href="#contato" class="btn">Quero mais clientes</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-            document.getElementById('alertas').innerHTML = alerts.join('');
-        }
-    </script>
+    <!-- Seção Por Que Nos Escolher -->
+    <section class="why-us">
+        <div class="container">
+            <div class="section-title">
+                <h2>Por Que Nos Escolher?</h2>
+                <p>Nossos diferenciais que fazem a diferença</p>
+            </div>
+            
+            <div class="features">
+                <div class="feature">
+                    <i class="fas fa-laptop-code"></i>
+                    <h3>Design Moderno</h3>
+                    <p>Sites criados com as melhores práticas de design e usabilidade para garantir a melhor experiência para seus clientes.</p>
+                </div>
+                
+                <div class="feature">
+                    <i class="fas fa-search"></i>
+                    <h3>Otimizado para SEO</h3>
+                    <p>Seu site já sai pronto para ser encontrado no Google, com técnicas avançadas de otimização.</p>
+                </div>
+                
+                <div class="feature">
+                    <i class="fas fa-headset"></i>
+                    <h3>Suporte Contínuo</h3>
+                    <p>Não abandonamos você após a entrega. Oferecemos suporte técnico para manter seu site sempre atualizado.</p>
+                </div>
+                
+                <div class="feature">
+                    <i class="fas fa-hand-holding-usd"></i>
+                    <h3>Preços Justos</h3>
+                    <p>Qualidade profissional a preços acessíveis, com opções de pagamento flexíveis.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção de Contato -->
+    <section id="contato" class="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2>Entre em Contato</h2>
+                <p>Solicite um orçamento ou tire suas dúvidas</p>
+            </div>
+            
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <h3>Email</h3>
+                        <p>contato@techsolutions.com.br</p>
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <div>
+                        <h3>Telefone</h3>
+                        <p>(11) 99999-9999</p>
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>
+                        <h3>Endereço</h3>
+                        <p>São Paulo/SP</p>
+                    </div>
+                </div>
+            </div>
+            
+            <form>
+                <div class="form-group">
+                    <label for="nome">Nome</label>
+                    <input type="text" id="nome" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="telefone">Telefone</label>
+                    <input type="tel" id="telefone">
+                </div>
+                
+                <div class="form-group">
+                    <label for="servico">Serviço de Interesse</label>
+                    <select id="servico">
+                        <option value="">Selecione...</option>
+                        <option value="site">Criação de Site</option>
+                        <option value="ecommerce">Loja Virtual</option>
+                        <option value="suporte">Suporte em TI</option>
+                        <option value="marketing">Marketing Digital</option>
+                        <option value="outro">Outro</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="mensagem">Mensagem</label>
+                    <textarea id="mensagem" required></textarea>
+                </div>
+                
+                <button type="submit" class="btn">Enviar Mensagem</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Rodapé -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 TechSolutions - Todos os direitos reservados</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-whatsapp"></i></a>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
