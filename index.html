@@ -3,37 +3,176 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TechPrime Solutions - Criação e Manutenção de Sites</title>
+  <title>TechPrime Solutions</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Segoe UI", Arial, sans-serif;
-    }
+    /* === Reset & Base === */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      background: #f9f9f9;
+      font-family: Arial, sans-serif;
+      background: #f4f4f9;
       color: #333;
       line-height: 1.6;
     }
+    a { text-decoration: none; color: inherit; }
+
     header {
-      background: #1e1e2f;
+      background: #2c3e50;
       color: #fff;
-      padding: 15px 20px;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 1000;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      padding: 20px;
+      text-align: center;
     }
-    header h1 {
-      font-size: 22px;
-      color: #00aaff;
+    header h1 { font-size: 28px; }
+    nav {
+      margin-top: 10px;
     }
     nav a {
+      margin: 0 10px;
+      color: #fff;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    nav a:hover { color: #1abc9c; }
+
+    /* === Hero === */
+    .hero {
+      background: linear-gradient(135deg, #1abc9c, #16a085);
+      color: #fff;
+      padding: 80px 20px;
+      text-align: center;
+    }
+    .hero h2 { font-size: 36px; margin-bottom: 15px; }
+    .hero p { font-size: 18px; margin-bottom: 20px; }
+    .btn {
+      display: inline-block;
+      padding: 12px 25px;
+      background: #fff;
+      color: #16a085;
+      font-weight: bold;
+      border-radius: 6px;
+      transition: 0.3s;
+    }
+    .btn:hover { background: #f1f1f1; }
+
+    /* === Sections === */
+    section { padding: 60px 20px; text-align: center; }
+    section h3 { font-size: 28px; margin-bottom: 20px; }
+
+    .services, .pricing, .portfolio {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: 0.3s;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    }
+
+    .price { font-size: 24px; color: #16a085; font-weight: bold; margin: 15px 0; }
+
+    /* === Footer === */
+    footer {
+      background: #2c3e50;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <h1>TechPrime Solutions</h1>
+    <nav>
+      <a href="#servicos">Serviços</a>
+      <a href="#planos">Planos</a>
+      <a href="#portfolio">Portfólio</a>
+      <a href="#contato">Contato</a>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <h2>Transforme sua ideia em um site profissional 🚀</h2>
+    <p>Manutenção, desenvolvimento e soluções em TI sob medida para o seu negócio.</p>
+    <a href="#contato" class="btn">Peça um orçamento</a>
+  </section>
+
+  <!-- Serviços -->
+  <section id="servicos">
+    <h3>💼 Nossos Serviços</h3>
+    <div class="services">
+      <div class="card">
+        <h4>Manutenção de Sites</h4>
+        <p>Correções, otimizações e suporte completo.</p>
+      </div>
+      <div class="card">
+        <h4>Criação de Sites</h4>
+        <p>Sites modernos, rápidos e responsivos.</p>
+      </div>
+      <div class="card">
+        <h4>Consultoria em TI</h4>
+        <p>Orientação estratégica para sua empresa.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Planos -->
+  <section id="planos">
+    <h3>💰 Planos e Valores</h3>
+    <div class="pricing">
+      <div class="card">
+        <h4>Básico</h4>
+        <p class="price">R$ 500</p>
+        <p>Site simples de até 3 páginas</p>
+      </div>
+      <div class="card">
+        <h4>Profissional</h4>
+        <p class="price">R$ 1.200</p>
+        <p>Site completo com 6 páginas + responsivo</p>
+      </div>
+      <div class="card">
+        <h4>Avançado</h4>
+        <p class="price">R$ 2.000</p>
+        <p>Site com loja virtual + integrações</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Portfólio -->
+  <section id="portfolio">
+    <h3>📂 Portfólio</h3>
+    <div class="portfolio">
+      <div class="card">Projeto 1</div>
+      <div class="card">Projeto 2</div>
+      <div class="card">Projeto 3</div>
+    </div>
+  </section>
+
+  <!-- Contato -->
+  <section id="contato">
+    <h3>📞 Fale Conosco</h3>
+    <p>Quer um orçamento ou tem dúvidas? Entre em contato:</p>
+    <p><strong>Email:</strong> contato@techprime.com</p>
+    <p><strong>WhatsApp:</strong> (11) 90000-0000</p>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 TechPrime Solutions - Todos os direitos reservados</p>
+    <p>Desenvolvimento e manutenção de sites profissionais</p>
+  </footer>
+
+</body>
+</html>
       color: #fff;
       text-decoration: none;
       margin-left: 15px;
