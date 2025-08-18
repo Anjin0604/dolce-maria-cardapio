@@ -1,493 +1,411 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechSolutions - Criação de Sites e Serviços de TI</title>
-    <style>
-        /* Estilos CSS */
-        :root {
-            --primary: #2c3e50;
-            --secondary: #3498db;
-            --light: #ecf0f1;
-            --dark: #2c3e50;
-            --success: #2ecc71;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            line-height: 1.6;
-            color: #333;
-        }
-        
-        header {
-            background-color: var(--primary);
-            color: white;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-        }
-        
-        .logo span {
-            color: var(--secondary);
-        }
-        
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
-        
-        nav ul li {
-            margin-left: 1.5rem;
-        }
-        
-        nav ul li a {
-            color: white;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        
-        nav ul li a:hover {
-            color: var(--secondary);
-        }
-        
-        .hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
-            background-size: cover;
-            background-position: center;
-            height: 80vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            color: white;
-            padding: 0 2rem;
-        }
-        
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-        
-        .hero p {
-            font-size: 1.2rem;
-            max-width: 800px;
-            margin-bottom: 2rem;
-        }
-        
-        .btn {
-            display: inline-block;
-            background-color: var(--secondary);
-            color: white;
-            padding: 0.8rem 1.5rem;
-            border: none;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: background-color 0.3s;
-        }
-        
-        .btn:hover {
-            background-color: #2980b9;
-        }
-        
-        section {
-            padding: 4rem 2rem;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .section-title {
-            text-align: center;
-            margin-bottom: 3rem;
-            color: var(--dark);
-        }
-        
-        .section-title h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .section-title p {
-            font-size: 1.1rem;
-            color: #666;
-        }
-        
-        .services {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-        
-        .service-card {
-            background-color: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s;
-        }
-        
-        .service-card:hover {
-            transform: translateY(-10px);
-        }
-        
-        .service-img {
-            height: 200px;
-            background-color: #ddd;
-            background-size: cover;
-            background-position: center;
-        }
-        
-        .service-content {
-            padding: 1.5rem;
-        }
-        
-        .service-content h3 {
-            margin-bottom: 1rem;
-            color: var(--primary);
-        }
-        
-        .service-content ul {
-            margin-left: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .price {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--secondary);
-            margin: 1rem 0;
-        }
-        
-        .why-us {
-            background-color: var(--light);
-        }
-        
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-        }
-        
-        .feature {
-            text-align: center;
-            padding: 2rem;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-        
-        .feature i {
-            font-size: 3rem;
-            color: var(--secondary);
-            margin-bottom: 1rem;
-        }
-        
-        .feature h3 {
-            margin-bottom: 1rem;
-            color: var(--primary);
-        }
-        
-        .contact {
-            background-color: var(--primary);
-            color: white;
-        }
-        
-        .contact .section-title h2,
-        .contact .section-title p {
-            color: white;
-        }
-        
-        .contact-info {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-        
-        .contact-item {
-            display: flex;
-            align-items: center;
-        }
-        
-        .contact-item i {
-            font-size: 1.5rem;
-            margin-right: 1rem;
-            color: var(--secondary);
-        }
-        
-        form {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        form label {
-            display: block;
-            margin-bottom: 0.5rem;
-        }
-        
-        form input,
-        form textarea,
-        form select {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-        
-        form textarea {
-            height: 150px;
-        }
-        
-        footer {
-            background-color: var(--dark);
-            color: white;
-            text-align: center;
-            padding: 2rem;
-        }
-        
-        @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                padding: 1rem;
-            }
-            
-            nav ul {
-                margin-top: 1rem;
-            }
-            
-            .hero h1 {
-                font-size: 2rem;
-            }
-        }
-    </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TechSolutions — Criação de Sites & Serviços de TI</title>
+  <meta name="description" content="Criação de sites, manutenção de TI, hospedagem e marketing digital com valores justos." />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root{
+      --bg:#0b1220;--panel:#0f172a;--soft:#111a2e;--text:#e5e7eb;--muted:#94a3b8;
+      --brand:#3b82f6;--brand-2:#22c55e;--warn:#eab308;--danger:#ef4444;--ring:rgba(59,130,246,.4)
+    }
+    :root.light{
+      --bg:#f6f8fb;--panel:#ffffff;--soft:#eef2ff;--text:#111827;--muted:#4b5563;
+      --brand:#2563eb;--brand-2:#16a34a;--warn:#ca8a04;--danger:#dc2626;--ring:rgba(37,99,235,.25)
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0}
+    body{
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      background:var(--bg);color:var(--text);line-height:1.6;scroll-behavior:smooth
+    }
+    a{color:inherit;text-decoration:none}
+    .container{max-width:1200px;margin:auto;padding:0 1.25rem}
+    /* header */
+    header{
+      position:sticky;top:0;z-index:40;background:rgba(11,18,32,.7);
+      backdrop-filter: blur(8px);border-bottom:1px solid rgba(255,255,255,.06)
+    }
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+    .logo{font-weight:800;letter-spacing:.5px}
+    .logo span{color:var(--brand)}
+    .nav-links{display:flex;gap:20px}
+    .nav-links a{padding:8px 10px;border-radius:10px;color:var(--muted)}
+    .nav-links a:hover{color:var(--text);background:rgba(255,255,255,.05)}
+    .actions{display:flex;align-items:center;gap:10px}
+    .btn,.chip{
+      display:inline-flex;align-items:center;gap:8px;border:0;cursor:pointer;font-weight:600
+    }
+    .btn{padding:10px 16px;border-radius:12px;background:var(--brand);color:#fff;box-shadow:0 5px 18px -6px var(--ring)}
+    .btn.secondary{background:transparent;color:var(--text);outline:1px solid rgba(255,255,255,.12)}
+    .btn.ghost{background:transparent;color:var(--muted)}
+    .theme{width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,.06)}
+    /* mobile */
+    .burger{display:none;font-size:22px}
+    @media (max-width:860px){
+      .nav-links{display:none}
+      .burger{display:block}
+      .drawer{position:fixed;inset:0 0 0 auto;width:78%;max-width:380px;background:var(--panel);
+        transform:translateX(100%);transition:.3s;box-shadow:-20px 0 60px rgba(0,0,0,.35);padding:22px;z-index:50}
+      .drawer.open{transform:translateX(0)}
+      .drawer a{display:block;padding:12px;border-radius:10px;color:var(--muted)}
+      .drawer a:hover{background:rgba(255,255,255,.06);color:var(--text)}
+    }
+    /* hero */
+    .hero{
+      position:relative;isolation:isolate
+    }
+    .hero .bg{
+      position:absolute;inset:0;z-index:-1;
+      background:
+        radial-gradient(1200px 400px at 10% 10%,rgba(59,130,246,.25),transparent 60%),
+        radial-gradient(900px 400px at 90% 20%,rgba(34,197,94,.2),transparent 60%),
+        linear-gradient(180deg,rgba(255,255,255,.06),transparent 35%)
+    }
+    .hero .wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:40px;align-items:center;padding:64px 0}
+    .hero h1{font-size:clamp(28px,5vw,52px);line-height:1.1;margin:0 0 10px}
+    .lead{color:var(--muted);font-size:clamp(16px,2.5vw,18px)}
+    .badges{display:flex;gap:10px;margin:18px 0 26px;flex-wrap:wrap}
+    .chip{padding:6px 10px;border-radius:999px;background:rgba(59,130,246,.12);color:#cfe1ff}
+    .chip.green{background:rgba(34,197,94,.12);color:#c9f7d5}
+    .cta{display:flex;gap:12px;flex-wrap:wrap}
+    .mock{
+      border:1px solid rgba(255,255,255,.08);border-radius:16px;overflow:hidden;background:var(--panel);
+      box-shadow:0 30px 80px -30px rgba(0,0,0,.5)
+    }
+    .mock img{width:100%;display:block;aspect-ratio:16/10;object-fit:cover;filter:saturate(1.1)}
+    @media (max-width:960px){.hero .wrap{grid-template-columns:1fr;gap:24px}}
+    /* sections */
+    section{padding:70px 0}
+    .title{font-size:clamp(24px,3vw,34px);margin:0 0 10px}
+    .sub{color:var(--muted);margin:0 0 26px}
+    /* services & features */
+    .grid{display:grid;gap:18px}
+    .g-3{grid-template-columns:repeat(3,1fr)}
+    .g-4{grid-template-columns:repeat(4,1fr)}
+    @media (max-width:960px){.g-3,.g-4{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:620px){.g-3,.g-4{grid-template-columns:1fr}}
+    .card{
+      background:var(--panel);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:18px;
+      transition:.25s box-shadow,.25s transform
+    }
+    .card:hover{transform:translateY(-3px);box-shadow:0 20px 60px -30px rgba(0,0,0,.6)}
+    .icon{
+      width:44px;height:44px;display:grid;place-items:center;border-radius:12px;
+      background:linear-gradient(135deg,var(--brand),rgba(59,130,246,.35));color:#fff;margin-bottom:12px
+    }
+    .icon.green{background:linear-gradient(135deg,var(--brand-2),rgba(34,197,94,.35))}
+    /* pricing */
+    .pricing .card{padding:22px}
+    .price{font-size:32px;font-weight:800}
+    .price small{font-weight:600;color:var(--muted)}
+    .list{list-style:none;margin:14px 0 18px;padding:0}
+    .list li{display:flex;gap:10px;margin:6px 0;color:var(--text)}
+    .list li i{color:var(--brand-2)}
+    /* portfolio */
+    .portfolio .item{position:relative;overflow:hidden;border-radius:14px}
+    .portfolio img{width:100%;height:220px;object-fit:cover;display:block;transition:transform .35s}
+    .portfolio .item:hover img{transform:scale(1.05)}
+    .tag{position:absolute;left:10px;top:10px;background:rgba(0,0,0,.5);color:#fff;padding:4px 8px;border-radius:999px;font-size:12px}
+    /* testimonials */
+    .testimonial{display:flex;gap:14px;align-items:flex-start}
+    .avatar{width:42px;height:42px;border-radius:50%;background:#cbd5e1}
+    .quote{background:var(--panel);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px}
+    /* faq */
+    .faq details{background:var(--panel);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px 14px}
+    .faq details+details{margin-top:10px}
+    .faq summary{cursor:pointer;font-weight:600}
+    /* contact */
+    form{display:grid;gap:12px}
+    input,select,textarea{
+      background:var(--panel);color:var(--text);border:1px solid rgba(255,255,255,.12);border-radius:12px;
+      padding:12px;font-size:16px;outline:none
+    }
+    input:focus,select:focus,textarea:focus{box-shadow:0 0 0 4px var(--ring)}
+    textarea{min-height:120px;resize:vertical}
+    .cols{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media (max-width:680px){.cols{grid-template-columns:1fr}}
+    /* footer */
+    footer{border-top:1px solid rgba(255,255,255,.08);padding:28px 0;color:var(--muted)}
+    /* helpers */
+    .reveal{opacity:0;transform:translateY(18px);transition:.5s}
+    .reveal.show{opacity:1;transform:none}
+    /* float btns */
+    .float-wpp{
+      position:fixed;right:18px;bottom:18px;z-index:60;width:56px;height:56px;border-radius:14px;
+      display:grid;place-items:center;background:#25d366;color:#fff;box-shadow:0 10px 30px -10px rgba(0,0,0,.6)
+    }
+    .to-top{
+      position:fixed;left:18px;bottom:18px;z-index:60;width:44px;height:44px;border-radius:12px;
+      display:grid;place-items:center;background:rgba(255,255,255,.06);color:var(--text);opacity:.8
+    }
+  </style>
 </head>
 <body>
-    <!-- Cabeçalho -->
-    <header>
-        <div class="logo">Tech<span>Solutions</span></div>
-        <nav>
-            <ul>
-                <li><a href="#servicos">Serviços</a></li>
-                <li><a href="#sobre">Sobre Nós</a></li>
-                <li><a href="#contato">Contato</a></li>
-            </ul>
-        </nav>
-    </header>
+  <!-- Header -->
+  <header>
+    <div class="container nav">
+      <a class="logo" href="#home">Tech<span>Solutions</span></a>
+      <nav class="nav-links">
+        <a href="#servicos">Serviços</a>
+        <a href="#planos">Planos</a>
+        <a href="#portfolio">Portfólio</a>
+        <a href="#depoimentos">Depoimentos</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contato">Contato</a>
+      </nav>
+      <div class="actions">
+        <button class="btn secondary theme" id="themeBtn" title="Alternar tema"><i class="fa-solid fa-moon"></i></button>
+        <a class="btn" href="#contato"><i class="fa-regular fa-paper-plane"></i> Orçamento</a>
+        <button class="burger btn ghost" id="burger"><i class="fa-solid fa-bars"></i></button>
+      </div>
+    </div>
+    <!-- Drawer mobile -->
+    <aside class="drawer" id="drawer">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <strong>Menu</strong>
+        <button class="btn ghost" id="closeDrawer"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <nav>
+        <a href="#servicos">Serviços</a>
+        <a href="#planos">Planos</a>
+        <a href="#portfolio">Portfólio</a>
+        <a href="#depoimentos">Depoimentos</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contato">Contato</a>
+      </nav>
+    </aside>
+  </header>
 
-    <!-- Banner Principal -->
-    <section class="hero">
-        <h1>Seu Negócio Online com Qualidade e Tecnologia</h1>
-        <p>Oferecemos soluções digitais personalizadas para alavancar sua presença na internet. Desde criação de sites até consultoria em TI, estamos prontos para transformar suas ideias em realidade.</p>
-        <a href="#contato" class="btn">Solicite um Orçamento</a>
-    </section>
-
-    <!-- Seção de Serviços -->
-    <section id="servicos" class="services-section">
-        <div class="container">
-            <div class="section-title">
-                <h2>O Que Oferecemos</h2>
-                <p>Soluções completas para sua presença digital</p>
-            </div>
-            
-            <div class="services">
-                <!-- Serviço 1 -->
-                <div class="service-card">
-                    <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');"></div>
-                    <div class="service-content">
-                        <h3>Criação de Sites Profissionais</h3>
-                        <ul>
-                            <li>Sites Institucionais</li>
-                            <li>Landing Pages</li>
-                            <li>Lojas Virtuais (E-commerce)</li>
-                            <li>Blogs Personalizados</li>
-                            <li>Sites Responsivos</li>
-                        </ul>
-                        <p><strong>Tecnologias:</strong> HTML5, CSS3, JavaScript, WordPress, React</p>
-                        <div class="price">A partir de R$ 1.500</div>
-                        <a href="#contato" class="btn">Quero meu site</a>
-                    </div>
-                </div>
-                
-                <!-- Serviço 2 -->
-                <div class="service-card">
-                    <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');"></div>
-                    <div class="service-content">
-                        <h3>Manutenção e Suporte em TI</h3>
-                        <ul>
-                            <li>Atualizações de segurança</li>
-                            <li>Backup e recuperação de dados</li>
-                            <li>Hospedagem e domínio</li>
-                            <li>Suporte técnico remoto</li>
-                        </ul>
-                        <div class="price">A partir de R$ 200/mês</div>
-                        <a href="#contato" class="btn">Contratar suporte</a>
-                    </div>
-                </div>
-                
-                <!-- Serviço 3 -->
-                <div class="service-card">
-                    <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');"></div>
-                    <div class="service-content">
-                        <h3>Marketing Digital</h3>
-                        <ul>
-                            <li>SEO (Otimização para Google)</li>
-                            <li>Gestão de Redes Sociais</li>
-                            <li>Google Ads e Meta Ads</li>
-                            <li>Conteúdo para redes sociais</li>
-                        </ul>
-                        <div class="price">A partir de R$ 500/mês</div>
-                        <a href="#contato" class="btn">Quero mais clientes</a>
-                    </div>
-                </div>
-            </div>
+  <!-- Hero -->
+  <section id="home" class="hero">
+    <div class="bg"></div>
+    <div class="container wrap">
+      <div>
+        <div class="badges">
+          <span class="chip"><i class="fa-solid fa-code"></i> Sites modernos</span>
+          <span class="chip green"><i class="fa-solid fa-shield-halved"></i> Suporte de TI</span>
         </div>
-    </section>
-
-    <!-- Seção Por Que Nos Escolher -->
-    <section class="why-us">
-        <div class="container">
-            <div class="section-title">
-                <h2>Por Que Nos Escolher?</h2>
-                <p>Nossos diferenciais que fazem a diferença</p>
-            </div>
-            
-            <div class="features">
-                <div class="feature">
-                    <i class="fas fa-laptop-code"></i>
-                    <h3>Design Moderno</h3>
-                    <p>Sites criados com as melhores práticas de design e usabilidade para garantir a melhor experiência para seus clientes.</p>
-                </div>
-                
-                <div class="feature">
-                    <i class="fas fa-search"></i>
-                    <h3>Otimizado para SEO</h3>
-                    <p>Seu site já sai pronto para ser encontrado no Google, com técnicas avançadas de otimização.</p>
-                </div>
-                
-                <div class="feature">
-                    <i class="fas fa-headset"></i>
-                    <h3>Suporte Contínuo</h3>
-                    <p>Não abandonamos você após a entrega. Oferecemos suporte técnico para manter seu site sempre atualizado.</p>
-                </div>
-                
-                <div class="feature">
-                    <i class="fas fa-hand-holding-usd"></i>
-                    <h3>Preços Justos</h3>
-                    <p>Qualidade profissional a preços acessíveis, com opções de pagamento flexíveis.</p>
-                </div>
-            </div>
+        <h1>Seu negócio online com performance, segurança e design profissional</h1>
+        <p class="lead">Criação de sites, manutenção de TI, hospedagem e marketing digital — soluções completas e valores justos para pequenas e médias empresas.</p>
+        <div class="cta">
+          <a class="btn" href="https://wa.me/5511914830656?text=Olá!%20Quero%20um%20orçamento%20para%20meu%20site.">
+            <i class="fa-brands fa-whatsapp"></i> Falar no WhatsApp
+          </a>
+          <a class="btn secondary" href="#planos"><i class="fa-solid fa-tags"></i> Ver planos</a>
         </div>
-    </section>
+      </div>
+      <div class="mock reveal">
+        <img alt="Exemplo de site" src="https://images.unsplash.com/photo-1522199710521-72d69614c702?q=80&w=1400&auto=format&fit=crop" loading="lazy">
+      </div>
+    </div>
+  </section>
 
-    <!-- Seção de Contato -->
-    <section id="contato" class="contact">
-        <div class="container">
-            <div class="section-title">
-                <h2>Entre em Contato</h2>
-                <p>Solicite um orçamento ou tire suas dúvidas</p>
-            </div>
-            
-            <div class="contact-info">
-                <div class="contact-item">
-                    <i class="fas fa-envelope"></i>
-                    <div>
-                        <h3>Email</h3>
-                        <p>contato@techsolutions.com.br</p>
-                    </div>
-                </div>
-                
-                <div class="contact-item">
-                    <i class="fas fa-phone"></i>
-                    <div>
-                        <h3>Telefone</h3>
-                        <p>(11) 99999-9999</p>
-                    </div>
-                </div>
-                
-                <div class="contact-item">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <div>
-                        <h3>Endereço</h3>
-                        <p>São Paulo/SP</p>
-                    </div>
-                </div>
-            </div>
-            
-            <form>
-                <div class="form-group">
-                    <label for="nome">Nome</label>
-                    <input type="text" id="nome" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="telefone">Telefone</label>
-                    <input type="tel" id="telefone">
-                </div>
-                
-                <div class="form-group">
-                    <label for="servico">Serviço de Interesse</label>
-                    <select id="servico">
-                        <option value="">Selecione...</option>
-                        <option value="site">Criação de Site</option>
-                        <option value="ecommerce">Loja Virtual</option>
-                        <option value="suporte">Suporte em TI</option>
-                        <option value="marketing">Marketing Digital</option>
-                        <option value="outro">Outro</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="mensagem">Mensagem</label>
-                    <textarea id="mensagem" required></textarea>
-                </div>
-                
-                <button type="submit" class="btn">Enviar Mensagem</button>
-            </form>
+  <!-- Services -->
+  <section id="servicos">
+    <div class="container">
+      <h2 class="title">Serviços</h2>
+      <p class="sub">Soluções que aceleram sua presença digital</p>
+      <div class="grid g-4">
+        <div class="card reveal">
+          <div class="icon"><i class="fa-solid fa-laptop-code"></i></div>
+          <h3>Criação de Sites</h3>
+          <p>Institucional, Landing Page e Blog. SEO técnico e performance desde o primeiro dia.</p>
+          <ul class="list">
+            <li><i class="fa-solid fa-check"></i> Design responsivo</li>
+            <li><i class="fa-solid fa-check"></i> Páginas rápidas (Core Web Vitals)</li>
+            <li><i class="fa-solid fa-check"></i> Integração WhatsApp/Analytics</li>
+          </ul>
+          <a class="btn" href="https://wa.me/5511914830656?text=Quero%20um%20site%20institucional.">Pedir agora</a>
         </div>
-    </section>
+        <div class="card reveal">
+          <div class="icon green"><i class="fa-solid fa-cart-shopping"></i></div>
+          <h3>Loja Virtual</h3>
+          <p>E-commerce completo e seguro, com meios de pagamento e catálogo fácil de gerenciar.</p>
+          <ul class="list">
+            <li><i class="fa-solid fa-check"></i> Checkout integrado</li>
+            <li><i class="fa-solid fa-check"></i> Cupom & frete</li>
+            <li><i class="fa-solid fa-check"></i> Otimização SEO</li>
+          </ul>
+          <a class="btn" href="https://wa.me/5511914830656?text=Quero%20uma%20loja%20virtual.">Pedir agora</a>
+        </div>
+        <div class="card reveal">
+          <div class="icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+          <h3>Suporte & Manutenção</h3>
+          <p>Atendimento remoto, backup e segurança para manter tudo funcionando.</p>
+          <ul class="list">
+            <li><i class="fa-solid fa-check"></i> Atualizações e monitoramento</li>
+            <li><i class="fa-solid fa-check"></i> Backup automático</li>
+            <li><i class="fa-solid fa-check"></i> Otimizações mensais</li>
+          </ul>
+          <a class="btn" href="https://wa.me/5511914830656?text=Quero%20o%20plano%20de%20suporte.">Assinar suporte</a>
+        </div>
+        <div class="card reveal">
+          <div class="icon green"><i class="fa-solid fa-bullhorn"></i></div>
+          <h3>Marketing Digital</h3>
+          <p>SEO, conteúdo, Google & Meta Ads para atrair clientes todos os dias.</p>
+          <ul class="list">
+            <li><i class="fa-solid fa-check"></i> Planejamento de palavras-chave</li>
+            <li><i class="fa-solid fa-check"></i> Anúncios de performance</li>
+            <li><i class="fa-solid fa-check"></i> Relatórios mensais</li>
+          </ul>
+          <a class="btn" href="https://wa.me/5511914830656?text=Quero%20marketing%20digital.">Quero crescer</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <!-- Rodapé -->
-    <footer>
-        <div class="container">
-            <p>&copy; 2023 TechSolutions - Todos os direitos reservados</p>
-            <div class="social-links">
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-linkedin"></i></a>
-                <a href="#"><i class="fab fa-whatsapp"></i></a>
-            </div>
+  <!-- Pricing -->
+  <section id="planos">
+    <div class="container">
+      <h2 class="title">Planos & Valores</h2>
+      <p class="sub">Preços justos do mercado — personalize conforme a necessidade</p>
+      <div class="grid g-3 pricing">
+        <div class="card reveal">
+          <h3>Site Simples</h3>
+          <p class="price">R$ 500 <small>— 1 página</small></p>
+          <ul class="list">
+            <li><i class="fa-solid fa-check"></i> Landing page responsiva</li>
+            <li><i class="fa-solid fa-check"></i> Integração WhatsApp</li>
+            <li><i class="fa-solid fa-check"></i> Entrega rápida</li>
+          </ul>
+          <a class="btn" href="https://wa.me/5511914830656?text=Quero%20o%20Plano%20Site%20Simples%20(R$500).">Escolher plano</a>
         </div>
-    </footer>
-</body>
-</html>
+        <div class="card reveal" style="outline:2px solid var(--brand);">
+          <h3>Site Profissional</h3>
+          <p class="price">R$ 1.200 <small>até 5 páginas</small></p>
+          <ul class="list">
+            <li><i class="fa-solid fa-check"></i> Design exclusivo</li>
+            <li><i class="fa-solid fa-check"></i> SEO técnico</li>
+            <li><i class="fa-solid fa-check"></i> Formulário de contato</li>
+          </ul>
+          <a class="btn" href="https://wa.me/5511914830656?text=Quero%20o%20Plano%20Site%20Profissional%20(R$1200).">Escolher plano</a>
+        </div>
+        <div class="card reveal">
+          <h3>Loja Virtual</h3>
+          <p class="price">R$ 2.500 <small>base</small></p>
+          <ul class="list">
+            <li><i class="fa-solid fa-check"></i> Catálogo e checkout</li>
+            <li><i class="fa-solid fa-check"></i> Meios de pagamento</li>
+            <li><i class="fa-solid fa-check"></i> SEO para produtos</li>
+          </ul>
+          <a class="btn" href="https://wa.me/5511914830656?text=Quero%20o%20Plano%20Loja%20Virtual%20(a%20partir%20de%20R$2500).">Escolher plano</a>
+        </div>
+        <div class="card reveal">
+          <h3>Suporte Mensal</h3>
+          <p class="price">R$ 100 <small>/mês</small></p>
+          <ul class="list">
+            <li><i class="fa-solid fa-check"></i> Atualizações e backups</li>
+            <li><i class="fa-solid fa-check"></i> 2h de suporte incluídas</li>
+            <li><i class="fa-solid fa-check"></i> Monitoramento básico</li>
+          </ul>
+          <a class="btn" href="https://wa.me/5511914830656?text=Quero%20assinar%20o%20Suporte%20Mensal%20(R$100/mês).">Assinar</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Portfolio -->
+  <section id="portfolio" class="portfolio">
+    <div class="container">
+      <h2 class="title">Portfólio</h2>
+      <p class="sub">Alguns layouts e conceitos (pode substituir pelos seus projetos)</p>
+      <div class="grid g-3">
+        <div class="item reveal">
+          <span class="tag">Landing Page</span>
+          <img alt="Projeto 1" src="https://images.unsplash.com/photo-1529336953121-ad5a0d43d0d2?q=80&w=1200&auto=format&fit=crop" loading="lazy">
+        </div>
+        <div class="item reveal">
+          <span class="tag">Institucional</span>
+          <img alt="Projeto 2" src="https://images.unsplash.com/photo-1527689368864-3a821dbccc34?q=80&w=1200&auto=format&fit=crop" loading="lazy">
+        </div>
+        <div class="item reveal">
+          <span class="tag">E-commerce</span>
+          <img alt="Projeto 3" src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1200&auto=format&fit=crop" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section id="depoimentos">
+    <div class="container">
+      <h2 class="title">Depoimentos</h2>
+      <p class="sub">O que clientes dizem</p>
+      <div class="grid g-3">
+        <div class="testimonial reveal">
+          <div class="avatar"></div>
+          <div class="quote">
+            <strong>R. Souza</strong> <br>
+            “Entrega rápida e site muito leve. Atendimento excelente.”
+          </div>
+        </div>
+        <div class="testimonial reveal">
+          <div class="avatar"></div>
+          <div class="quote">
+            <strong>L. Martins</strong> <br>
+            “Minha loja virtual começou a vender na primeira semana. Recomendo!”
+          </div>
+        </div>
+        <div class="testimonial reveal">
+          <div class="avatar"></div>
+          <div class="quote">
+            <strong>F. Oliveira</strong> <br>
+            “Suporte mensal me salvou de perder dados. Profissionalismo total.”
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="faq">
+    <div class="container">
+      <h2 class="title">Perguntas Frequentes</h2>
+      <p class="sub">Transparência de ponta a ponta</p>
+      <details class="reveal"><summary>Em quanto tempo meu site fica pronto?</summary><p>Landing page: 3–7 dias. Site profissional: 10–20 dias, dependendo do conteúdo.</p></details>
+      <details class="reveal"><summary>Vocês fornecem domínio e hospedagem?</summary><p>Podemos orientar na compra e configurar tudo. Também oferecemos plano de hospedagem e manutenção.</p></details>
+      <details class="reveal"><summary>Posso parcelar?</summary><p>Sim, combinamos condições de pagamento de forma flexível.</p></details>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contato">
+    <div class="container">
+      <h2 class="title">Contato</h2>
+      <p class="sub">Envie uma mensagem pelo formulário ou chame no WhatsApp</p>
+      <div class="grid g-3">
+        <div class="card reveal">
+          <h3>Fale pelo WhatsApp</h3>
+          <p>Resposta rápida em horário comercial.</p>
+          <a class="btn" href="https://wa.me/5511914830656?text=Olá!%20Tenho%20interesse%20em%20um%20projeto."><i class="fa-brands fa-whatsapp"></i> Abrir conversa</a>
+        </div>
+        <div class="card reveal">
+          <h3>E-mail</h3>
+          <p>Caso prefira, envie por e-mail com os detalhes do projeto.</p>
+          <a class="btn secondary" href="mailto:contato@techsolutions.com.br?subject=Orçamento%20de%20site">Enviar e-mail</a>
+        </div>
+        <div class="card reveal">
+          <h3>Formulário rápido</h3>
+          <form id="contactForm">
+            <div class="cols">
+              <input required id="nome" placeholder="Seu nome" />
+              <input required id="email" type="email" placeholder="Seu e-mail" />
+            </div>
+            <div class="cols">
+              <input id="telefone" placeholder="Telefone (opcional)" />
+              <select id="servico">
+                <option value="" selected>Serviço desejado</option>
+                <option>Site Simples</option>
+                <option>Site Profissional</option>
+                <option>Loja Virtual</option>
+                <option>Suporte Mensal</option>
+                <option>Marketing Digital</option>
+                <option>Outro</option>
+              </select>
+            </div>
+           
