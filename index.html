@@ -1,1035 +1,584 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EnterpriseSolutions - Soluções em TI e Desenvolvimento Web</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary: #0a8dea;
-            --primary-dark: #0868b2;
-            --secondary: #121212;
-            --accent: #00d9ff;
-            --text: #f0f0f0;
-            --text-muted: #a0a0a0;
-            --card-bg: #1a1a1a;
-            --header-bg: rgba(10, 15, 30, 0.95);
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', 'Segoe UI', sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #0a0a16 0%, #12122a 100%);
-            color: var(--text);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-        
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        /* Header */
-        header {
-            background: var(--header-bg);
-            backdrop-filter: blur(10px);
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(10, 141, 234, 0.2);
-        }
-        
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .logo-text {
-            font-size: 24px;
-            font-weight: 800;
-            background: linear-gradient(to right, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 25px;
-        }
-        
-        nav a {
-            text-decoration: none;
-            color: var(--text);
-            font-weight: 500;
-            transition: color 0.3s;
-            font-size: 16px;
-            position: relative;
-        }
-        
-        nav a:after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -5px;
-            left: 0;
-            background: var(--primary);
-            transition: width 0.3s;
-        }
-        
-        nav a:hover {
-            color: var(--primary);
-        }
-        
-        nav a:hover:after {
-            width: 100%;
-        }
-        
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: var(--primary);
-        }
-        
-        /* Hero Section */
-        .hero {
-            padding: 160px 0 80px;
-            text-align: center;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%230868b2" fill-opacity="0.1" d="M0,128L48,117.3C96,107,192,85,288,112C384,139,480,213,576,224C672,235,768,181,864,160C960,139,1056,149,1152,165.3C1248,181,1344,203,1392,213.3L1440,224L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path></svg>') no-repeat bottom;
-            background-size: contain;
-        }
-        
-        .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .hero h1 {
-            font-size: 3.2rem;
-            margin-bottom: 20px;
-            line-height: 1.2;
-        }
-        
-        .hero-highlight {
-            color: var(--primary);
-        }
-        
-        .hero p {
-            font-size: 1.3rem;
-            margin-bottom: 40px;
-            color: var(--text-muted);
-        }
-        
-        .btn {
-            display: inline-block;
-            background: linear-gradient(to right, var(--primary), var(--primary-dark));
-            color: white;
-            padding: 15px 35px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(10, 141, 234, 0.3);
-            margin: 5px;
-        }
-        
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(10, 141, 234, 0.4);
-        }
-        
-        .btn-outline {
-            background: transparent;
-            border: 2px solid var(--primary);
-            color: var(--primary);
-        }
-        
-        .btn-outline:hover {
-            background: var(--primary);
-            color: white;
-        }
-        
-        .btn-whatsapp {
-            background: linear-gradient(to right, #25D366, #128C7E);
-            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
-        }
-        
-        .btn-whatsapp:hover {
-            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
-        }
-        
-        /* Services Section */
-        .section-title {
-            text-align: center;
-            margin-bottom: 60px;
-            padding-top: 80px;
-        }
-        
-        .section-title h2 {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-            background: linear-gradient(to right, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .section-title p {
-            color: var(--text-muted);
-            max-width: 600px;
-            margin: 0 auto;
-            font-size: 1.1rem;
-        }
-        
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-bottom: 50px;
-        }
-        
-        .service-card {
-            background: var(--card-bg);
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: 1px solid rgba(10, 141, 234, 0.1);
-        }
-        
-        .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-            border-color: rgba(10, 141, 234, 0.3);
-        }
-        
-        .service-icon {
-            height: 180px;
-            background: linear-gradient(to right, #0a0a16, #12122a);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 60px;
-            color: var(--primary);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .service-icon:after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(transparent, rgba(10, 141, 234, 0.1));
-        }
-        
-        .service-content {
-            padding: 25px;
-        }
-        
-        .service-content h3 {
-            margin-bottom: 15px;
-            color: var(--text);
-            font-size: 1.5rem;
-        }
-        
-        .service-content ul {
-            margin-left: 20px;
-            margin-bottom: 25px;
-            color: var(--text-muted);
-        }
-        
-        .service-content li {
-            margin-bottom: 8px;
-            position: relative;
-        }
-        
-        .service-content li:before {
-            content: '▸';
-            color: var(--primary);
-            margin-right: 8px;
-        }
-        
-        .price {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin: 15px 0;
-            text-align: center;
-        }
-        
-        /* FAQ Section */
-        .faq {
-            background: rgba(10, 15, 30, 0.5);
-            padding: 80px 0;
-            margin: 50px 0;
-        }
-        
-        .faq-container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .faq-item {
-            margin-bottom: 20px;
-            border: 1px solid rgba(10, 141, 234, 0.2);
-            border-radius: 10px;
-            overflow: hidden;
-            background: var(--card-bg);
-        }
-        
-        .faq-question {
-            padding: 20px;
-            background: rgba(10, 15, 30, 0.3);
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 600;
-        }
-        
-        .faq-answer {
-            padding: 0 20px;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s, padding 0.3s;
-        }
-        
-        .faq-item.active .faq-answer {
-            max-height: 300px;
-            padding: 20px;
-        }
-        
-        /* Testimonials */
-        .testimonials {
-            padding: 80px 0;
-        }
-        
-        .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-        
-        .testimonial-card {
-            background: var(--card-bg);
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(10, 141, 234, 0.1);
-        }
-        
-        .testimonial-text {
-            font-style: italic;
-            margin-bottom: 20px;
-            color: var(--text);
-        }
-        
-        .testimonial-author {
-            display: flex;
-            align-items: center;
-        }
-        
-        .testimonial-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 15px;
-            font-weight: bold;
-            font-size: 20px;
-        }
-        
-        .testimonial-info h4 {
-            color: var(--primary);
-            margin-bottom: 5px;
-        }
-        
-        .testimonial-info p {
-            color: var(--text-muted);
-            font-size: 14px;
-        }
-        
-        /* Contact Section */
-        .contact {
-            padding: 80px 0;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%230868b2" fill-opacity="0.1" d="M0,128L48,117.3C96,107,192,85,288,112C384,139,480,213,576,224C672,235,768,181,864,160C960,139,1056,149,1152,165.3C1248,181,1344,203,1392,213.3L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat top;
-            background-size: contain;
-        }
-        
-        .contact-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-        }
-        
-        .contact-info {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
-        
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .contact-item i {
-            font-size: 24px;
-            color: var(--primary);
-            width: 40px;
-        }
-        
-        .contact-form {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(10, 141, 234, 0.1);
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-        
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
-            width: 100%;
-            padding: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            font-size: 16px;
-            background: rgba(10, 15, 30, 0.5);
-            color: var(--text);
-        }
-        
-        .form-group textarea {
-            min-height: 150px;
-            resize: vertical;
-        }
-        
-        /* Footer */
-        footer {
-            background: var(--secondary);
-            padding: 50px 0 20px;
-            border-top: 1px solid rgba(10, 141, 234, 0.2);
-        }
-        
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-        
-        .footer-col h3 {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            position: relative;
-            padding-bottom: 10px;
-            color: var(--primary);
-        }
-        
-        .footer-col h3::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 40px;
-            height: 2px;
-            background: var(--primary);
-        }
-        
-        .footer-col ul {
-            list-style: none;
-        }
-        
-        .footer-col ul li {
-            margin-bottom: 10px;
-        }
-        
-        .footer-col a {
-            color: var(--text-muted);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        
-        .footer-col a:hover {
-            color: var(--primary);
-        }
-        
-        .social-links {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .social-links a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            transition: background 0.3s;
-        }
-        
-        .social-links a:hover {
-            background: var(--primary);
-        }
-        
-        .copyright {
-            text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-        
-        /* WhatsApp Float */
-        .whatsapp-float {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(to right, #25D366, #128C7E);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
-            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
-            z-index: 100;
-            transition: all 0.3s;
-            animation: pulse 2s infinite;
-        }
-        
-        .whatsapp-float:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
-        }
-        
-        @keyframes pulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
-            }
-            70% {
-                box-shadow: 0 0 0 10px rgba(37, 211, 102, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
-            }
-        }
-        
-        /* Responsive Design */
-        @media (max-width: 992px) {
-            .contact-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            nav ul {
-                display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                background: var(--header-bg);
-                flex-direction: column;
-                padding: 20px;
-                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-                gap: 15px;
-                border-top: 1px solid rgba(10, 141, 234, 0.2);
-            }
-            
-            nav ul.show {
-                display: flex;
-            }
-            
-            .mobile-menu-btn {
-                display: block;
-            }
-            
-            .hero h1 {
-                font-size: 2rem;
-            }
-            
-            .hero p {
-                font-size: 1.1rem;
-            }
-            
-            .btn {
-                display: block;
-                margin: 10px auto;
-                width: 80%;
-            }
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gestação+ | Acompanhamento de Gravidez (offline, 1 arquivo)</title>
+  <meta name="description" content="App completo de acompanhamento de gravidez, que salva no seu navegador e permite exportar/importar um arquivo de backup. 100% HTML (com CSS e JS embutidos)." />
+  <style>
+    :root{
+      --bg:#0b0f14; --panel:#10161d; --muted:#8aa0b3; --text:#e9f0f7; --brand:#7c9cff; --brand-2:#9ef0c9; --danger:#ff6b6b; --warn:#ffd166; --ok:#3ad29f; --line:#1c2733;
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;background:linear-gradient(180deg,#0b0f14, #0b0f14 60%, #0e141b), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><defs><pattern id="p" width="48" height="48" patternUnits="userSpaceOnUse" patternTransform="scale(1)"><path d="M0 48 L48 0" stroke="%231c2733" stroke-width="1" opacity="0.3"/></pattern></defs><rect width="100%" height="100%" fill="url(%23p)"/></svg>') fixed; color:var(--text); font:500 16px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";}
+    a{color:var(--brand);text-decoration:none}
+    header{position:sticky;top:0;z-index:5;background:rgba(11,15,20,.85);backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid var(--line)}
+    .wrap{max-width:1100px;margin:0 auto;padding:16px}
+    .row{display:flex;gap:12px;flex-wrap:wrap}
+    .grow{flex:1}
+    .brand{display:flex;align-items:center;gap:10px}
+    .brand .logo{width:38px;height:38px;border-radius:12px;background:conic-gradient(from 200deg at 70% 30%, var(--brand), var(--brand-2)); box-shadow:0 0 0 2px rgba(124,156,255,.15)}
+    .brand h1{font-size:18px;margin:0}
+    .toolbar{display:flex;gap:8px;flex-wrap:wrap}
+    button, input, select, textarea{font:inherit;color:inherit}
+    button{background:#111925;border:1px solid var(--line);padding:10px 14px;border-radius:12px;cursor:pointer}
+    button:hover{border-color:#2a394b}
+    button.primary{background:linear-gradient(180deg, #2a3bff22,#2a3bff11); border-color:#3e4dff44}
+    button.ghost{background:transparent;border-color:transparent}
+    .danger{color:#ffb4b4}
+    .ok{color:var(--brand-2)}
+
+    main{padding:18px}
+    .grid{display:grid;gap:18px}
+    @media(min-width:900px){
+      .grid{grid-template-columns: 280px 1fr}
+    }
+
+    .card{background:linear-gradient(180deg,#0e141b,#0c1218);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+    .card h3{margin:0 0 10px 0;font-size:16px;color:#cfe0f4}
+    .muted{color:var(--muted)}
+    .hr{height:1px;background:var(--line);margin:10px 0}
+    .field{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
+    .field input,.field select,.field textarea{background:#0f1620;border:1px solid #1b2633;padding:10px 12px;border-radius:12px}
+    .field small{color:#91a3b8}
+
+    .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+    .tab-btn{padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:#0f1722;cursor:pointer}
+    .tab-btn.active{border-color:#39506b;background:#111b28}
+
+    .kpi{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    @media(min-width:700px){.kpi{grid-template-columns:repeat(4,1fr)}}
+    .kpi .box{padding:12px;border:1px dashed #284055;border-radius:14px;background:#0e1823}
+    .kpi .val{font-size:22px}
+
+    table{width:100%;border-collapse:collapse}
+    th,td{border-bottom:1px solid #12202c;padding:10px 8px;text-align:left}
+    tr:hover td{background:#0f1520}
+
+    .chip{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border:1px solid #27405a;background:#0e1825;border-radius:999px;font-size:12px}
+    .progress{height:8px;background:#101a26;border:1px solid #203247;border-radius:999px;overflow:hidden}
+    .progress > span{display:block;height:100%;background:linear-gradient(90deg,var(--brand),var(--brand-2));width:0%}
+
+    .photo{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+    .photo figure{border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:0;background:#0f1620}
+    .photo img{width:100%;display:block}
+    .photo figcaption{padding:8px;color:#b8c7d8}
+
+    .footer{opacity:.7;text-align:center;padding:20px 0}
+    .tip{font-size:12px;color:#9eb2c7}
+  </style>
 </head>
 <body>
-    <!-- WhatsApp Float -->
-    <a href="https://wa.me/5511914830656?text=Olá! Gostaria de mais informações sobre os serviços da EnterpriseSolutions" class="whatsapp-float" target="_blank">
-        <i class="fab fa-whatsapp"></i>
-    </a>
+  <header>
+    <div class="wrap row">
+      <div class="brand grow">
+        <div class="logo" aria-hidden="true"></div>
+        <h1>Gestação+ <span class="muted">· offline e privado</span></h1>
+      </div>
+      <div class="toolbar">
+        <button id="btn-export" class="primary" title="Exportar backup (.json)">💾 Exportar</button>
+        <label class="chip" title="Importar backup (.json)">📥 Importar
+          <input id="file-import" type="file" accept="application/json" style="display:none" />
+        </label>
+        <button id="btn-reset" class="danger" title="Apagar tudo deste perfil">🗑️ Reset</button>
+      </div>
+    </div>
+  </header>
 
-    <!-- Header -->
-    <header>
-        <div class="container header-container">
-            <div class="logo">
-                <div class="logo-text">Enterprise<span style="color: var(--accent)">Solutions</span></div>
-            </div>
-            
-            <nav>
-                <button class="mobile-menu-btn" id="mobileMenuBtn">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <ul id="navMenu">
-                    <li><a href="#servicos">Serviços</a></li>
-                    <li><a href="#planos">Planos</a></li>
-                    <li><a href="#faq">Dúvidas</a></li>
-                    <li><a href="#contato">Contato</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+  <main class="wrap grid">
+    <!-- Lateral: perfis e setup -->
+    <aside class="card" aria-label="Configurações e Perfis">
+      <h3>👤 Perfis</h3>
+      <div class="field">
+        <label for="perfilSelect">Selecionar perfil</label>
+        <select id="perfilSelect"></select>
+      </div>
+      <div class="row">
+        <button id="novoPerfil">➕ Novo</button>
+        <button id="renomearPerfil">✏️ Renomear</button>
+        <button id="removerPerfil" class="danger">➖ Remover</button>
+      </div>
+      <div class="hr"></div>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container hero-content">
-            <h1>Soluções em <span class="hero-highlight">TI</span> para <span class="hero-highlight">Empresas</span> que Buscam <span class="hero-highlight">Resultados</span></h1>
-            <p>Desenvolvemos sites, sistemas e soluções digitais personalizadas para impulsionar seu negócio</p>
-            <div>
-                <a href="https://wa.me/5511914830656?text=Olá! Gostaria de solicitar um orçamento" class="btn btn-whatsapp" target="_blank"><i class="fab fa-whatsapp"></i> Falar no WhatsApp</a>
-                <a href="#servicos" class="btn btn-outline">Conhecer Serviços</a>
-            </div>
+      <h3>⚙️ Dados do casal</h3>
+      <div class="field">
+        <label>Nome da gestante</label>
+        <input id="mae" placeholder="Nome"/>
+      </div>
+      <div class="field">
+        <label>Nome do parceiro(a)</label>
+        <input id="parceiro" placeholder="Nome"/>
+      </div>
+      <div class="field">
+        <label>Contato do médico(a)</label>
+        <input id="medico" placeholder="Dr(a)., telefone"/>
+      </div>
+
+      <div class="hr"></div>
+      <h3>🗓️ Início da gestação</h3>
+      <div class="field"><label>
+        <input type="radio" name="baseData" value="dpp" checked> Tenho a DPP (data provável do parto)
+      </label></div>
+      <div class="field"><label>
+        <input type="radio" name="baseData" value="dum"> Tenho a DUM (data da última menstruação)
+      </label></div>
+
+      <div class="field" id="boxDPP">
+        <label>📅 DPP</label>
+        <input id="dpp" type="date" />
+        <small>Se você sabe a DPP, o app calcula o restante.</small>
+      </div>
+      <div class="field" id="boxDUM" style="display:none">
+        <label>📅 DUM</label>
+        <input id="dum" type="date" />
+        <small>Se você tem a DUM, a DPP será estimada (DUM + 280 dias).</small>
+      </div>
+
+      <div class="hr"></div>
+      <div class="tip">Privacidade: tudo fica somente no seu navegador. Você também pode <b>exportar</b> um backup e <b>importar</b> depois para continuar.</div>
+    </aside>
+
+    <!-- Conteúdo principal -->
+    <section>
+      <div class="card">
+        <div class="kpi">
+          <div class="box">
+            <div class="muted">Semana</div>
+            <div class="val" id="kpiSemana">–</div>
+          </div>
+          <div class="box">
+            <div class="muted">Dias de gestação</div>
+            <div class="val" id="kpiDias">–</div>
+          </div>
+          <div class="box">
+            <div class="muted">Falta</div>
+            <div class="val" id="kpiFalta">–</div>
+          </div>
+          <div class="box">
+            <div class="muted">DPP</div>
+            <div class="val" id="kpiDPP">–</div>
+          </div>
         </div>
+        <div class="hr"></div>
+        <div class="progress"><span id="barra"></span></div>
+        <div class="tip" id="textoTrimestre" style="margin-top:8px">—</div>
+      </div>
+
+      <div class="card">
+        <div class="tabs" role="tablist">
+          <button class="tab-btn active" data-tab="anotacoes">📝 Anotações</button>
+          <button class="tab-btn" data-tab="consultas">📅 Consultas</button>
+          <button class="tab-btn" data-tab="sintomas">💬 Sintomas</button>
+          <button class="tab-btn" data-tab="medidas">⚖️ Medidas</button>
+          <button class="tab-btn" data-tab="ultra">🖼️ Ultrassons</button>
+          <button class="tab-btn" data-tab="tarefas">✅ Tarefas</button>
+          <button class="tab-btn" data-tab="vacinas">💉 Vacinas</button>
+          <button class="tab-btn" data-tab="resumo">📦 Backup & Resumo</button>
+        </div>
+
+        <!-- TAB: Anotações -->
+        <div class="tab" id="tab-anotacoes">
+          <div class="field"><label>Título</label><input id="noteTitulo" placeholder="Ex.: Primeiros chutes"/></div>
+          <div class="field"><label>Texto</label><textarea id="noteTexto" rows="5" placeholder="Escreva aqui o que aconteceu hoje..."></textarea></div>
+          <div class="row"><button id="addNota" class="primary">Adicionar anotação</button></div>
+          <div class="hr"></div>
+          <div id="listaNotas"></div>
+        </div>
+
+        <!-- TAB: Consultas -->
+        <div class="tab" id="tab-consultas" style="display:none">
+          <div class="row">
+            <div class="field grow"><label>Data</label><input id="cData" type="date"></div>
+            <div class="field grow"><label>Hora</label><input id="cHora" type="time"></div>
+          </div>
+          <div class="field"><label>Local / Profissional</label><input id="cLocal" placeholder="Clínica, endereço"></div>
+          <div class="field"><label>Observações</label><input id="cObs" placeholder="Trazer exames, jejum..."></div>
+          <button id="addConsulta" class="primary">Adicionar consulta</button>
+          <div class="hr"></div>
+          <table id="tConsultas"><thead><tr><th>Quando</th><th>Local</th><th>Obs</th><th></th></tr></thead><tbody></tbody></table>
+        </div>
+
+        <!-- TAB: Sintomas -->
+        <div class="tab" id="tab-sintomas" style="display:none">
+          <div class="row">
+            <div class="field grow"><label>Data</label><input id="sData" type="date"></div>
+            <div class="field grow"><label>Intensidade</label>
+              <select id="sInt"><option>Leve</option><option>Médio</option><option>Forte</option></select>
+            </div>
+          </div>
+          <div class="field"><label>Descrição</label><input id="sDesc" placeholder="Ex.: enjoo pela manhã"></div>
+          <button id="addSintoma" class="primary">Adicionar</button>
+          <div class="hr"></div>
+          <table id="tSintomas"><thead><tr><th>Data</th><th>Intensidade</th><th>Descrição</th><th></th></tr></thead><tbody></tbody></table>
+        </div>
+
+        <!-- TAB: Medidas -->
+        <div class="tab" id="tab-medidas" style="display:none">
+          <div class="row">
+            <div class="field grow"><label>Data</label><input id="mData" type="date"></div>
+            <div class="field grow"><label>Peso (kg)</label><input id="mPeso" type="number" step="0.01" placeholder="Ex.: 62.5"></div>
+            <div class="field grow"><label>Barriga (cm)</label><input id="mBarriga" type="number" step="0.1" placeholder="Opcional"></div>
+          </div>
+          <button id="addMedida" class="primary">Adicionar</button>
+          <div class="hr"></div>
+          <table id="tMedidas"><thead><tr><th>Data</th><th>Peso</th><th>Barriga</th><th></th></tr></thead><tbody></tbody></table>
+        </div>
+
+        <!-- TAB: Ultrasons -->
+        <div class="tab" id="tab-ultra" style="display:none">
+          <div class="row">
+            <div class="field grow"><label>Data</label><input id="uData" type="date"></div>
+            <div class="field grow"><label>Observações</label><input id="uObs" placeholder="Ex.: 12 semanas, TN ok"></div>
+          </div>
+          <div class="field"><label>Foto do exame (opcional)</label><input id="uFoto" type="file" accept="image/*"></div>
+          <button id="addUltra" class="primary">Adicionar ultrassom</button>
+          <div class="hr"></div>
+          <div class="photo" id="galeria"></div>
+        </div>
+
+        <!-- TAB: Tarefas -->
+        <div class="tab" id="tab-tarefas" style="display:none">
+          <div class="row">
+            <div class="field grow"><label>Nova tarefa</label><input id="tNova" placeholder="Ex.: Comprar cadeirinha"></div>
+            <button id="addTarefa" class="primary">Adicionar</button>
+          </div>
+          <div id="listaTarefas"></div>
+        </div>
+
+        <!-- TAB: Vacinas -->
+        <div class="tab" id="tab-vacinas" style="display:none">
+          <div class="row">
+            <div class="field grow"><label>Vacina</label><input id="vNome" placeholder="Ex.: dTpa, Influenza"></div>
+            <div class="field grow"><label>Data</label><input id="vData" type="date"></div>
+          </div>
+          <button id="addVacina" class="primary">Adicionar</button>
+          <div class="hr"></div>
+          <table id="tVacinas"><thead><tr><th>Vacina</th><th>Data</th><th></th></tr></thead><tbody></tbody></table>
+        </div>
+
+        <!-- TAB: Resumo -->
+        <div class="tab" id="tab-resumo" style="display:none">
+          <div class="row">
+            <button id="btnBaixarTXT">Baixar diário (.txt)</button>
+            <button id="btnBaixarCSV">Medidas (.csv)</button>
+          </div>
+          <p class="tip">Dica: você pode imprimir esta página (Ctrl/Cmd+P) para gerar um PDF do momento atual. 😉</p>
+          <pre id="previewResumo" style="white-space:pre-wrap;background:#0f1722;border:1px solid #1b2a3a;border-radius:12px;padding:12px;max-height:300px;overflow:auto"></pre>
+        </div>
+      </div>
+
+      <div class="footer muted">Feito com ❤️. Tudo que você criar fica salvo somente no seu navegador (LocalStorage). Exporte para garantir um backup.</div>
     </section>
+  </main>
 
-    <!-- Services Section -->
-    <section id="servicos">
-        <div class="container">
-            <div class="section-title">
-                <h2>Nossos Serviços</h2>
-                <p>Soluções completas para transformar sua presença digital</p>
-            </div>
-            
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-laptop-code"></i>
-                    </div>
-                    <div class="service-content">
-                        <h3>Desenvolvimento de Sites</h3>
-                        <ul>
-                            <li>Sites Institucionais Profissionais</li>
-                            <li>Landing Pages de Alta Conversão</li>
-                            <li>Blogs Corporativos</li>
-                            <li>Sites Responsivos</li>
-                            <li>SEO Otimizado</li>
-                        </ul>
-                        <div class="price">A partir de R$ 1.499</div>
-                        <a href="https://wa.me/5511914830656?text=Olá! Gostaria de solicitar um orçamento para desenvolvimento de site" class="btn" target="_blank">Solicitar Orçamento</a>
-                    </div>
-                </div>
-                
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-shopping-cart"></i>
-                    </div>
-                    <div class="service-content">
-                        <h3>E-commerce Corporativo</h3>
-                        <ul>
-                            <li>Lojas Virtuais Completas</li>
-                            <li>Integração com Meios de Pagamento</li>
-                            <li>Sistemas de Gestão</li>
-                            <li>Painel Administrativo</li>
-                            <li>Relatórios de Vendas</li>
-                        </ul>
-                        <div class="price">A partir de R$ 3.999</div>
-                        <a href="https://wa.me/5511914810656?text=Olá! Gostaria de solicitar um orçamento para e-commerce" class="btn" target="_blank">Solicitar Orçamento</a>
-                    </div>
-                </div>
-                
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-tools"></i>
-                    </div>
-                    <div class="service-content">
-                        <h3>Suporte e Manutenção</h3>
-                        <ul>
-                            <li>Atualizações de Segurança</li>
-                            <li>Backup e Recuperação de Dados</li>
-                            <li>Hospedagem Profissional</li>
-                            <li>Suporte Técnico Especializado</li>
-                            <li>Monitoramento 24/7</li>
-                        </ul>
-                        <div class="price">A partir de R$ 299/mês</div>
-                        <a href="https://wa.me/5511914830656?text=Olá! Gostaria de informações sobre planos de suporte" class="btn" target="_blank">Solicitar Orçamento</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+  <script>
+  // ===== Utilidades =====
+  const $ = (sel, root=document) => root.querySelector(sel);
+  const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+  const fmt = (d) => new Date(d).toLocaleDateString('pt-BR',{timeZone:'UTC'});
+  const todayISO = () => new Date().toISOString().slice(0,10);
+  const clamp = (v,a,b)=>Math.max(a,Math.min(b,v));
 
-    <!-- FAQ Section -->
-    <section id="faq" class="faq">
-        <div class="container">
-            <div class="section-title">
-                <h2>Perguntas Frequentes</h2>
-                <p>Tire todas as suas dúvidas sobre nossos serviços</p>
-            </div>
-            
-            <div class="faq-container">
-                <div class="faq-item">
-                    <div class="faq-question">
-                        Quanto tempo leva para desenvolver um site?
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>O prazo varia conforme a complexidade do projeto. Sites institucionais simples levam em média 7 a 14 dias, enquanto e-commerces e sistemas mais complexos podem levar de 3 a 8 semanas. Após a contratação, apresentamos um cronograma detalhado com todas as etapas e prazos.</p>
-                    </div>
-                </div>
-                
-                <div class="faq-item">
-                    <div class="faq-question">
-                        Vocês fazem manutenção após o lançamento?
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Sim, oferecemos planos de manutenção mensal que incluem atualizações de segurança, backup diário, suporte técnico e ajustes necessários. Também fornecemos treinamento para que você mesmo possa fazer atualizações simples de conteúdo.</p>
-                    </div>
-                </div>
-                
-                <div class="faq-item">
-                    <div class="faq-question">
-                        Preciso comprar hospedagem separadamente?
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Não, todos os nossos pacotes incluem hospedagem de alta performance com SSL gratuito, email profissional e suporte técnico. Utilizamos servidores otimizados para garantir velocidade e segurança para seu site.</p>
-                    </div>
-                </div>
-                
-                <div class="faq-item">
-                    <div class="faq-question">
-                        Como funciona o processo de criação?
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Nosso processo é dividido em 4 etapas: 1) Briefing e planejamento; 2) Design e aprovação; 3) Desenvolvimento; 4) Lançamento e treinamento. Em cada etapa, você participa ativamente e aprova as fases antes de seguirmos adiante.</p>
-                    </div>
-                </div>
-                
-                <div class="faq-item">
-                    <div class="faq-question">
-                        Vocês trabalham com SEO?
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Sim, todos os nossos sites são desenvolvidos seguindo as melhores práticas de SEO. Além disso, oferecemos serviços especializados de otimização para motores de busca, incluindo pesquisa de palavras-chave, criação de conteúdo otimizado e acompanhamento de resultados.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div style="text-align: center; margin-top: 40px;">
-                <p style="margin-bottom: 20px;">Ainda tem dúvidas? Fale diretamente conosco!</p>
-                <a href="https://wa.me/5511914830656?text=Olá! Tenho algumas dúvidas sobre os serviços" class="btn btn-whatsapp" target="_blank"><i class="fab fa-whatsapp"></i> Chamar no WhatsApp</a>
-            </div>
-        </div>
-    </section>
+  // ===== Persistência (multi-perfis) =====
+  const LS_KEY = 'gestacao_plus_v1';
+  const defaultProfile = () => ({
+    id: crypto.randomUUID(),
+    nome: 'Meu perfil',
+    mae:'', parceiro:'', medico:'',
+    base:'dpp', dpp:'', dum:'',
+    notas:[], consultas:[], sintomas:[], medidas:[], ultras:[], tarefas:[], vacinas:[],
+    createdAt: Date.now()
+  });
 
-    <!-- Testimonials Section -->
-    <section class="testimonials">
-        <div class="container">
-            <div class="section-title">
-                <h2>O que Nossos Clientes Dizem</h2>
-                <p>Feedback real de quem já contratou nossos serviços</p>
-            </div>
-            
-            <div class="testimonials-grid">
-                <div class="testimonial-card">
-                    <div class="testimonial-text">
-                        "A EnterpriseSolutions transformou nosso site e aumentou significativamente nossas conversões. O atendimento é excepcional e o suporte pós-venda é rápido e eficiente."
-                    </div>
-                    <div class="testimonial-author">
-                        <div class="testimonial-avatar">C</div>
-                        <div class="testimonial-info">
-                            <h4>Carlos Mendes</h4>
-                            <p>Mendes Consultoria</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="testimonial-card">
-                    <div class="testimonial-text">
-                        "Finalmente encontrei uma empresa que entrega exatamente o que promete. Nosso e-commerce ficou incrível e as vendas online aumentaram 65% no primeiro mês."
-                    </div>
-                    <div class="testimonial-author">
-                        <div class="testimonial-avatar">A</div>
-                        <div class="testimonial-info">
-                            <h4>Amanda Santos</h4>
-                            <p>Moda Elegante</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="testimonial-card">
-                    <div class="testimonial-text">
-                        "O suporte técnico da EnterpriseSolutions é fantástico. Resolvem qualquer problema rapidamente e sempre com muita paciência para explicar tudo detalhadamente."
-                    </div>
-                    <div class="testimonial-author">
-                        <div class="testimonial-avatar">R</div>
-                        <div class="testimonial-info">
-                            <h4>Ricardo Oliveira</h4>
-                            <p>Oliveira Advogados</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+  function loadAll(){
+    try{ return JSON.parse(localStorage.getItem(LS_KEY)) || {ativos:[], ativoId:null}; }
+    catch(e){ return {ativos:[], ativoId:null}; }
+  }
+  function saveAll(state){ localStorage.setItem(LS_KEY, JSON.stringify(state)); }
 
-    <!-- Contact Section -->
-    <section id="contato" class="contact">
-        <div class="container">
-            <div class="section-title">
-                <h2>Entre em Contato</h2>
-                <p>Pronto para transformar sua presença digital?</p>
-            </div>
-            
-            <div class="contact-grid">
-                <div class="contact-info">
-                    <h3>Informações de Contato</h3>
-                    
-                    <div class="contact-item">
-                        <i class="fas fa-phone"></i>
-                        <div>
-                            <h4>Telefone</h4>
-                            <p>(11) 91483-0656</p>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <i class="fas fa-envelope"></i>
-                        <div>
-                            <h4>Email</h4>
-                            <p>contato@enterprisesolutions.com.br</p>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <div>
-                            <h4>Localização</h4>
-                            <p>Rio de janeiro/Rj</p>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <i class="fas fa-clock"></i>
-                        <div>
-                            <h4>Horário de Atendimento</h4>
-                            <p>Segunda a Sexta, 9h às 18h</p>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <i class="fab fa-whatsapp"></i>
-                        <div>
-                            <h4>WhatsApp</h4>
-                            <p>(11) 91483-0656</p>
-                            <a href="https://wa.me/5511914830656?text=Olá! Gostaria de informações" class="btn" style="padding: 8px 15px; margin-top: 10px;" target="_blank">Enviar mensagem</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="contact-form">
-                    <h3>Solicite um Orçamento</h3>
-                    <form id="budgetForm">
-                        <div class="form-group">
-                            <label for="name">Nome</label>
-                            <input type="text" id="name" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="phone">Telefone/WhatsApp</label>
-                            <input type="tel" id="phone" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="service">Serviço de Interesse</label>
-                            <select id="service" required>
-                                <option value="">Selecione...</option>
-                                <option value="site">Site Institucional</option>
-                                <option value="ecommerce">E-commerce</option>
-                                <option value="suporte">Suporte Técnico</option>
-                                <option value="outro">Outro</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="message">Mensagem</label>
-                            <textarea id="message" required></textarea>
-                        </div>
-                        
-                        <button type="submit" class="btn">Enviar Mensagem</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
+  let state = loadAll();
+  if(!state.ativos.length){
+    const p = defaultProfile(); state.ativos.push(p); state.ativoId = p.id; saveAll(state);
+  }
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-col">
-                    <h3>EnterpriseSolutions</h3>
-                    <p>Soluções digitais completas para empresas que buscam excelência e inovação.</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#"><i class="fab fa-whatsapp"></i></a>
-                    </div>
-                </div>
-                
-                <div class="footer-col">
-                    <h3>Serviços</h3>
-                    <ul>
-                        <li><a href="#servicos">Desenvolvimento de Sites</a></li>
-                        <li><a href="#servicos">E-commerce Corporativo</a></li>
-                        <li><a href="#servicos">Suporte e Manutenção</a></li>
-                        <li><a href="#servicos">Hospedagem Profissional</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-col">
-                    <h3>Links Rápidos</h3>
-                    <ul>
-                        <li><a href="#servicos">Serviços</a></li>
-                        <li><a href="#planos">Planos</a></li>
-                        <li><a href="#faq">Dúvidas Frequentes</a></li>
-                        <li><a href="#contato">Contato</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-col">
-                    <h3>Contato</h3>
-                    <ul>
-                        <li><i class="fas fa-phone"></i> (11) 991483-0656</li>
-                        <li><i class="fas fa-envelope"></i> contato@enterprisesolutions.com.br</li>
-                        <li><i class="fas fa-map-marker-alt"></i> Rio de Janeiro/Rj</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="copyright">
-                <p>&copy; 2025 EnterpriseSolutions - Todos os direitos reservados.</p>
-            </div>
-        </div>
-    </footer>
+  function getAtivo(){ return state.ativos.find(p=>p.id===state.ativoId); }
+  function setAtivo(id){ state.ativoId=id; saveAll(state); renderEverything(); }
+  function up(cb){ const p=getAtivo(); cb(p); saveAll(state); renderEverything(); }
 
-    <script>
-        // Mobile menu toggle
-        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
-            document.getElementById('navMenu').classList.toggle('show');
-        });
-        
-        // Form submission
-        document.getElementById('budgetForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const name = document.getElementById('name').value;
-            const service = document.getElementById('service').value;
-            
-            // Redirect to WhatsApp with form info
-            const message = `Olá! Me chamo ${name} e gostaria de informações sobre ${service}.`;
-            const whatsappURL = `https://wa.me/5511914830556?text=${encodeURIComponent(message)}`;
-            
-            window.open(whatsappURL, '_blank');
-            this.reset();
-            
-            // Show confirmation message
-            alert('Obrigado pelo seu interesse! Redirecionando para o WhatsApp.');
-        });
-        
-        // FAQ accordion functionality
-        const faqItems = document.querySelectorAll('.faq-item');
-        faqItems.forEach(item => {
-            const question = item.querySelector('.faq-question');
-            question.addEventListener('click', () => {
-                item.classList.toggle('active');
-            });
-        });
-        
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                    
-                    // Close mobile menu if open
-                    document.getElementById('navMenu').classList.remove('show');
-                }
-            });
-        });
-    </script>
+  // ===== UI: perfis =====
+  function renderPerfis(){
+    const sel = $('#perfilSelect'); sel.innerHTML='';
+    state.ativos.sort((a,b)=>a.createdAt-b.createdAt).forEach(p=>{
+      const o = document.createElement('option'); o.value=p.id; o.textContent=p.nome; if(p.id===state.ativoId) o.selected=true; sel.appendChild(o);
+    });
+  }
+
+  $('#perfilSelect').addEventListener('change', e=> setAtivo(e.target.value));
+  $('#novoPerfil').addEventListener('click', ()=>{
+    const nome = prompt('Nome do novo perfil?', 'Perfil ' + (state.ativos.length+1)); if(!nome) return;
+    const p = defaultProfile(); p.nome = nome; state.ativos.push(p); state.ativoId=p.id; saveAll(state); renderEverything();
+  });
+  $('#renomearPerfil').addEventListener('click', ()=>{
+    const p=getAtivo(); const nome = prompt('Novo nome do perfil:', p.nome); if(!nome) return; p.nome=nome; saveAll(state); renderPerfis();
+  });
+  $('#removerPerfil').addEventListener('click', ()=>{
+    if(!confirm('Remover este perfil e todos os dados dele?')) return;
+    state.ativos = state.ativos.filter(p=>p.id!==state.ativoId);
+    if(!state.ativos.length){ const p=defaultProfile(); state.ativos=[p]; state.ativoId=p.id; }
+    else { state.ativoId = state.ativos[0].id; }
+    saveAll(state); renderEverything();
+  });
+
+  // ===== Setup (DPP/DUM) =====
+  $$('input[name="baseData"]').forEach(r=> r.addEventListener('change', e=>{
+    const v=e.target.value; up(p=>{p.base=v});
+    $('#boxDPP').style.display = v==='dpp'? 'block':'none';
+    $('#boxDUM').style.display = v==='dum'? 'block':'none';
+  }));
+  $('#dpp').addEventListener('change', e=> up(p=>{p.dpp=e.target.value}));
+  $('#dum').addEventListener('change', e=> up(p=>{p.dum=e.target.value}));
+  $('#mae').addEventListener('input', e=> up(p=>{p.mae=e.target.value}));
+  $('#parceiro').addEventListener('input', e=> up(p=>{p.parceiro=e.target.value}));
+  $('#medico').addEventListener('input', e=> up(p=>{p.medico=e.target.value}));
+
+  // ===== Cálculos de gestação =====
+  function calcInfo(p){
+    let dpp = p.dpp;
+    if(p.base==='dum' && p.dum){ // DUM + 280 dias
+      const t = new Date(p.dum+'T00:00:00Z'); t.setUTCDate(t.getUTCDate()+280); dpp = t.toISOString().slice(0,10);
+    }
+    if(!dpp) return {dpp:null, dias:0, semana:"–", falta:"–", perc:0, trimestre:""};
+
+    const tHoje = new Date();
+    const dtDPP = new Date(dpp+'T00:00:00');
+    const gestLen = 280; // dias aproximados
+    const dtConcepcao = new Date(dtDPP); dtConcepcao.setDate(dtConcepcao.getDate()-gestLen);
+
+    const dias = Math.floor((tHoje - dtConcepcao)/(1000*60*60*24));
+    const semana = Math.floor(dias/7);
+    const falta = Math.max(0, gestLen - dias);
+    const perc = clamp((dias/gestLen)*100, 0, 100);
+    let trimestre = '';
+    if(semana<=12) trimestre = '1º trimestre'; else if(semana<=27) trimestre='2º trimestre'; else trimestre='3º trimestre';
+
+    return {dpp, dias: clamp(dias,0,gestLen), semana: semana+"ª", falta, perc, trimestre};
+  }
+
+  // ===== Render KPIs =====
+  function renderKPI(){
+    const p=getAtivo(); const info=calcInfo(p);
+    $('#kpiSemana').textContent = info.semana;
+    $('#kpiDias').textContent = Number.isFinite(info.dias)? info.dias : '–';
+    $('#kpiFalta').textContent = Number.isFinite(info.falta)? info.falta+ 'd' : '–';
+    $('#kpiDPP').textContent = info.dpp? fmt(info.dpp): '–';
+    $('#barra').style.width = info.perc+'%';
+    $('#textoTrimestre').textContent = info.trimestre? `Você está no ${info.trimestre}. Progresso aproximado de ${info.perc.toFixed(1)}%.` : 'Informe DPP ou DUM para iniciar.';
+  }
+
+  // ===== Tabs =====
+  $$('.tab-btn').forEach(btn=> btn.addEventListener('click', ()=>{
+    $$('.tab-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const id = 'tab-'+btn.dataset.tab; $$('.tab').forEach(t=> t.style.display = (t.id===id?'block':'none'));
+    if(id==='tab-resumo') renderResumo();
+  }));
+
+  // ===== Anotações =====
+  $('#addNota').addEventListener('click', ()=>{
+    const t = $('#noteTitulo').value.trim(); const x = $('#noteTexto').value.trim();
+    if(!t && !x) return; up(p=>{ p.notas.unshift({id:crypto.randomUUID(), titulo:t, texto:x, data: todayISO()}) });
+    $('#noteTitulo').value=''; $('#noteTexto').value='';
+  });
+  function renderNotas(){
+    const box = $('#listaNotas'); box.innerHTML=''; const p=getAtivo();
+    if(!p.notas.length){ box.innerHTML = '<div class="muted">Sem anotações ainda.</div>'; return; }
+    p.notas.forEach(n=>{
+      const div = document.createElement('div');
+      div.className='card';
+      div.innerHTML = `<div class="row" style="justify-content:space-between;align-items:center">
+        <div><b>${n.titulo||'Sem título'}</b><div class="tip">${fmt(n.data)}</div></div>
+        <button data-id="${n.id}" class="ghost danger">Apagar</button>
+      </div>
+      <div style="margin-top:8px">${(n.texto||'').replace(/</g,'&lt;')}</div>`;
+      div.querySelector('button').addEventListener('click',()=> up(p=>{p.notas=p.notas.filter(i=>i.id!==n.id)}));
+      box.appendChild(div);
+    });
+  }
+
+  // ===== Consultas =====
+  $('#addConsulta').addEventListener('click', ()=>{
+    const item={id:crypto.randomUUID(), data:$('#cData').value, hora:$('#cHora').value, local:$('#cLocal').value.trim(), obs:$('#cObs').value.trim()};
+    if(!item.data) return alert('Informe a data.');
+    up(p=>{ p.consultas.push(item); });
+    ['#cData','#cHora','#cLocal','#cObs'].forEach(s=>$(s).value='');
+  });
+  function renderConsultas(){
+    const tb = $('#tConsultas tbody'); tb.innerHTML=''; const p=getAtivo();
+    p.consultas.sort((a,b)=>(a.data+a.hora).localeCompare(b.data+b.hora)).forEach(c=>{
+      const tr = document.createElement('tr');
+      tr.innerHTML=`<td>${fmt(c.data)} ${c.hora||''}</td><td>${(c.local||'')}</td><td>${(c.obs||'')}</td><td><button class="ghost danger" data-id="${c.id}">Apagar</button></td>`;
+      tr.querySelector('button').addEventListener('click',()=> up(p=>{p.consultas=p.consultas.filter(i=>i.id!==c.id)}));
+      tb.appendChild(tr);
+    });
+  }
+
+  // ===== Sintomas =====
+  $('#addSintoma').addEventListener('click', ()=>{
+    const item={id:crypto.randomUUID(), data:$('#sData').value||todayISO(), intensidade:$('#sInt').value, desc:$('#sDesc').value.trim()};
+    if(!item.desc) return; up(p=>{p.sintomas.unshift(item)});
+    $('#sDesc').value='';
+  });
+  function renderSintomas(){
+    const tb = $('#tSintomas tbody'); tb.innerHTML=''; const p=getAtivo();
+    p.sintomas.forEach(s=>{
+      const tr=document.createElement('tr');
+      tr.innerHTML=`<td>${fmt(s.data)}</td><td>${s.intensidade}</td><td>${s.desc}</td><td><button class="ghost danger">Apagar</button></td>`;
+      tr.querySelector('button').addEventListener('click',()=> up(p=>{p.sintomas=p.sintomas.filter(i=>i.id!==s.id)}));
+      tb.appendChild(tr);
+    });
+  }
+
+  // ===== Medidas =====
+  $('#addMedida').addEventListener('click', ()=>{
+    const item={id:crypto.randomUUID(), data:$('#mData').value||todayISO(), peso:parseFloat($('#mPeso').value||''), barriga:$('#mBarriga').value? parseFloat($('#mBarriga').value): null};
+    if(!item.peso){ return alert('Informe o peso.'); }
+    up(p=>{p.medidas.push(item)});
+    ['#mData','#mPeso','#mBarriga'].forEach(s=>$(s).value='');
+  });
+  function renderMedidas(){
+    const tb = $('#tMedidas tbody'); tb.innerHTML=''; const p=getAtivo();
+    p.medidas.sort((a,b)=> (a.data).localeCompare(b.data)).forEach(m=>{
+      const tr=document.createElement('tr');
+      tr.innerHTML=`<td>${fmt(m.data)}</td><td>${m.peso.toFixed(2)} kg</td><td>${m.barriga? m.barriga.toFixed(1)+' cm' : '—'}</td><td><button class="ghost danger">Apagar</button></td>`;
+      tr.querySelector('button').addEventListener('click',()=> up(p=>{p.medidas=p.medidas.filter(i=>i.id!==m.id)}));
+      tb.appendChild(tr);
+    });
+  }
+
+  // ===== Ultras =====
+  $('#addUltra').addEventListener('click', async ()=>{
+    const data = $('#uData').value||todayISO(); const obs=$('#uObs').value.trim(); const f=$('#uFoto').files[0];
+    let fotoData=null;
+    if(f){ fotoData = await fileToDataURL(f); }
+    up(p=>{p.ultras.unshift({id:crypto.randomUUID(), data, obs, foto: fotoData})});
+    $('#uObs').value=''; $('#uFoto').value='';
+  });
+  function fileToDataURL(file){
+    return new Promise(res=>{ const r=new FileReader(); r.onload=()=>res(r.result); r.readAsDataURL(file); });
+  }
+  function renderUltras(){
+    const g=$('#galeria'); g.innerHTML=''; const p=getAtivo();
+    if(!p.ultras.length){ g.innerHTML='<div class="muted">Sem ultrassons ainda.</div>'; return; }
+    p.ultras.forEach(u=>{
+      const fig=document.createElement('figure');
+      fig.innerHTML=`${u.foto? `<img src="${u.foto}" alt="Ultrassom ${fmt(u.data)}">` : ''}<figcaption><b>${fmt(u.data)}</b><br>${u.obs||''}<div style="margin-top:6px"><button class="ghost danger">Apagar</button></div></figcaption>`;
+      fig.querySelector('button').addEventListener('click',()=> up(p=>{p.ultras=p.ultras.filter(i=>i.id!==u.id)}));
+      g.appendChild(fig);
+    });
+  }
+
+  // ===== Tarefas =====
+  $('#addTarefa').addEventListener('click', ()=>{
+    const t=$('#tNova').value.trim(); if(!t) return; up(p=>{p.tarefas.unshift({id:crypto.randomUUID(), txt:t, done:false})}); $('#tNova').value='';
+  });
+  function renderTarefas(){
+    const box=$('#listaTarefas'); box.innerHTML=''; const p=getAtivo();
+    if(!p.tarefas.length){ box.innerHTML='<div class="muted">Nenhuma tarefa. Que tal criar uma lista de enxoval? 🧺</div>'; return; }
+    p.tarefas.forEach(t=>{
+      const line=document.createElement('div'); line.className='row'; line.style.alignItems='center'; line.style.justifyContent='space-between';
+      const left=document.createElement('label'); left.className='chip';
+      const cb=document.createElement('input'); cb.type='checkbox'; cb.checked=t.done; cb.addEventListener('change',()=> up(p=>{const it=p.tarefas.find(i=>i.id===t.id); if(it) it.done=cb.checked;}));
+      left.appendChild(cb); left.append(' '+t.txt);
+      const del=document.createElement('button'); del.className='ghost danger'; del.textContent='Apagar'; del.addEventListener('click',()=> up(p=>{p.tarefas=p.tarefas.filter(i=>i.id!==t.id)}));
+      line.append(left, del); box.appendChild(line);
+    });
+  }
+
+  // ===== Vacinas =====
+  $('#addVacina').addEventListener('click', ()=>{
+    const nome=$('#vNome').value.trim(); const data=$('#vData').value; if(!nome || !data) return;
+    up(p=>{p.vacinas.push({id:crypto.randomUUID(), nome, data})}); $('#vNome').value=''; $('#vData').value='';
+  });
+  function renderVacinas(){
+    const tb=$('#tVacinas tbody'); tb.innerHTML=''; const p=getAtivo();
+    p.vacinas.sort((a,b)=>a.data.localeCompare(b.data)).forEach(v=>{
+      const tr=document.createElement('tr'); tr.innerHTML=`<td>${v.nome}</td><td>${fmt(v.data)}</td><td><button class="ghost danger">Apagar</button></td>`;
+      tr.querySelector('button').addEventListener('click',()=> up(p=>{p.vacinas=p.vacinas.filter(i=>i.id!==v.id)}));
+      tb.appendChild(tr);
+    });
+  }
+
+  // ===== Exportar / Importar =====
+  $('#btn-export').addEventListener('click', ()=>{
+    const nome = (getAtivo().nome||'perfil') + '-' + new Date().toISOString().slice(0,10) + '.gestacao.json';
+    const blob = new Blob([JSON.stringify(state,null,2)], {type:'application/json'});
+    const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=nome; a.click(); URL.revokeObjectURL(a.href);
+  });
+  $('#file-import').addEventListener('change', async (e)=>{
+    const f=e.target.files[0]; if(!f) return; const txt=await f.text();
+    try{ const data=JSON.parse(txt); if(!data.ativos) throw new Error('formato'); state=data; saveAll(state); renderEverything(); alert('Backup importado com sucesso!'); }
+    catch(err){ alert('Arquivo inválido.'); }
+    e.target.value='';
+  });
+  $('#btn-reset').addEventListener('click', ()=>{
+    if(!confirm('Tem certeza? Isso apagará todos os dados deste perfil.')) return;
+    up(p=>{ p.notas=[]; p.consultas=[]; p.sintomas=[]; p.medidas=[]; p.ultras=[]; p.tarefas=[]; p.vacinas=[]; p.dpp=''; p.dum=''; });
+  });
+
+  // ===== Resumo / Downloads rápidos =====
+  function gerarDiarioTXT(){
+    const p=getAtivo(); const info=calcInfo(p);
+    let out = [];
+    out.push(`# Gestação+ — Diário de ${p.nome}`);
+    out.push(`Gestante: ${p.mae||'-'} | Parceiro(a): ${p.parceiro||'-'} | Médico(a): ${p.medico||'-'}`);
+    out.push(`Base: ${p.base==='dpp'? 'DPP' : 'DUM'} | DPP: ${info.dpp? fmt(info.dpp):'-'} | Semana: ${info.semana} | Progresso: ${info.perc.toFixed(1)}%`);
+    out.push('\n== Anotações =='); p.notas.forEach(n=> out.push(`- [${fmt(n.data)}] ${n.titulo||'Sem título'} — ${n.texto}`));
+    out.push('\n== Consultas =='); p.consultas.forEach(c=> out.push(`- ${fmt(c.data)} ${c.hora||''} @ ${c.local||''} — ${c.obs||''}`));
+    out.push('\n== Sintomas =='); p.sintomas.forEach(s=> out.push(`- ${fmt(s.data)} | ${s.intensidade}: ${s.desc}`));
+    out.push('\n== Medidas =='); p.medidas.forEach(m=> out.push(`- ${fmt(m.data)} | ${m.peso.toFixed(2)} kg${m.barriga? ' | '+m.barriga.toFixed(1)+' cm':''}`));
+    out.push('\n== Vacinas =='); p.vacinas.forEach(v=> out.push(`- ${fmt(v.data)} | ${v.nome}`));
+    out.push('\n== Tarefas =='); p.tarefas.forEach(t=> out.push(`- [${t.done?'x':' '}] ${t.txt}`));
+    return out.join('\n');
+  }
+  function download(filename, text){ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([text],{type:'text/plain'})); a.download=filename; a.click(); URL.revokeObjectURL(a.href); }
+
+  $('#btnBaixarTXT').addEventListener('click', ()=>{
+    download((getAtivo().nome||'perfil')+'-diario.txt', gerarDiarioTXT());
+  });
+
+  $('#btnBaixarCSV').addEventListener('click', ()=>{
+    const p=getAtivo();
+    let csv = 'data,peso,barriga\n'; p.medidas.forEach(m=> csv += `${m.data},${m.peso},${m.barriga??''}\n`);
+    download((p.nome||'perfil')+'-medidas.csv', csv);
+  });
+
+  function renderResumo(){ $('#previewResumo').textContent = gerarDiarioTXT(); }
+
+  // ===== Render geral =====
+  function renderEverything(){
+    renderPerfis();
+    const p=getAtivo();
+    // preencher inputs
+    $('#mae').value=p.mae||''; $('#parceiro').value=p.parceiro||''; $('#medico').value=p.medico||'';
+    $$('input[name="baseData"]').forEach(r=> r.checked = (r.value===p.base));
+    $('#boxDPP').style.display = p.base==='dpp'? 'block':'none';
+    $('#boxDUM').style.display = p.base==='dum'? 'block':'none';
+    $('#dpp').value=p.dpp||''; $('#dum').value=p.dum||'';
+
+    renderKPI();
+    renderNotas();
+    renderConsultas();
+    renderSintomas();
+    renderMedidas();
+    renderUltras();
+    renderTarefas();
+    renderVacinas();
+  }
+
+  // Init
+  renderEverything();
+  </script>
 </body>
 </html>
