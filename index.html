@@ -1,40 +1,863 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Gestação+ | Acompanhamento de Gravidez (offline, 1 arquivo)</title>
-  <meta name="description" content="App completo de acompanhamento de gravidez, que salva no seu navegador e permite exportar/importar um arquivo de backup. 100% HTML (com CSS e JS embutidos)." />
-  <style>
-    :root{
-      --bg:#0b0f14; --panel:#10161d; --muted:#8aa0b3; --text:#e9f0f7; --brand:#7c9cff; --brand-2:#9ef0c9; --danger:#ff6b6b; --warn:#ffd166; --ok:#3ad29f; --line:#1c2733;
-      --radius:18px;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{margin:0;background:linear-gradient(180deg,#0b0f14, #0b0f14 60%, #0e141b), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><defs><pattern id="p" width="48" height="48" patternUnits="userSpaceOnUse" patternTransform="scale(1)"><path d="M0 48 L48 0" stroke="%231c2733" stroke-width="1" opacity="0.3"/></pattern></defs><rect width="100%" height="100%" fill="url(%23p)"/></svg>') fixed; color:var(--text); font:500 16px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";}
-    a{color:var(--brand);text-decoration:none}
-    header{position:sticky;top:0;z-index:5;background:rgba(11,15,20,.85);backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid var(--line)}
-    .wrap{max-width:1100px;margin:0 auto;padding:16px}
-    .row{display:flex;gap:12px;flex-wrap:wrap}
-    .grow{flex:1}
-    .brand{display:flex;align-items:center;gap:10px}
-    .brand .logo{width:38px;height:38px;border-radius:12px;background:conic-gradient(from 200deg at 70% 30%, var(--brand), var(--brand-2)); box-shadow:0 0 0 2px rgba(124,156,255,.15)}
-    .brand h1{font-size:18px;margin:0}
-    .toolbar{display:flex;gap:8px;flex-wrap:wrap}
-    button, input, select, textarea{font:inherit;color:inherit}
-    button{background:#111925;border:1px solid var(--line);padding:10px 14px;border-radius:12px;cursor:pointer}
-    button:hover{border-color:#2a394b}
-    button.primary{background:linear-gradient(180deg, #2a3bff22,#2a3bff11); border-color:#3e4dff44}
-    button.ghost{background:transparent;border-color:transparent}
-    .danger{color:#ffb4b4}
-    .ok{color:var(--brand-2)}
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Parada Carioca — Pedido Rápido</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0b0b0b;
+    --card: #111111;
+    --muted: #dfe6ea;
+    --accent: #ff7a2f;      /* laranja principal */
+    --accent-dark: #ff5a1a; /* laranja escuro */
+    --brand-yellow: #ffd24a; 
+    --danger: #e64545;
+    --glass: rgba(255,255,255,0.03);
+    --radius: 14px;
+    color-scheme: dark;
+    font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;background: linear-gradient(180deg,#070606 0%, #0b0b0b 100%);color:var(--muted);}
+  .wrap{max-width:1100px;margin:18px auto;padding:14px;display:grid;grid-template-columns:1fr 390px;gap:18px}
+  header{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo-sq{width:56px;height:56px;border-radius:12px;background:linear-gradient(180deg,var(--brand-yellow),#ffb94d);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 22px rgba(255,120,40,0.12)}
+  .logo-sq strong{color:#111;padding:4px 6px;border-radius:8px}
+  h1{font-size:20px;margin:0}
+  .subtitle{font-size:13px;color:#bfcbd2}
+  .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:16px; border-radius:var(--radius); border:1px solid rgba(255,255,255,0.03); box-shadow: 0 8px 30px rgba(0,0,0,0.6)}
+  .left .controls{display:flex;gap:10px;align-items:end}
+  input[type="text"], input[type="number"], select{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:10px;border-radius:10px;color:var(--muted);outline:none;width:100%}
+  button{cursor:pointer}
+  .btn{background:var(--accent);border:none;color:#111;padding:10px 12px;border-radius:10px;font-weight:700}
+  .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);padding:10px 12px;border-radius:10px}
+  .stores{display:flex;gap:12px;margin-top:12px}
+  .store-card{flex:1;padding:10px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border:1px solid rgba(255,255,255,0.02)}
+  .store-card h4{margin:0 0 6px 0}
+  .muted{color:#bfcbd2;font-size:13px}
+  .menu-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px}
+  .section{background:rgba(255,255,255,0.01);padding:12px;border-radius:10px}
+  .item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px dashed rgba(255,255,255,0.03)}
+  .item:last-child{border-bottom:none}
+  .price{font-weight:800}
+  .cart{position:sticky;top:18px}
+  .cart .title{display:flex;align-items:center;justify-content:space-between}
+  .cart-list{max-height:420px;overflow:auto;margin-top:12px}
+  .cart-row{display:flex;justify-content:space-between;align-items:center;padding:8px;border-radius:8px;background:rgba(255,255,255,0.01);margin-bottom:8px}
+  .qty{display:flex;gap:8px;align-items:center}
+  .small{font-size:13px;color:#bfcbd2}
+  .summary{margin-top:12px;background:linear-gradient(180deg, rgba(0,0,0,0.15), rgba(0,0,0,0.08));padding:12px;border-radius:10px}
+  .flex{display:flex;align-items:center;justify-content:space-between}
+  .whatsapp{background:#25D366;color:#031013;padding:10px;border-radius:10px;border:none;font-weight:800}
+  .pix{background:transparent;border:2px dashed rgba(255,255,255,0.06);padding:10px;border-radius:10px;color:var(--accent-dark);font-weight:700}
+  .tag{display:inline-block;padding:6px 8px;border-radius:999px;background:rgba(0,0,0,0.4);color:var(--brand-yellow);font-weight:700}
+  footer{grid-column:1/-1;text-align:center;color:#9fb1b8;margin-top:12px;font-size:13px}
+  @media(max-width:980px){
+    .wrap{grid-template-columns:1fr;padding:12px}
+    .cart{position:relative;top:0}
+    .menu-grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <div class="logo-sq"><strong>PC</strong></div>
+      <div>
+        <h1>Parada Carioca</h1>
+        <div class="subtitle">Peça online — Comer na loja ou Entrega</div>
+      </div>
+    </div>
+    <div style="text-align:right">
+      <div class="tag">Entrega ≥ 6km → taxa 7%/km</div>
+      <div style="font-size:12px;color:#9fb1b8;margin-top:6px">Pagamento: Débito • Crédito • Pix</div>
+    </div>
+  </header>
 
-    main{padding:18px}
-    .grid{display:grid;gap:18px}
-    @media(min-width:900px){
-      .grid{grid-template-columns: 280px 1fr}
+  <!-- LEFT: busca / menu -->
+  <main class="left">
+    <div class="card">
+      <div style="display:flex;gap:12px;align-items:center">
+        <div style="flex:1">
+          <label class="small">Endereço / CEP</label>
+          <input id="cepInput" type="text" placeholder="Digite o CEP (ou permita localização)" />
+        </div>
+        <div style="width:160px">
+          <label class="small">Modo</label>
+          <select id="mode">
+            <option value="delivery">Entrega</option>
+            <option value="dinein">Comer na loja</option>
+          </select>
+        </div>
+        <div style="width:130px;display:flex;flex-direction:column;justify-content:flex-end">
+          <button id="btnLocate" class="btn">Localizar</button>
+          <button id="btnGeo" class="btn-ghost" style="margin-top:8px;font-size:12px">Usar GPS</button>
+        </div>
+      </div>
+
+      <div class="stores">
+        <div class="store-card" id="store1Card">
+          <h4>Loja 1 — Parada Carioca</h4>
+          <div class="muted" id="s1Addr">Rua Santa Luz, nº 2 — em frente ao Brizolão do Cristo</div>
+          <div class="small">CEP: <span id="s1Cep">23056-030</span></div>
+          <div style="margin-top:6px"><strong>WhatsApp:</strong> <a id="s1Whats" href="#" target="_blank">+55 21 99116-6886</a></div>
+          <div class="muted" id="s1Dist">Distância: —</div>
+        </div>
+
+        <div class="store-card" id="store2Card">
+          <h4>Loja 2 — Projetada Cinco</h4>
+          <div class="muted" id="s2Addr">R. Projetada Cinco, 31 (foto)</div>
+          <div class="small">CEP: <span id="s2Cep">23055-000</span></div>
+          <div style="margin-top:6px"><strong>WhatsApp:</strong> <a id="s2Whats" href="#" target="_blank" style="opacity:0.6;pointer-events:none">—</a></div>
+          <div class="muted" id="s2Dist">Distância: —</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button id="chooseS1" class="btn">Selecionar Loja 1</button>
+        <button id="chooseS2" class="btn-ghost">Selecionar Loja 2</button>
+        <div style="margin-left:auto" class="small">Loja selecionada: <span id="selectedLabel">—</span></div>
+      </div>
+    </div>
+
+    <!-- cardápio -->
+    <div class="card" style="margin-top:12px">
+      <h3 style="margin:0 0 8px 0">Cardápio</h3>
+      <div class="menu-grid">
+        <div class="section">
+          <h4>Combos</h4>
+          <div id="combosList"></div>
+        </div>
+
+        <div class="section">
+          <h4>Lanches avulsos</h4>
+          <div id="sandesList"></div>
+        </div>
+
+        <div class="section">
+          <h4>Bebidas</h4>
+          <div id="drinksList"></div>
+        </div>
+
+        <div class="section">
+          <h4>Caldos</h4>
+          <div id="caldosList"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- RIGHT: carrinho -->
+  <aside class="cart">
+    <div class="card">
+      <div class="title">
+        <div>
+          <h3 style="margin:0">Carrinho</h3>
+          <div class="small">Itens adicionados aparecerão aqui</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-weight:800" id="subtotalTop">R$ 0,00</div>
+        </div>
+      </div>
+
+      <div class="cart-list" id="cartList">
+        <div class="small muted">Carrinho vazio</div>
+      </div>
+
+      <div style="margin-top:10px" class="summary">
+        <div class="flex"><div class="small">Subtotal</div><div id="subtotal">R$ 0,00</div></div>
+        <div class="flex"><div class="small">Taxa de entrega</div><div id="deliveryFee">R$ 0,00</div></div>
+        <div class="flex"><div class="small">Desconto</div><div id="couponDisc">R$ 0,00</div></div>
+        <div style="height:1px;background:rgba(255,255,255,0.03);margin:8px 0;border-radius:6px"></div>
+        <div class="flex"><div style="font-weight:900">Total</div><div id="total" style="font-size:18px;font-weight:900">R$ 0,00</div></div>
+      </div>
+
+      <div style="margin-top:10px;display:flex;gap:8px">
+        <input id="couponInput" placeholder="Cupom (opcional)" style="flex:1;border-radius:10px;padding:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--muted)">
+        <button id="applyCoupon" class="btn-ghost">Aplicar</button>
+      </div>
+
+      <div style="margin-top:12px">
+        <div class="small">Pagamento na entrega</div>
+        <div style="display:flex;gap:8px;margin-top:6px">
+          <label style="font-weight:700"><input type="radio" name="pay" value="debito" checked/> Débito</label>
+          <label style="font-weight:700"><input type="radio" name="pay" value="credito"/> Crédito</label>
+          <label style="font-weight:700"><input type="radio" name="pay" value="pix"/> Pix</label>
+        </div>
+
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <button id="btnSendWhats" class="whatsapp" style="flex:1">Enviar pedido via WhatsApp</button>
+          <button id="btnPixWhats" class="pix" style="width:140px">Pix via WhatsApp</button>
+        </div>
+      </div>
+
+      <div style="margin-top:10px" class="small muted">
+        Observação: a loja selecionada recebe o pedido por WhatsApp. Caso queira, edite telefones ou endereços no topo do script.
+      </div>
+    </div>
+  </aside>
+
+  <footer>Prototipo — Parada Carioca • Edite telefones/CEPs no script conforme necessário.</footer>
+</div>
+
+<script>
+/* ====== CONFIG (edite aqui) ======
+ - Atualize phones, endereços e coordenadas caso queira fixar valores
+ - Loja2 phone está vazio por padrão, você pode preencher.
+*/
+const config = {
+  stores: [
+    {
+      id: 'loja1',
+      name: 'Parada Carioca',
+      phone: '5521991166886', // formato wa.me = country + ddd + number (55 21 99116-6886)
+      address: 'Rua Santa Luz, 2 - em frente ao Brizolão do Cristo',
+      cep: '23056030',
+      // coords: opcional (se souber, coloque lat/lon; se não, geocode será usado)
+      coords: { lat: -22.9068, lon: -43.1729 } // EXEMPLO (substitua se souber)
+    },
+    {
+      id: 'loja2',
+      name: 'R. Projetada Cinco, 31',
+      phone: '', // coloque aqui se tiver
+      address: 'R. Projetada Cinco, 31',
+      cep: '23055000',
+      coords: null
     }
+  ],
+  thresholdKm: 6,
+  percentPerKm: 0.07 // 7% por km extra
+};
+
+/* ====== Menu (edite preços/itens) ====== */
+const menu = {
+  combos: [
+    { id:'c1', name:'Combo X-Burg + Fritas + Refri (M)', price: 34.00 },
+    { id:'c2', name:'Combo Chicken Crispy + Onion Rings + Refri', price: 36.50 }
+  ],
+  sandes: [
+    { id:'s1', name:'X-Burg Simples', price: 19.00 },
+    { id:'s2', name:'X-Burg Bacon', price: 24.00 },
+    { id:'s3', name:'Veggie Burger', price: 21.00 }
+  ],
+  drinks: [
+    { id:'d1', name:'Refrigerante 350ml', price: 6.50 },
+    { id:'d2', name:'Suco Natural 300ml', price: 8.50 },
+    { id:'d3', name:'Água 500ml', price: 4.00 }
+  ],
+  caldos: [
+    { id:'cal1', name:'Caldo de Feijão (p.)', price: 10.00 },
+    { id:'cal2', name:'Caldo Verde (p.)', price: 11.50 }
+  ]
+};
+
+/* CUPONS */
+const coupons = {
+  'PROMO10': { type:'percent', value:10 },
+  'FIX5': { type:'fixed', value:5 }
+};
+
+/* estado */
+let state = {
+  userCoords: null,
+  selectedStore: null,
+  distances: {},
+  cart: {},
+  coupon: null
+};
+
+/* helpers */
+function money(v){ return 'R$ ' + v.toFixed(2).replace('.',','); }
+function round2(n){ return Math.round(n*100)/100; }
+function haversine(lat1,lon1,lat2,lon2){
+  const toRad = x => x * Math.PI / 180;
+  const R = 6371;
+  const dLat = toRad(lat2-lat1);
+  const dLon = toRad(lon2-lon1);
+  const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLon/2)**2;
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  return R * c;
+}
+
+/* DOM refs */
+const cepInput = document.getElementById('cepInput');
+const btnLocate = document.getElementById('btnLocate');
+const btnGeo = document.getElementById('btnGeo');
+const s1Addr = document.getElementById('s1Addr');
+const s2Addr = document.getElementById('s2Addr');
+const s1Whats = document.getElementById('s1Whats');
+const s2Whats = document.getElementById('s2Whats');
+const s1Dist = document.getElementById('s1Dist');
+const s2Dist = document.getElementById('s2Dist');
+const chooseS1 = document.getElementById('chooseS1');
+const chooseS2 = document.getElementById('chooseS2');
+const combosList = document.getElementById('combosList');
+const sandesList = document.getElementById('sandesList');
+const drinksList = document.getElementById('drinksList');
+const caldosList = document.getElementById('caldosList');
+const cartList = document.getElementById('cartList');
+const subtotalEl = document.getElementById('subtotal');
+const deliveryFeeEl = document.getElementById('deliveryFee');
+const totalEl = document.getElementById('total');
+const subtotalTop = document.getElementById('subtotalTop');
+const couponInput = document.getElementById('couponInput');
+const applyCouponBtn = document.getElementById('applyCoupon');
+const btnSendWhats = document.getElementById('btnSendWhats');
+const btnPixWhats = document.getElementById('btnPixWhats');
+const selectedLabel = document.getElementById('selectedLabel');
+const modeSelect = document.getElementById('mode');
+const couponDiscEl = document.getElementById('couponDisc');
+
+/* inicializar UI lojas */
+function initStoresUI(){
+  s1Addr.textContent = config.stores[0].address;
+  document.getElementById('s1Cep').textContent = formatCep(config.stores[0].cep);
+  s1Whats.href = config.stores[0].phone ? `https://wa.me/${config.stores[0].phone}` : '#';
+  s1Whats.textContent = formatPhone(config.stores[0].phone) || '—';
+  s2Addr.textContent = config.stores[1].address;
+  document.getElementById('s2Cep').textContent = formatCep(config.stores[1].cep);
+  s2Whats.href = config.stores[1].phone ? `https://wa.me/${config.stores[1].phone}` : '#';
+  s2Whats.textContent = formatPhone(config.stores[1].phone) || '—';
+  s1Dist.textContent = 'Distância: —';
+  s2Dist.textContent = 'Distância: —';
+}
+function formatCep(c){ if(!c) return '—'; const s = (''+c).replace(/\D/g,''); return s.slice(0,5)+'-'+s.slice(5); }
+function formatPhone(p){
+  if(!p) return '';
+  const s = p.replace(/\D/g,'');
+  if(s.length>=12){ const dd = s.slice(2,4), num = s.slice(4); return `+${s.slice(0,2)} (${dd}) ${num.slice(0,5)}-${num.slice(5)}`; }
+  return p;
+}
+
+/* render menu */
+function mkItem(item){
+  const div = document.createElement('div');
+  div.className = 'item';
+  div.innerHTML = `<div>
+      <div style="font-weight:700">${item.name}</div>
+      <div class="small">ID: ${item.id}</div>
+    </div>
+    <div style="text-align:right">
+      <div class="price">${money(item.price)}</div>
+      <div style="margin-top:8px"><button class="btn" onclick="addToCart('${item.id}')">Adicionar</button></div>
+    </div>`;
+  return div;
+}
+function renderMenu(){
+  menu.combos.forEach(i=>combosList.appendChild(mkItem(i)));
+  menu.sandes.forEach(i=>sandesList.appendChild(mkItem(i)));
+  menu.drinks.forEach(i=>drinksList.appendChild(mkItem(i)));
+  menu.caldos.forEach(i=>caldosList.appendChild(mkItem(i)));
+}
+
+/* achar item */
+function findMenuItem(id){
+  return [...menu.combos,...menu.sandes,...menu.drinks,...menu.caldos].find(x=>x.id===id);
+}
+
+/* CART */
+window.addToCart = function(itemId){
+  const it = findMenuItem(itemId);
+  if(!it) return alert('Item não encontrado');
+  if(!state.cart[itemId]) state.cart[itemId] = {...it, qty:0};
+  state.cart[itemId].qty++;
+  renderCart();
+};
+function changeQty(itemId, delta){
+  if(!state.cart[itemId]) return;
+  state.cart[itemId].qty += delta;
+  if(state.cart[itemId].qty <= 0) delete state.cart[itemId];
+  renderCart();
+}
+function renderCart(){
+  cartList.innerHTML = '';
+  const keys = Object.keys(state.cart);
+  if(keys.length === 0){
+    cartList.innerHTML = `<div class="small muted">Carrinho vazio</div>`;
+  } else {
+    keys.forEach(k=>{
+      const it = state.cart[k];
+      const row = document.createElement('div');
+      row.className = 'cart-row';
+      row.innerHTML = `<div>
+          <div style="font-weight:700">${it.name}</div>
+          <div class="small">x${it.qty} • ${money(it.price)} cada</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-weight:800">${money(it.price*it.qty)}</div>
+          <div class="qty" style="margin-top:8px">
+            <button onclick="changeQty('${k}',-1)" class="btn-ghost" style="padding:6px">-</button>
+            <div class="small">${it.qty}</div>
+            <button onclick="changeQty('${k}',1)" class="btn-ghost" style="padding:6px">+</button>
+          </div>
+        </div>`;
+      cartList.appendChild(row);
+    });
+  }
+  updateSummary();
+}
+
+/* resumo */
+function calcSubtotal(){ return round2(Object.values(state.cart).reduce((s,it)=>s + it.price*it.qty,0)); }
+function calcDeliveryFee(){
+  if(modeSelect.value === 'dinein') return 0;
+  if(!state.userCoords || !state.selectedStore) return 0;
+  const dist = state.distances[state.selectedStore.id] ?? 0;
+  if(dist <= config.thresholdKm) return 0;
+  const extraKm = Math.max(0, dist - config.thresholdKm);
+  const subtotal = calcSubtotal();
+  const fee = round2(subtotal * config.percentPerKm * extraKm);
+  return fee;
+}
+function applyCouponAmount(subtotal){
+  if(!state.coupon) return {discount:0};
+  const c = state.coupon;
+  if(c.type === 'percent'){
+    const disc = round2(subtotal * (c.value/100));
+    return {discount: disc};
+  } else {
+    return {discount: Math.min(c.value, subtotal)};
+  }
+}
+function updateSummary(){
+  const subtotal = calcSubtotal();
+  const fee = calcDeliveryFee();
+  const {discount} = applyCouponAmount(subtotal);
+  const total = round2(Math.max(0, subtotal + fee - discount));
+  subtotalEl.textContent = money(subtotal);
+  subtotalTop.textContent = money(subtotal);
+  deliveryFeeEl.textContent = money(fee);
+  couponDiscEl.textContent = money(discount);
+  totalEl.textContent = money(total);
+}
+
+/* cupom */
+applyCouponBtn.addEventListener('click', ()=>{
+  const code = (couponInput.value || '').trim().toUpperCase();
+  if(!code){ state.coupon = null; updateSummary(); return alert('Insira um cupom ou deixe em branco.'); }
+  if(coupons[code]){ state.coupon = coupons[code]; alert('Cupom aplicado: ' + code); }
+  else { state.coupon = null; alert('Cupom inválido'); }
+  updateSummary();
+});
+
+/* selecionar loja */
+chooseS1.addEventListener('click', ()=> selectStore(config.stores[0].id, true));
+chooseS2.addEventListener('click', ()=> selectStore(config.stores[1].id, true));
+
+function selectStore(storeId, manual=false){
+  const s = config.stores.find(x=>x.id === storeId) || config.stores[0];
+  state.selectedStore = s;
+  highlightSelected();
+  if(!manual) console.log('Loja selecionada automaticamente:', s.name);
+}
+function highlightSelected(){
+  selectedLabel.textContent = state.selectedStore ? state.selectedStore.name : '—';
+  document.getElementById('store1Card').style.border = state.selectedStore === config.stores[0] ? '2px solid rgba(255,120,40,0.12)' : '1px solid rgba(255,255,255,0.02)';
+  document.getElementById('store2Card').style.border = state.selectedStore === config.stores[1] ? '2px solid rgba(255,120,40,0.12)' : '1px solid rgba(255,255,255,0.02)';
+  updateSummary();
+}
+
+/* WhatsApp enviar */
+btnSendWhats.addEventListener('click', ()=>{
+  if(!state.selectedStore) return alert('Selecione uma loja primeiro (localize seu CEP).');    </div>
+    <div style="text-align:right">
+      <div class="tag">Entrega ≥ 6km → taxa 7%/km</div>
+      <div style="font-size:12px;color:#9fb1b8;margin-top:6px">Pagamento: Débito • Crédito • Pix</div>
+    </div>
+  </header>
+
+  <!-- LEFT: busca / menu -->
+  <main class="left">
+    <div class="card">
+      <div style="display:flex;gap:12px;align-items:center">
+        <div style="flex:1">
+          <label class="small">Endereço / CEP</label>
+          <input id="cepInput" type="text" placeholder="Digite o CEP (ou permita localização)" />
+        </div>
+        <div style="width:160px">
+          <label class="small">Modo</label>
+          <select id="mode">
+            <option value="delivery">Entrega</option>
+            <option value="dinein">Comer na loja</option>
+          </select>
+        </div>
+        <div style="width:130px;display:flex;flex-direction:column;justify-content:flex-end">
+          <button id="btnLocate" class="btn">Localizar</button>
+          <button id="btnGeo" class="btn-ghost" style="margin-top:8px;font-size:12px">Usar GPS</button>
+        </div>
+      </div>
+
+      <div class="stores">
+        <div class="store-card" id="store1Card">
+          <h4>Loja 1 — Parada Carioca</h4>
+          <div class="muted" id="s1Addr">Rua Santa Luz, nº 2 — em frente ao Brizolão do Cristo</div>
+          <div class="small">CEP: <span id="s1Cep">23056-030</span></div>
+          <div style="margin-top:6px"><strong>WhatsApp:</strong> <a id="s1Whats" href="#" target="_blank">+55 21 99116-6886</a></div>
+          <div class="muted" id="s1Dist">Distância: —</div>
+        </div>
+
+        <div class="store-card" id="store2Card">
+          <h4>Loja 2 — Projetada Cinco</h4>
+          <div class="muted" id="s2Addr">R. Projetada Cinco, 31 (foto)</div>
+          <div class="small">CEP: <span id="s2Cep">23055-000</span></div>
+          <div style="margin-top:6px"><strong>WhatsApp:</strong> <a id="s2Whats" href="#" target="_blank" style="opacity:0.6;pointer-events:none">—</a></div>
+          <div class="muted" id="s2Dist">Distância: —</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button id="chooseS1" class="btn">Selecionar Loja 1</button>
+        <button id="chooseS2" class="btn-ghost">Selecionar Loja 2</button>
+        <div style="margin-left:auto" class="small">Loja selecionada: <span id="selectedLabel">—</span></div>
+      </div>
+    </div>
+
+    <!-- cardápio -->
+    <div class="card" style="margin-top:12px">
+      <h3 style="margin:0 0 8px 0">Cardápio</h3>
+      <div class="menu-grid">
+        <div class="section">
+          <h4>Combos</h4>
+          <div id="combosList"></div>
+        </div>
+
+        <div class="section">
+          <h4>Lanches avulsos</h4>
+          <div id="sandesList"></div>
+        </div>
+
+        <div class="section">
+          <h4>Bebidas</h4>
+          <div id="drinksList"></div>
+        </div>
+
+        <div class="section">
+          <h4>Caldos</h4>
+          <div id="caldosList"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- RIGHT: carrinho -->
+  <aside class="cart">
+    <div class="card">
+      <div class="title">
+        <div>
+          <h3 style="margin:0">Carrinho</h3>
+          <div class="small">Itens adicionados aparecerão aqui</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-weight:800" id="subtotalTop">R$ 0,00</div>
+        </div>
+      </div>
+
+      <div class="cart-list" id="cartList">
+        <div class="small muted">Carrinho vazio</div>
+      </div>
+
+      <div style="margin-top:10px" class="summary">
+        <div class="flex"><div class="small">Subtotal</div><div id="subtotal">R$ 0,00</div></div>
+        <div class="flex"><div class="small">Taxa de entrega</div><div id="deliveryFee">R$ 0,00</div></div>
+        <div class="flex"><div class="small">Desconto</div><div id="couponDisc">R$ 0,00</div></div>
+        <div style="height:1px;background:rgba(255,255,255,0.03);margin:8px 0;border-radius:6px"></div>
+        <div class="flex"><div style="font-weight:900">Total</div><div id="total" style="font-size:18px;font-weight:900">R$ 0,00</div></div>
+      </div>
+
+      <div style="margin-top:10px;display:flex;gap:8px">
+        <input id="couponInput" placeholder="Cupom (opcional)" style="flex:1;border-radius:10px;padding:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--muted)">
+        <button id="applyCoupon" class="btn-ghost">Aplicar</button>
+      </div>
+
+      <div style="margin-top:12px">
+        <div class="small">Pagamento na entrega</div>
+        <div style="display:flex;gap:8px;margin-top:6px">
+          <label style="font-weight:700"><input type="radio" name="pay" value="debito" checked/> Débito</label>
+          <label style="font-weight:700"><input type="radio" name="pay" value="credito"/> Crédito</label>
+          <label style="font-weight:700"><input type="radio" name="pay" value="pix"/> Pix</label>
+        </div>
+
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <button id="btnSendWhats" class="whatsapp" style="flex:1">Enviar pedido via WhatsApp</button>
+          <button id="btnPixWhats" class="pix" style="width:140px">Pix via WhatsApp</button>
+        </div>
+      </div>
+
+      <div style="margin-top:10px" class="small muted">
+        Observação: a loja selecionada recebe o pedido por WhatsApp. Caso queira, edite telefones ou endereços no topo do script.
+      </div>
+    </div>
+  </aside>
+
+  <footer>Prototipo — Parada Carioca • Edite telefones/CEPs no script conforme necessário.</footer>
+</div>
+
+<script>
+/* ====== CONFIG (edite aqui) ======
+ - Atualize phones, endereços e coordenadas caso queira fixar valores
+ - Loja2 phone está vazio por padrão, você pode preencher.
+*/
+const config = {
+  stores: [
+    {
+      id: 'loja1',
+      name: 'Parada Carioca',
+      phone: '5521991166886', // formato wa.me = country + ddd + number (55 21 99116-6886)
+      address: 'Rua Santa Luz, 2 - em frente ao Brizolão do Cristo',
+      cep: '23056030',
+      // coords: opcional (se souber, coloque lat/lon; se não, geocode será usado)
+      coords: { lat: -22.9068, lon: -43.1729 } // EXEMPLO (substitua se souber)
+    },
+    {
+      id: 'loja2',
+      name: 'R. Projetada Cinco, 31',
+      phone: '', // coloque aqui se tiver
+      address: 'R. Projetada Cinco, 31',
+      cep: '23055000',
+      coords: null
+    }
+  ],
+  thresholdKm: 6,
+  percentPerKm: 0.07 // 7% por km extra
+};
+
+/* ====== Menu (edite preços/itens) ====== */
+const menu = {
+  combos: [
+    { id:'c1', name:'Combo X-Burg + Fritas + Refri (M)', price: 34.00 },
+    { id:'c2', name:'Combo Chicken Crispy + Onion Rings + Refri', price: 36.50 }
+  ],
+  sandes: [
+    { id:'s1', name:'X-Burg Simples', price: 19.00 },
+    { id:'s2', name:'X-Burg Bacon', price: 24.00 },
+    { id:'s3', name:'Veggie Burger', price: 21.00 }
+  ],
+  drinks: [
+    { id:'d1', name:'Refrigerante 350ml', price: 6.50 },
+    { id:'d2', name:'Suco Natural 300ml', price: 8.50 },
+    { id:'d3', name:'Água 500ml', price: 4.00 }
+  ],
+  caldos: [
+    { id:'cal1', name:'Caldo de Feijão (p.)', price: 10.00 },
+    { id:'cal2', name:'Caldo Verde (p.)', price: 11.50 }
+  ]
+};
+
+/* CUPONS */
+const coupons = {
+  'PROMO10': { type:'percent', value:10 },
+  'FIX5': { type:'fixed', value:5 }
+};
+
+/* estado */
+let state = {
+  userCoords: null,
+  selectedStore: null,
+  distances: {},
+  cart: {},
+  coupon: null
+};
+
+/* helpers */
+function money(v){ return 'R$ ' + v.toFixed(2).replace('.',','); }
+function round2(n){ return Math.round(n*100)/100; }
+function haversine(lat1,lon1,lat2,lon2){
+  const toRad = x => x * Math.PI / 180;
+  const R = 6371;
+  const dLat = toRad(lat2-lat1);
+  const dLon = toRad(lon2-lon1);
+  const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLon/2)**2;
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  return R * c;
+}
+
+/* DOM refs */
+const cepInput = document.getElementById('cepInput');
+const btnLocate = document.getElementById('btnLocate');
+const btnGeo = document.getElementById('btnGeo');
+const s1Addr = document.getElementById('s1Addr');
+const s2Addr = document.getElementById('s2Addr');
+const s1Whats = document.getElementById('s1Whats');
+const s2Whats = document.getElementById('s2Whats');
+const s1Dist = document.getElementById('s1Dist');
+const s2Dist = document.getElementById('s2Dist');
+const chooseS1 = document.getElementById('chooseS1');
+const chooseS2 = document.getElementById('chooseS2');
+const combosList = document.getElementById('combosList');
+const sandesList = document.getElementById('sandesList');
+const drinksList = document.getElementById('drinksList');
+const caldosList = document.getElementById('caldosList');
+const cartList = document.getElementById('cartList');
+const subtotalEl = document.getElementById('subtotal');
+const deliveryFeeEl = document.getElementById('deliveryFee');
+const totalEl = document.getElementById('total');
+const subtotalTop = document.getElementById('subtotalTop');
+const couponInput = document.getElementById('couponInput');
+const applyCouponBtn = document.getElementById('applyCoupon');
+const btnSendWhats = document.getElementById('btnSendWhats');
+const btnPixWhats = document.getElementById('btnPixWhats');
+const selectedLabel = document.getElementById('selectedLabel');
+const modeSelect = document.getElementById('mode');
+const couponDiscEl = document.getElementById('couponDisc');
+
+/* inicializar UI lojas */
+function initStoresUI(){
+  s1Addr.textContent = config.stores[0].address;
+  document.getElementById('s1Cep').textContent = formatCep(config.stores[0].cep);
+  s1Whats.href = config.stores[0].phone ? `https://wa.me/${config.stores[0].phone}` : '#';
+  s1Whats.textContent = formatPhone(config.stores[0].phone) || '—';
+  s2Addr.textContent = config.stores[1].address;
+  document.getElementById('s2Cep').textContent = formatCep(config.stores[1].cep);
+  s2Whats.href = config.stores[1].phone ? `https://wa.me/${config.stores[1].phone}` : '#';
+  s2Whats.textContent = formatPhone(config.stores[1].phone) || '—';
+  s1Dist.textContent = 'Distância: —';
+  s2Dist.textContent = 'Distância: —';
+}
+function formatCep(c){ if(!c) return '—'; const s = (''+c).replace(/\D/g,''); return s.slice(0,5)+'-'+s.slice(5); }
+function formatPhone(p){
+  if(!p) return '';
+  const s = p.replace(/\D/g,'');
+  if(s.length>=12){ const dd = s.slice(2,4), num = s.slice(4); return `+${s.slice(0,2)} (${dd}) ${num.slice(0,5)}-${num.slice(5)}`; }
+  return p;
+}
+
+/* render menu */
+function mkItem(item){
+  const div = document.createElement('div');
+  div.className = 'item';
+  div.innerHTML = `<div>
+      <div style="font-weight:700">${item.name}</div>
+      <div class="small">ID: ${item.id}</div>
+    </div>
+    <div style="text-align:right">
+      <div class="price">${money(item.price)}</div>
+      <div style="margin-top:8px"><button class="btn" onclick="addToCart('${item.id}')">Adicionar</button></div>
+    </div>`;
+  return div;
+}
+function renderMenu(){
+  menu.combos.forEach(i=>combosList.appendChild(mkItem(i)));
+  menu.sandes.forEach(i=>sandesList.appendChild(mkItem(i)));
+  menu.drinks.forEach(i=>drinksList.appendChild(mkItem(i)));
+  menu.caldos.forEach(i=>caldosList.appendChild(mkItem(i)));
+}
+
+/* achar item */
+function findMenuItem(id){
+  return [...menu.combos,...menu.sandes,...menu.drinks,...menu.caldos].find(x=>x.id===id);
+}
+
+/* CART */
+window.addToCart = function(itemId){
+  const it = findMenuItem(itemId);
+  if(!it) return alert('Item não encontrado');
+  if(!state.cart[itemId]) state.cart[itemId] = {...it, qty:0};
+  state.cart[itemId].qty++;
+  renderCart();
+};
+function changeQty(itemId, delta){
+  if(!state.cart[itemId]) return;
+  state.cart[itemId].qty += delta;
+  if(state.cart[itemId].qty <= 0) delete state.cart[itemId];
+  renderCart();
+}
+function renderCart(){
+  cartList.innerHTML = '';
+  const keys = Object.keys(state.cart);
+  if(keys.length === 0){
+    cartList.innerHTML = `<div class="small muted">Carrinho vazio</div>`;
+  } else {
+    keys.forEach(k=>{
+      const it = state.cart[k];
+      const row = document.createElement('div');
+      row.className = 'cart-row';
+      row.innerHTML = `<div>
+          <div style="font-weight:700">${it.name}</div>
+          <div class="small">x${it.qty} • ${money(it.price)} cada</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-weight:800">${money(it.price*it.qty)}</div>
+          <div class="qty" style="margin-top:8px">
+            <button onclick="changeQty('${k}',-1)" class="btn-ghost" style="padding:6px">-</button>
+            <div class="small">${it.qty}</div>
+            <button onclick="changeQty('${k}',1)" class="btn-ghost" style="padding:6px">+</button>
+          </div>
+        </div>`;
+      cartList.appendChild(row);
+    });
+  }
+  updateSummary();
+}
+
+/* resumo */
+function calcSubtotal(){ return round2(Object.values(state.cart).reduce((s,it)=>s + it.price*it.qty,0)); }
+function calcDeliveryFee(){
+  if(modeSelect.value === 'dinein') return 0;
+  if(!state.userCoords || !state.selectedStore) return 0;
+  const dist = state.distances[state.selectedStore.id] ?? 0;
+  if(dist <= config.thresholdKm) return 0;
+  const extraKm = Math.max(0, dist - config.thresholdKm);
+  const subtotal = calcSubtotal();
+  const fee = round2(subtotal * config.percentPerKm * extraKm);
+  return fee;
+}
+function applyCouponAmount(subtotal){
+  if(!state.coupon) return {discount:0};
+  const c = state.coupon;
+  if(c.type === 'percent'){
+    const disc = round2(subtotal * (c.value/100));
+    return {discount: disc};
+  } else {
+    return {discount: Math.min(c.value, subtotal)};
+  }
+}
+function updateSummary(){
+  const subtotal = calcSubtotal();
+  const fee = calcDeliveryFee();
+  const {discount} = applyCouponAmount(subtotal);
+  const total = round2(Math.max(0, subtotal + fee - discount));
+  subtotalEl.textContent = money(subtotal);
+  subtotalTop.textContent = money(subtotal);
+  deliveryFeeEl.textContent = money(fee);
+  couponDiscEl.textContent = money(discount);
+  totalEl.textContent = money(total);
+}
+
+/* cupom */
+applyCouponBtn.addEventListener('click', ()=>{
+  const code = (couponInput.value || '').trim().toUpperCase();
+  if(!code){ state.coupon = null; updateSummary(); return alert('Insira um cupom ou deixe em branco.'); }
+  if(coupons[code]){ state.coupon = coupons[code]; alert('Cupom aplicado: ' + code); }
+  else { state.coupon = null; alert('Cupom inválido'); }
+  updateSummary();
+});
+
+/* selecionar loja */
+chooseS1.addEventListener('click', ()=> selectStore(config.stores[0].id, true));
+chooseS2.addEventListener('click', ()=> selectStore(config.stores[1].id, true));
+
+function selectStore(storeId, manual=false){
+  const s = config.stores.find(x=>x.id === storeId) || config.stores[0];
+  state.selectedStore = s;
+  highlightSelected();
+  if(!manual) console.log('Loja selecionada automaticamente:', s.name);
+}
+function highlightSelected(){
+  selectedLabel.textContent = state.selectedStore ? state.selectedStore.name : '—';
+  document.getElementById('store1Card').style.border = state.selectedStore === config.stores[0] ? '2px solid rgba(255,120,40,0.12)' : '1px solid rgba(255,255,255,0.02)';
+  document.getElementById('store2Card').style.border = state.selectedStore === config.stores[1] ? '2px solid rgba(255,120,40,0.12)' : '1px solid rgba(255,255,255,0.02)';
+  updateSummary();
+}
+
+/* WhatsApp enviar */
+btnSendWhats.addEventListener('click', ()=>{
+  if(!state.selectedStore) return alert('Selecione uma loja primeiro (localize seu CEP).');    }
 
     .card{background:linear-gradient(180deg,#0e141b,#0c1218);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
     .card h3{margin:0 0 10px 0;font-size:16px;color:#cfe0f4}
