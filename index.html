@@ -1,1407 +1,214 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Parada Carioca — Pedido Rápido</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parada Carioca - Delivery</title>
 <style>
-  :root{
-    --bg: #0b0b0b;
-    --card: #111111;
-    --muted: #dfe6ea;
-    --accent: #ff7a2f;      /* laranja principal */
-    --accent-dark: #ff5a1a; /* laranja escuro */
-    --brand-yellow: #ffd24a; 
-    --danger: #e64545;
-    --glass: rgba(255,255,255,0.03);
-    --radius: 14px;
-    color-scheme: dark;
-    font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  :root {
+    --primary: #ff7b00;
+    --accent: #ffc107;
+    --text: #111;
+    --bg: #fff;
   }
-  *{box-sizing:border-box}
-  html,body{height:100%;margin:0;background: linear-gradient(180deg,#070606 0%, #0b0b0b 100%);color:var(--muted);}
-  .wrap{max-width:1100px;margin:18px auto;padding:14px;display:grid;grid-template-columns:1fr 390px;gap:18px}
-  header{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:10px}
-  .brand{display:flex;align-items:center;gap:12px}
-  .logo-sq{width:56px;height:56px;border-radius:12px;background:linear-gradient(180deg,var(--brand-yellow),#ffb94d);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 22px rgba(255,120,40,0.12)}
-  .logo-sq strong{color:#111;padding:4px 6px;border-radius:8px}
-  h1{font-size:20px;margin:0}
-  .subtitle{font-size:13px;color:#bfcbd2}
-  .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:16px; border-radius:var(--radius); border:1px solid rgba(255,255,255,0.03); box-shadow: 0 8px 30px rgba(0,0,0,0.6)}
-  .left .controls{display:flex;gap:10px;align-items:end}
-  input[type="text"], input[type="number"], select{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:10px;border-radius:10px;color:var(--muted);outline:none;width:100%}
-  button{cursor:pointer}
-  .btn{background:var(--accent);border:none;color:#111;padding:10px 12px;border-radius:10px;font-weight:700}
-  .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);padding:10px 12px;border-radius:10px}
-  .stores{display:flex;gap:12px;margin-top:12px}
-  .store-card{flex:1;padding:10px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border:1px solid rgba(255,255,255,0.02)}
-  .store-card h4{margin:0 0 6px 0}
-  .muted{color:#bfcbd2;font-size:13px}
-  .menu-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px}
-  .section{background:rgba(255,255,255,0.01);padding:12px;border-radius:10px}
-  .item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px dashed rgba(255,255,255,0.03)}
-  .item:last-child{border-bottom:none}
-  .price{font-weight:800}
-  .cart{position:sticky;top:18px}
-  .cart .title{display:flex;align-items:center;justify-content:space-between}
-  .cart-list{max-height:420px;overflow:auto;margin-top:12px}
-  .cart-row{display:flex;justify-content:space-between;align-items:center;padding:8px;border-radius:8px;background:rgba(255,255,255,0.01);margin-bottom:8px}
-  .qty{display:flex;gap:8px;align-items:center}
-  .small{font-size:13px;color:#bfcbd2}
-  .summary{margin-top:12px;background:linear-gradient(180deg, rgba(0,0,0,0.15), rgba(0,0,0,0.08));padding:12px;border-radius:10px}
-  .flex{display:flex;align-items:center;justify-content:space-between}
-  .whatsapp{background:#25D366;color:#031013;padding:10px;border-radius:10px;border:none;font-weight:800}
-  .pix{background:transparent;border:2px dashed rgba(255,255,255,0.06);padding:10px;border-radius:10px;color:var(--accent-dark);font-weight:700}
-  .tag{display:inline-block;padding:6px 8px;border-radius:999px;background:rgba(0,0,0,0.4);color:var(--brand-yellow);font-weight:700}
-  footer{grid-column:1/-1;text-align:center;color:#9fb1b8;margin-top:12px;font-size:13px}
-  @media(max-width:980px){
-    .wrap{grid-template-columns:1fr;padding:12px}
-    .cart{position:relative;top:0}
-    .menu-grid{grid-template-columns:1fr}
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+  header {
+    background: var(--primary);
+    color: #fff;
+    padding: 1rem;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+  .container {
+    padding: 1rem;
+    max-width: 800px;
+    margin: auto;
+  }
+  section {
+    margin-bottom: 2rem;
+  }
+  h2 {
+    border-left: 6px solid var(--primary);
+    padding-left: .5rem;
+    color: var(--primary);
+  }
+  .item {
+    border: 1px solid #ddd;
+    padding: .75rem;
+    border-radius: .75rem;
+    margin: .5rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fffaf5;
+  }
+  button {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: .5rem;
+    padding: .4rem .8rem;
+    cursor: pointer;
+  }
+  button:hover {
+    background: #e86a00;
+  }
+  input, select {
+    padding: .5rem;
+    border: 1px solid #ccc;
+    border-radius: .5rem;
+    width: 100%;
+    margin-bottom: .5rem;
+  }
+  .total {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  .promo {
+    background: var(--accent);
+    color: #000;
+    padding: .8rem;
+    text-align: center;
+    border-radius: .5rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
   }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <div class="brand">
-      <div class="logo-sq"><strong>PC</strong></div>
-      <div>
-        <h1>Parada Carioca</h1>
-        <div class="subtitle">Peça online — Comer na loja ou Entrega</div>
-      </div>
-    </div>
-    <div style="text-align:right">
-      <div class="tag">Entrega ≥ 6km → taxa 7%/km</div>
-      <div style="font-size:12px;color:#9fb1b8;margin-top:6px">Pagamento: Débito • Crédito • Pix</div>
-    </div>
-  </header>
+<header>🍔 Parada Carioca Delivery</header>
 
-  <!-- LEFT: busca / menu -->
-  <main class="left">
-    <div class="card">
-      <div style="display:flex;gap:12px;align-items:center">
-        <div style="flex:1">
-          <label class="small">Endereço / CEP</label>
-          <input id="cepInput" type="text" placeholder="Digite o CEP (ou permita localização)" />
-        </div>
-        <div style="width:160px">
-          <label class="small">Modo</label>
-          <select id="mode">
-            <option value="delivery">Entrega</option>
-            <option value="dinein">Comer na loja</option>
-          </select>
-        </div>
-        <div style="width:130px;display:flex;flex-direction:column;justify-content:flex-end">
-          <button id="btnLocate" class="btn">Localizar</button>
-          <button id="btnGeo" class="btn-ghost" style="margin-top:8px;font-size:12px">Usar GPS</button>
-        </div>
-      </div>
+<div class="container">
+  <section id="localizacao">
+    <h2>📍 Localização</h2>
+    <p>Digite seu CEP ou use o GPS para escolher a loja mais próxima:</p>
+    <input type="text" id="cep" placeholder="Digite seu CEP">
+    <button onclick="buscarLoja()">Localizar</button>
+    <button onclick="usarGPS()">Usar GPS</button>
+    <p id="lojaEscolhida"></p>
+  </section>
 
-      <div class="stores">
-        <div class="store-card" id="store1Card">
-          <h4>Loja 1 — Parada Carioca</h4>
-          <div class="muted" id="s1Addr">Rua Santa Luz, nº 2 — em frente ao Brizolão do Cristo</div>
-          <div class="small">CEP: <span id="s1Cep">23056-030</span></div>
-          <div style="margin-top:6px"><strong>WhatsApp:</strong> <a id="s1Whats" href="#" target="_blank">+55 21 99116-6886</a></div>
-          <div class="muted" id="s1Dist">Distância: —</div>
-        </div>
+  <div class="promo">🔥 Promoção de Segunda a Quarta: 2x Xtudo + 2x Guaracamp por R$25!</div>
 
-        <div class="store-card" id="store2Card">
-          <h4>Loja 2 — Projetada Cinco</h4>
-          <div class="muted" id="s2Addr">R. Projetada Cinco, 31 (foto)</div>
-          <div class="small">CEP: <span id="s2Cep">23055-000</span></div>
-          <div style="margin-top:6px"><strong>WhatsApp:</strong> <a id="s2Whats" href="#" target="_blank" style="opacity:0.6;pointer-events:none">—</a></div>
-          <div class="muted" id="s2Dist">Distância: —</div>
-        </div>
-      </div>
+  <section id="cardapio">
+    <h2>🍔 Lanches</h2>
+    <div class="item"><span>Xtudo</span> <span>R$14,00 <button onclick="add('Xtudo',14)">+</button></span></div>
+    <div class="item"><span>X-Bacon</span> <span>R$12,00 <button onclick="add('X-Bacon',12)">+</button></span></div>
+    <div class="item"><span>X-Burg</span> <span>R$10,00 <button onclick="add('X-Burg',10)">+</button></span></div>
+    <div class="item"><span>X-Salada</span> <span>R$11,00 <button onclick="add('X-Salada',11)">+</button></span></div>
 
-      <div style="display:flex;gap:8px;margin-top:12px">
-        <button id="chooseS1" class="btn">Selecionar Loja 1</button>
-        <button id="chooseS2" class="btn-ghost">Selecionar Loja 2</button>
-        <div style="margin-left:auto" class="small">Loja selecionada: <span id="selectedLabel">—</span></div>
-      </div>
-    </div>
+    <h2>🥤 Bebidas</h2>
+    <div class="item"><span>Coca-Cola 350ml</span> <span>R$5,00 <button onclick="add('Coca-Cola 350ml',5)">+</button></span></div>
+    <div class="item"><span>Guaraná Antarctica 350ml</span> <span>R$4,50 <button onclick="add('Guaraná Antarctica 350ml',4.5)">+</button></span></div>
+    <div class="item"><span>Guaracamp 350ml</span> <span>R$3,50 <button onclick="add('Guaracamp 350ml',3.5)">+</button></span></div>
+    <div class="item"><span>Água 500ml</span> <span>R$3,00 <button onclick="add('Água 500ml',3)">+</button></span></div>
 
-    <!-- cardápio -->
-    <div class="card" style="margin-top:12px">
-      <h3 style="margin:0 0 8px 0">Cardápio</h3>
-      <div class="menu-grid">
-        <div class="section">
-          <h4>Combos</h4>
-          <div id="combosList"></div>
-        </div>
+    <h2>🍲 Caldos</h2>
+    <div class="item"><span>Caldo Verde</span> <span>R$9,00 <button onclick="add('Caldo Verde',9)">+</button></span></div>
+    <div class="item"><span>Mocotó</span> <span>R$10,00 <button onclick="add('Mocotó',10)">+</button></span></div>
+    <div class="item"><span>Ervilha</span> <span>R$9,00 <button onclick="add('Ervilha',9)">+</button></span></div>
+  </section>
 
-        <div class="section">
-          <h4>Lanches avulsos</h4>
-          <div id="sandesList"></div>
-        </div>
-
-        <div class="section">
-          <h4>Bebidas</h4>
-          <div id="drinksList"></div>
-        </div>
-
-        <div class="section">
-          <h4>Caldos</h4>
-          <div id="caldosList"></div>
-        </div>
-      </div>
-    </div>
-  </main>
-
-  <!-- RIGHT: carrinho -->
-  <aside class="cart">
-    <div class="card">
-      <div class="title">
-        <div>
-          <h3 style="margin:0">Carrinho</h3>
-          <div class="small">Itens adicionados aparecerão aqui</div>
-        </div>
-        <div style="text-align:right">
-          <div style="font-weight:800" id="subtotalTop">R$ 0,00</div>
-        </div>
-      </div>
-
-      <div class="cart-list" id="cartList">
-        <div class="small muted">Carrinho vazio</div>
-      </div>
-
-      <div style="margin-top:10px" class="summary">
-        <div class="flex"><div class="small">Subtotal</div><div id="subtotal">R$ 0,00</div></div>
-        <div class="flex"><div class="small">Taxa de entrega</div><div id="deliveryFee">R$ 0,00</div></div>
-        <div class="flex"><div class="small">Desconto</div><div id="couponDisc">R$ 0,00</div></div>
-        <div style="height:1px;background:rgba(255,255,255,0.03);margin:8px 0;border-radius:6px"></div>
-        <div class="flex"><div style="font-weight:900">Total</div><div id="total" style="font-size:18px;font-weight:900">R$ 0,00</div></div>
-      </div>
-
-      <div style="margin-top:10px;display:flex;gap:8px">
-        <input id="couponInput" placeholder="Cupom (opcional)" style="flex:1;border-radius:10px;padding:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--muted)">
-        <button id="applyCoupon" class="btn-ghost">Aplicar</button>
-      </div>
-
-      <div style="margin-top:12px">
-        <div class="small">Pagamento na entrega</div>
-        <div style="display:flex;gap:8px;margin-top:6px">
-          <label style="font-weight:700"><input type="radio" name="pay" value="debito" checked/> Débito</label>
-          <label style="font-weight:700"><input type="radio" name="pay" value="credito"/> Crédito</label>
-          <label style="font-weight:700"><input type="radio" name="pay" value="pix"/> Pix</label>
-        </div>
-
-        <div style="display:flex;gap:8px;margin-top:12px">
-          <button id="btnSendWhats" class="whatsapp" style="flex:1">Enviar pedido via WhatsApp</button>
-          <button id="btnPixWhats" class="pix" style="width:140px">Pix via WhatsApp</button>
-        </div>
-      </div>
-
-      <div style="margin-top:10px" class="small muted">
-        Observação: a loja selecionada recebe o pedido por WhatsApp. Caso queira, edite telefones ou endereços no topo do script.
-      </div>
-    </div>
-  </aside>
-
-  <footer>Prototipo — Parada Carioca • Edite telefones/CEPs no script conforme necessário.</footer>
+  <section id="pedido">
+    <h2>🛒 Seu Pedido</h2>
+    <ul id="lista"></ul>
+    <p><strong>Total:</strong> R$ <span id="total">0.00</span></p>
+    <input type="text" id="cupom" placeholder="Cupom (opcional)">
+    <select id="entrega">
+      <option value="loja">Comer na loja</option>
+      <option value="entrega">Entrega</option>
+    </select>
+    <p>Método de pagamento:</p>
+    <select id="pagamento">
+      <option value="cartao">Cartão (crédito/débito)</option>
+      <option value="pix">Pix na entrega</option>
+      <option value="pixwpp">Pix via WhatsApp</option>
+    </select>
+    <button onclick="finalizar()">Enviar Pedido via WhatsApp</button>
+  </section>
 </div>
 
 <script>
-/* ====== CONFIG (edite aqui) ======
- - Atualize phones, endereços e coordenadas caso queira fixar valores
- - Loja2 phone está vazio por padrão, você pode preencher.
-*/
-const config = {
-  stores: [
-    {
-      id: 'loja1',
-      name: 'Parada Carioca',
-      phone: '5521991166886', // formato wa.me = country + ddd + number (55 21 99116-6886)
-      address: 'Rua Santa Luz, 2 - em frente ao Brizolão do Cristo',
-      cep: '23056030',
-      // coords: opcional (se souber, coloque lat/lon; se não, geocode será usado)
-      coords: { lat: -22.9068, lon: -43.1729 } // EXEMPLO (substitua se souber)
-    },
-    {
-      id: 'loja2',
-      name: 'R. Projetada Cinco, 31',
-      phone: '', // coloque aqui se tiver
-      address: 'R. Projetada Cinco, 31',
-      cep: '23055000',
-      coords: null
+let carrinho = [];
+let loja = {};
+const lojas = [
+  {nome: 'Loja 1 - Parada Carioca', cep: '23056030', tel: '5521991166886', lat: -22.877, lon: -43.580},
+  {nome: 'Loja 2 - Projetada Cinco', cep: '23055000', tel: '5521999999999', lat: -22.870, lon: -43.570}
+];
+
+function add(nome, preco) {
+  carrinho.push({nome, preco});
+  render();
+}
+
+function render() {
+  const lista = document.getElementById('lista');
+  lista.innerHTML = '';
+  let total = 0;
+  carrinho.forEach(item => {
+    total += item.preco;
+    lista.innerHTML += `<li>${item.nome} - R$${item.preco.toFixed(2)}</li>`;
+  });
+
+  // Promoção de 2x Xtudo + 2x Guaracamp
+  const dia = new Date().getDay(); // 1=Seg, 2=Ter, 3=Qua
+  if ([1,2,3].includes(dia)) {
+    const qtdXtudo = carrinho.filter(i=>i.nome==='Xtudo').length;
+    const qtdGuaracamp = carrinho.filter(i=>i.nome==='Guaracamp 350ml').length;
+    const combos = Math.min(Math.floor(qtdXtudo/2), Math.floor(qtdGuaracamp/2));
+    if (combos>0) {
+      const desconto = (qtdXtudo*14 + qtdGuaracamp*3.5) - 25*combos;
+      total -= desconto;
     }
-  ],
-  thresholdKm: 6,
-  percentPerKm: 0.07 // 7% por km extra
-};
+  }
 
-/* ====== Menu (edite preços/itens) ====== */
-const menu = {
-  combos: [
-    { id:'c1', name:'Combo X-Burg + Fritas + Refri (M)', price: 34.00 },
-    { id:'c2', name:'Combo Chicken Crispy + Onion Rings + Refri', price: 36.50 }
-  ],
-  sandes: [
-    { id:'s1', name:'X-Burg Simples', price: 19.00 },
-    { id:'s2', name:'X-Burg Bacon', price: 24.00 },
-    { id:'s3', name:'Veggie Burger', price: 21.00 }
-  ],
-  drinks: [
-    { id:'d1', name:'Refrigerante 350ml', price: 6.50 },
-    { id:'d2', name:'Suco Natural 300ml', price: 8.50 },
-    { id:'d3', name:'Água 500ml', price: 4.00 }
-  ],
-  caldos: [
-    { id:'cal1', name:'Caldo de Feijão (p.)', price: 10.00 },
-    { id:'cal2', name:'Caldo Verde (p.)', price: 11.50 }
-  ]
-};
-
-/* CUPONS */
-const coupons = {
-  'PROMO10': { type:'percent', value:10 },
-  'FIX5': { type:'fixed', value:5 }
-};
-
-/* estado */
-let state = {
-  userCoords: null,
-  selectedStore: null,
-  distances: {},
-  cart: {},
-  coupon: null
-};
-
-/* helpers */
-function money(v){ return 'R$ ' + v.toFixed(2).replace('.',','); }
-function round2(n){ return Math.round(n*100)/100; }
-function haversine(lat1,lon1,lat2,lon2){
-  const toRad = x => x * Math.PI / 180;
-  const R = 6371;
-  const dLat = toRad(lat2-lat1);
-  const dLon = toRad(lon2-lon1);
-  const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLon/2)**2;
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-  return R * c;
+  document.getElementById('total').textContent = total.toFixed(2);
 }
 
-/* DOM refs */
-const cepInput = document.getElementById('cepInput');
-const btnLocate = document.getElementById('btnLocate');
-const btnGeo = document.getElementById('btnGeo');
-const s1Addr = document.getElementById('s1Addr');
-const s2Addr = document.getElementById('s2Addr');
-const s1Whats = document.getElementById('s1Whats');
-const s2Whats = document.getElementById('s2Whats');
-const s1Dist = document.getElementById('s1Dist');
-const s2Dist = document.getElementById('s2Dist');
-const chooseS1 = document.getElementById('chooseS1');
-const chooseS2 = document.getElementById('chooseS2');
-const combosList = document.getElementById('combosList');
-const sandesList = document.getElementById('sandesList');
-const drinksList = document.getElementById('drinksList');
-const caldosList = document.getElementById('caldosList');
-const cartList = document.getElementById('cartList');
-const subtotalEl = document.getElementById('subtotal');
-const deliveryFeeEl = document.getElementById('deliveryFee');
-const totalEl = document.getElementById('total');
-const subtotalTop = document.getElementById('subtotalTop');
-const couponInput = document.getElementById('couponInput');
-const applyCouponBtn = document.getElementById('applyCoupon');
-const btnSendWhats = document.getElementById('btnSendWhats');
-const btnPixWhats = document.getElementById('btnPixWhats');
-const selectedLabel = document.getElementById('selectedLabel');
-const modeSelect = document.getElementById('mode');
-const couponDiscEl = document.getElementById('couponDisc');
-
-/* inicializar UI lojas */
-function initStoresUI(){
-  s1Addr.textContent = config.stores[0].address;
-  document.getElementById('s1Cep').textContent = formatCep(config.stores[0].cep);
-  s1Whats.href = config.stores[0].phone ? `https://wa.me/${config.stores[0].phone}` : '#';
-  s1Whats.textContent = formatPhone(config.stores[0].phone) || '—';
-  s2Addr.textContent = config.stores[1].address;
-  document.getElementById('s2Cep').textContent = formatCep(config.stores[1].cep);
-  s2Whats.href = config.stores[1].phone ? `https://wa.me/${config.stores[1].phone}` : '#';
-  s2Whats.textContent = formatPhone(config.stores[1].phone) || '—';
-  s1Dist.textContent = 'Distância: —';
-  s2Dist.textContent = 'Distância: —';
-}
-function formatCep(c){ if(!c) return '—'; const s = (''+c).replace(/\D/g,''); return s.slice(0,5)+'-'+s.slice(5); }
-function formatPhone(p){
-  if(!p) return '';
-  const s = p.replace(/\D/g,'');
-  if(s.length>=12){ const dd = s.slice(2,4), num = s.slice(4); return `+${s.slice(0,2)} (${dd}) ${num.slice(0,5)}-${num.slice(5)}`; }
-  return p;
-}
-
-/* render menu */
-function mkItem(item){
-  const div = document.createElement('div');
-  div.className = 'item';
-  div.innerHTML = `<div>
-      <div style="font-weight:700">${item.name}</div>
-      <div class="small">ID: ${item.id}</div>
-    </div>
-    <div style="text-align:right">
-      <div class="price">${money(item.price)}</div>
-      <div style="margin-top:8px"><button class="btn" onclick="addToCart('${item.id}')">Adicionar</button></div>
-    </div>`;
-  return div;
-}
-function renderMenu(){
-  menu.combos.forEach(i=>combosList.appendChild(mkItem(i)));
-  menu.sandes.forEach(i=>sandesList.appendChild(mkItem(i)));
-  menu.drinks.forEach(i=>drinksList.appendChild(mkItem(i)));
-  menu.caldos.forEach(i=>caldosList.appendChild(mkItem(i)));
-}
-
-/* achar item */
-function findMenuItem(id){
-  return [...menu.combos,...menu.sandes,...menu.drinks,...menu.caldos].find(x=>x.id===id);
-}
-
-/* CART */
-window.addToCart = function(itemId){
-  const it = findMenuItem(itemId);
-  if(!it) return alert('Item não encontrado');
-  if(!state.cart[itemId]) state.cart[itemId] = {...it, qty:0};
-  state.cart[itemId].qty++;
-  renderCart();
-};
-function changeQty(itemId, delta){
-  if(!state.cart[itemId]) return;
-  state.cart[itemId].qty += delta;
-  if(state.cart[itemId].qty <= 0) delete state.cart[itemId];
-  renderCart();
-}
-function renderCart(){
-  cartList.innerHTML = '';
-  const keys = Object.keys(state.cart);
-  if(keys.length === 0){
-    cartList.innerHTML = `<div class="small muted">Carrinho vazio</div>`;
-  } else {
-    keys.forEach(k=>{
-      const it = state.cart[k];
-      const row = document.createElement('div');
-      row.className = 'cart-row';
-      row.innerHTML = `<div>
-          <div style="font-weight:700">${it.name}</div>
-          <div class="small">x${it.qty} • ${money(it.price)} cada</div>
-        </div>
-        <div style="text-align:right">
-          <div style="font-weight:800">${money(it.price*it.qty)}</div>
-          <div class="qty" style="margin-top:8px">
-            <button onclick="changeQty('${k}',-1)" class="btn-ghost" style="padding:6px">-</button>
-            <div class="small">${it.qty}</div>
-            <button onclick="changeQty('${k}',1)" class="btn-ghost" style="padding:6px">+</button>
-          </div>
-        </div>`;
-      cartList.appendChild(row);
+function buscarLoja() {
+  const cep = document.getElementById('cep').value.replace(/\D/g,'');
+  if (!cep) return alert('Digite um CEP válido');
+  fetch(`https://viacep.com.br/ws/${cep}/json/`)
+    .then(r=>r.json())
+    .then(d=>{
+      if(d.erro) return alert('CEP não encontrado');
+      // Simula distância por diferença de CEP
+      const dist1 = Math.abs(cep - lojas[0].cep);
+      const dist2 = Math.abs(cep - lojas[1].cep);
+      loja = dist1 < dist2 ? lojas[0] : lojas[1];
+      document.getElementById('lojaEscolhida').textContent = `✅ ${loja.nome}`;
     });
-  }
-  updateSummary();
 }
 
-/* resumo */
-function calcSubtotal(){ return round2(Object.values(state.cart).reduce((s,it)=>s + it.price*it.qty,0)); }
-function calcDeliveryFee(){
-  if(modeSelect.value === 'dinein') return 0;
-  if(!state.userCoords || !state.selectedStore) return 0;
-  const dist = state.distances[state.selectedStore.id] ?? 0;
-  if(dist <= config.thresholdKm) return 0;
-  const extraKm = Math.max(0, dist - config.thresholdKm);
-  const subtotal = calcSubtotal();
-  const fee = round2(subtotal * config.percentPerKm * extraKm);
-  return fee;
-}
-function applyCouponAmount(subtotal){
-  if(!state.coupon) return {discount:0};
-  const c = state.coupon;
-  if(c.type === 'percent'){
-    const disc = round2(subtotal * (c.value/100));
-    return {discount: disc};
-  } else {
-    return {discount: Math.min(c.value, subtotal)};
-  }
-}
-function updateSummary(){
-  const subtotal = calcSubtotal();
-  const fee = calcDeliveryFee();
-  const {discount} = applyCouponAmount(subtotal);
-  const total = round2(Math.max(0, subtotal + fee - discount));
-  subtotalEl.textContent = money(subtotal);
-  subtotalTop.textContent = money(subtotal);
-  deliveryFeeEl.textContent = money(fee);
-  couponDiscEl.textContent = money(discount);
-  totalEl.textContent = money(total);
-}
-
-/* cupom */
-applyCouponBtn.addEventListener('click', ()=>{
-  const code = (couponInput.value || '').trim().toUpperCase();
-  if(!code){ state.coupon = null; updateSummary(); return alert('Insira um cupom ou deixe em branco.'); }
-  if(coupons[code]){ state.coupon = coupons[code]; alert('Cupom aplicado: ' + code); }
-  else { state.coupon = null; alert('Cupom inválido'); }
-  updateSummary();
-});
-
-/* selecionar loja */
-chooseS1.addEventListener('click', ()=> selectStore(config.stores[0].id, true));
-chooseS2.addEventListener('click', ()=> selectStore(config.stores[1].id, true));
-
-function selectStore(storeId, manual=false){
-  const s = config.stores.find(x=>x.id === storeId) || config.stores[0];
-  state.selectedStore = s;
-  highlightSelected();
-  if(!manual) console.log('Loja selecionada automaticamente:', s.name);
-}
-function highlightSelected(){
-  selectedLabel.textContent = state.selectedStore ? state.selectedStore.name : '—';
-  document.getElementById('store1Card').style.border = state.selectedStore === config.stores[0] ? '2px solid rgba(255,120,40,0.12)' : '1px solid rgba(255,255,255,0.02)';
-  document.getElementById('store2Card').style.border = state.selectedStore === config.stores[1] ? '2px solid rgba(255,120,40,0.12)' : '1px solid rgba(255,255,255,0.02)';
-  updateSummary();
-}
-
-/* WhatsApp enviar */
-btnSendWhats.addEventListener('click', ()=>{
-  if(!state.selectedStore) return alert('Selecione uma loja primeiro (localize seu CEP).');    </div>
-    <div style="text-align:right">
-      <div class="tag">Entrega ≥ 6km → taxa 7%/km</div>
-      <div style="font-size:12px;color:#9fb1b8;margin-top:6px">Pagamento: Débito • Crédito • Pix</div>
-    </div>
-  </header>
-
-  <!-- LEFT: busca / menu -->
-  <main class="left">
-    <div class="card">
-      <div style="display:flex;gap:12px;align-items:center">
-        <div style="flex:1">
-          <label class="small">Endereço / CEP</label>
-          <input id="cepInput" type="text" placeholder="Digite o CEP (ou permita localização)" />
-        </div>
-        <div style="width:160px">
-          <label class="small">Modo</label>
-          <select id="mode">
-            <option value="delivery">Entrega</option>
-            <option value="dinein">Comer na loja</option>
-          </select>
-        </div>
-        <div style="width:130px;display:flex;flex-direction:column;justify-content:flex-end">
-          <button id="btnLocate" class="btn">Localizar</button>
-          <button id="btnGeo" class="btn-ghost" style="margin-top:8px;font-size:12px">Usar GPS</button>
-        </div>
-      </div>
-
-      <div class="stores">
-        <div class="store-card" id="store1Card">
-          <h4>Loja 1 — Parada Carioca</h4>
-          <div class="muted" id="s1Addr">Rua Santa Luz, nº 2 — em frente ao Brizolão do Cristo</div>
-          <div class="small">CEP: <span id="s1Cep">23056-030</span></div>
-          <div style="margin-top:6px"><strong>WhatsApp:</strong> <a id="s1Whats" href="#" target="_blank">+55 21 99116-6886</a></div>
-          <div class="muted" id="s1Dist">Distância: —</div>
-        </div>
-
-        <div class="store-card" id="store2Card">
-          <h4>Loja 2 — Projetada Cinco</h4>
-          <div class="muted" id="s2Addr">R. Projetada Cinco, 31 (foto)</div>
-          <div class="small">CEP: <span id="s2Cep">23055-000</span></div>
-          <div style="margin-top:6px"><strong>WhatsApp:</strong> <a id="s2Whats" href="#" target="_blank" style="opacity:0.6;pointer-events:none">—</a></div>
-          <div class="muted" id="s2Dist">Distância: —</div>
-        </div>
-      </div>
-
-      <div style="display:flex;gap:8px;margin-top:12px">
-        <button id="chooseS1" class="btn">Selecionar Loja 1</button>
-        <button id="chooseS2" class="btn-ghost">Selecionar Loja 2</button>
-        <div style="margin-left:auto" class="small">Loja selecionada: <span id="selectedLabel">—</span></div>
-      </div>
-    </div>
-
-    <!-- cardápio -->
-    <div class="card" style="margin-top:12px">
-      <h3 style="margin:0 0 8px 0">Cardápio</h3>
-      <div class="menu-grid">
-        <div class="section">
-          <h4>Combos</h4>
-          <div id="combosList"></div>
-        </div>
-
-        <div class="section">
-          <h4>Lanches avulsos</h4>
-          <div id="sandesList"></div>
-        </div>
-
-        <div class="section">
-          <h4>Bebidas</h4>
-          <div id="drinksList"></div>
-        </div>
-
-        <div class="section">
-          <h4>Caldos</h4>
-          <div id="caldosList"></div>
-        </div>
-      </div>
-    </div>
-  </main>
-
-  <!-- RIGHT: carrinho -->
-  <aside class="cart">
-    <div class="card">
-      <div class="title">
-        <div>
-          <h3 style="margin:0">Carrinho</h3>
-          <div class="small">Itens adicionados aparecerão aqui</div>
-        </div>
-        <div style="text-align:right">
-          <div style="font-weight:800" id="subtotalTop">R$ 0,00</div>
-        </div>
-      </div>
-
-      <div class="cart-list" id="cartList">
-        <div class="small muted">Carrinho vazio</div>
-      </div>
-
-      <div style="margin-top:10px" class="summary">
-        <div class="flex"><div class="small">Subtotal</div><div id="subtotal">R$ 0,00</div></div>
-        <div class="flex"><div class="small">Taxa de entrega</div><div id="deliveryFee">R$ 0,00</div></div>
-        <div class="flex"><div class="small">Desconto</div><div id="couponDisc">R$ 0,00</div></div>
-        <div style="height:1px;background:rgba(255,255,255,0.03);margin:8px 0;border-radius:6px"></div>
-        <div class="flex"><div style="font-weight:900">Total</div><div id="total" style="font-size:18px;font-weight:900">R$ 0,00</div></div>
-      </div>
-
-      <div style="margin-top:10px;display:flex;gap:8px">
-        <input id="couponInput" placeholder="Cupom (opcional)" style="flex:1;border-radius:10px;padding:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--muted)">
-        <button id="applyCoupon" class="btn-ghost">Aplicar</button>
-      </div>
-
-      <div style="margin-top:12px">
-        <div class="small">Pagamento na entrega</div>
-        <div style="display:flex;gap:8px;margin-top:6px">
-          <label style="font-weight:700"><input type="radio" name="pay" value="debito" checked/> Débito</label>
-          <label style="font-weight:700"><input type="radio" name="pay" value="credito"/> Crédito</label>
-          <label style="font-weight:700"><input type="radio" name="pay" value="pix"/> Pix</label>
-        </div>
-
-        <div style="display:flex;gap:8px;margin-top:12px">
-          <button id="btnSendWhats" class="whatsapp" style="flex:1">Enviar pedido via WhatsApp</button>
-          <button id="btnPixWhats" class="pix" style="width:140px">Pix via WhatsApp</button>
-        </div>
-      </div>
-
-      <div style="margin-top:10px" class="small muted">
-        Observação: a loja selecionada recebe o pedido por WhatsApp. Caso queira, edite telefones ou endereços no topo do script.
-      </div>
-    </div>
-  </aside>
-
-  <footer>Prototipo — Parada Carioca • Edite telefones/CEPs no script conforme necessário.</footer>
-</div>
-
-<script>
-/* ====== CONFIG (edite aqui) ======
- - Atualize phones, endereços e coordenadas caso queira fixar valores
- - Loja2 phone está vazio por padrão, você pode preencher.
-*/
-const config = {
-  stores: [
-    {
-      id: 'loja1',
-      name: 'Parada Carioca',
-      phone: '5521991166886', // formato wa.me = country + ddd + number (55 21 99116-6886)
-      address: 'Rua Santa Luz, 2 - em frente ao Brizolão do Cristo',
-      cep: '23056030',
-      // coords: opcional (se souber, coloque lat/lon; se não, geocode será usado)
-      coords: { lat: -22.9068, lon: -43.1729 } // EXEMPLO (substitua se souber)
-    },
-    {
-      id: 'loja2',
-      name: 'R. Projetada Cinco, 31',
-      phone: '', // coloque aqui se tiver
-      address: 'R. Projetada Cinco, 31',
-      cep: '23055000',
-      coords: null
-    }
-  ],
-  thresholdKm: 6,
-  percentPerKm: 0.07 // 7% por km extra
-};
-
-/* ====== Menu (edite preços/itens) ====== */
-const menu = {
-  combos: [
-    { id:'c1', name:'Combo X-Burg + Fritas + Refri (M)', price: 34.00 },
-    { id:'c2', name:'Combo Chicken Crispy + Onion Rings + Refri', price: 36.50 }
-  ],
-  sandes: [
-    { id:'s1', name:'X-Burg Simples', price: 19.00 },
-    { id:'s2', name:'X-Burg Bacon', price: 24.00 },
-    { id:'s3', name:'Veggie Burger', price: 21.00 }
-  ],
-  drinks: [
-    { id:'d1', name:'Refrigerante 350ml', price: 6.50 },
-    { id:'d2', name:'Suco Natural 300ml', price: 8.50 },
-    { id:'d3', name:'Água 500ml', price: 4.00 }
-  ],
-  caldos: [
-    { id:'cal1', name:'Caldo de Feijão (p.)', price: 10.00 },
-    { id:'cal2', name:'Caldo Verde (p.)', price: 11.50 }
-  ]
-};
-
-/* CUPONS */
-const coupons = {
-  'PROMO10': { type:'percent', value:10 },
-  'FIX5': { type:'fixed', value:5 }
-};
-
-/* estado */
-let state = {
-  userCoords: null,
-  selectedStore: null,
-  distances: {},
-  cart: {},
-  coupon: null
-};
-
-/* helpers */
-function money(v){ return 'R$ ' + v.toFixed(2).replace('.',','); }
-function round2(n){ return Math.round(n*100)/100; }
-function haversine(lat1,lon1,lat2,lon2){
-  const toRad = x => x * Math.PI / 180;
-  const R = 6371;
-  const dLat = toRad(lat2-lat1);
-  const dLon = toRad(lon2-lon1);
-  const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLon/2)**2;
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-  return R * c;
-}
-
-/* DOM refs */
-const cepInput = document.getElementById('cepInput');
-const btnLocate = document.getElementById('btnLocate');
-const btnGeo = document.getElementById('btnGeo');
-const s1Addr = document.getElementById('s1Addr');
-const s2Addr = document.getElementById('s2Addr');
-const s1Whats = document.getElementById('s1Whats');
-const s2Whats = document.getElementById('s2Whats');
-const s1Dist = document.getElementById('s1Dist');
-const s2Dist = document.getElementById('s2Dist');
-const chooseS1 = document.getElementById('chooseS1');
-const chooseS2 = document.getElementById('chooseS2');
-const combosList = document.getElementById('combosList');
-const sandesList = document.getElementById('sandesList');
-const drinksList = document.getElementById('drinksList');
-const caldosList = document.getElementById('caldosList');
-const cartList = document.getElementById('cartList');
-const subtotalEl = document.getElementById('subtotal');
-const deliveryFeeEl = document.getElementById('deliveryFee');
-const totalEl = document.getElementById('total');
-const subtotalTop = document.getElementById('subtotalTop');
-const couponInput = document.getElementById('couponInput');
-const applyCouponBtn = document.getElementById('applyCoupon');
-const btnSendWhats = document.getElementById('btnSendWhats');
-const btnPixWhats = document.getElementById('btnPixWhats');
-const selectedLabel = document.getElementById('selectedLabel');
-const modeSelect = document.getElementById('mode');
-const couponDiscEl = document.getElementById('couponDisc');
-
-/* inicializar UI lojas */
-function initStoresUI(){
-  s1Addr.textContent = config.stores[0].address;
-  document.getElementById('s1Cep').textContent = formatCep(config.stores[0].cep);
-  s1Whats.href = config.stores[0].phone ? `https://wa.me/${config.stores[0].phone}` : '#';
-  s1Whats.textContent = formatPhone(config.stores[0].phone) || '—';
-  s2Addr.textContent = config.stores[1].address;
-  document.getElementById('s2Cep').textContent = formatCep(config.stores[1].cep);
-  s2Whats.href = config.stores[1].phone ? `https://wa.me/${config.stores[1].phone}` : '#';
-  s2Whats.textContent = formatPhone(config.stores[1].phone) || '—';
-  s1Dist.textContent = 'Distância: —';
-  s2Dist.textContent = 'Distância: —';
-}
-function formatCep(c){ if(!c) return '—'; const s = (''+c).replace(/\D/g,''); return s.slice(0,5)+'-'+s.slice(5); }
-function formatPhone(p){
-  if(!p) return '';
-  const s = p.replace(/\D/g,'');
-  if(s.length>=12){ const dd = s.slice(2,4), num = s.slice(4); return `+${s.slice(0,2)} (${dd}) ${num.slice(0,5)}-${num.slice(5)}`; }
-  return p;
-}
-
-/* render menu */
-function mkItem(item){
-  const div = document.createElement('div');
-  div.className = 'item';
-  div.innerHTML = `<div>
-      <div style="font-weight:700">${item.name}</div>
-      <div class="small">ID: ${item.id}</div>
-    </div>
-    <div style="text-align:right">
-      <div class="price">${money(item.price)}</div>
-      <div style="margin-top:8px"><button class="btn" onclick="addToCart('${item.id}')">Adicionar</button></div>
-    </div>`;
-  return div;
-}
-function renderMenu(){
-  menu.combos.forEach(i=>combosList.appendChild(mkItem(i)));
-  menu.sandes.forEach(i=>sandesList.appendChild(mkItem(i)));
-  menu.drinks.forEach(i=>drinksList.appendChild(mkItem(i)));
-  menu.caldos.forEach(i=>caldosList.appendChild(mkItem(i)));
-}
-
-/* achar item */
-function findMenuItem(id){
-  return [...menu.combos,...menu.sandes,...menu.drinks,...menu.caldos].find(x=>x.id===id);
-}
-
-/* CART */
-window.addToCart = function(itemId){
-  const it = findMenuItem(itemId);
-  if(!it) return alert('Item não encontrado');
-  if(!state.cart[itemId]) state.cart[itemId] = {...it, qty:0};
-  state.cart[itemId].qty++;
-  renderCart();
-};
-function changeQty(itemId, delta){
-  if(!state.cart[itemId]) return;
-  state.cart[itemId].qty += delta;
-  if(state.cart[itemId].qty <= 0) delete state.cart[itemId];
-  renderCart();
-}
-function renderCart(){
-  cartList.innerHTML = '';
-  const keys = Object.keys(state.cart);
-  if(keys.length === 0){
-    cartList.innerHTML = `<div class="small muted">Carrinho vazio</div>`;
-  } else {
-    keys.forEach(k=>{
-      const it = state.cart[k];
-      const row = document.createElement('div');
-      row.className = 'cart-row';
-      row.innerHTML = `<div>
-          <div style="font-weight:700">${it.name}</div>
-          <div class="small">x${it.qty} • ${money(it.price)} cada</div>
-        </div>
-        <div style="text-align:right">
-          <div style="font-weight:800">${money(it.price*it.qty)}</div>
-          <div class="qty" style="margin-top:8px">
-            <button onclick="changeQty('${k}',-1)" class="btn-ghost" style="padding:6px">-</button>
-            <div class="small">${it.qty}</div>
-            <button onclick="changeQty('${k}',1)" class="btn-ghost" style="padding:6px">+</button>
-          </div>
-        </div>`;
-      cartList.appendChild(row);
-    });
-  }
-  updateSummary();
-}
-
-/* resumo */
-function calcSubtotal(){ return round2(Object.values(state.cart).reduce((s,it)=>s + it.price*it.qty,0)); }
-function calcDeliveryFee(){
-  if(modeSelect.value === 'dinein') return 0;
-  if(!state.userCoords || !state.selectedStore) return 0;
-  const dist = state.distances[state.selectedStore.id] ?? 0;
-  if(dist <= config.thresholdKm) return 0;
-  const extraKm = Math.max(0, dist - config.thresholdKm);
-  const subtotal = calcSubtotal();
-  const fee = round2(subtotal * config.percentPerKm * extraKm);
-  return fee;
-}
-function applyCouponAmount(subtotal){
-  if(!state.coupon) return {discount:0};
-  const c = state.coupon;
-  if(c.type === 'percent'){
-    const disc = round2(subtotal * (c.value/100));
-    return {discount: disc};
-  } else {
-    return {discount: Math.min(c.value, subtotal)};
-  }
-}
-function updateSummary(){
-  const subtotal = calcSubtotal();
-  const fee = calcDeliveryFee();
-  const {discount} = applyCouponAmount(subtotal);
-  const total = round2(Math.max(0, subtotal + fee - discount));
-  subtotalEl.textContent = money(subtotal);
-  subtotalTop.textContent = money(subtotal);
-  deliveryFeeEl.textContent = money(fee);
-  couponDiscEl.textContent = money(discount);
-  totalEl.textContent = money(total);
-}
-
-/* cupom */
-applyCouponBtn.addEventListener('click', ()=>{
-  const code = (couponInput.value || '').trim().toUpperCase();
-  if(!code){ state.coupon = null; updateSummary(); return alert('Insira um cupom ou deixe em branco.'); }
-  if(coupons[code]){ state.coupon = coupons[code]; alert('Cupom aplicado: ' + code); }
-  else { state.coupon = null; alert('Cupom inválido'); }
-  updateSummary();
-});
-
-/* selecionar loja */
-chooseS1.addEventListener('click', ()=> selectStore(config.stores[0].id, true));
-chooseS2.addEventListener('click', ()=> selectStore(config.stores[1].id, true));
-
-function selectStore(storeId, manual=false){
-  const s = config.stores.find(x=>x.id === storeId) || config.stores[0];
-  state.selectedStore = s;
-  highlightSelected();
-  if(!manual) console.log('Loja selecionada automaticamente:', s.name);
-}
-function highlightSelected(){
-  selectedLabel.textContent = state.selectedStore ? state.selectedStore.name : '—';
-  document.getElementById('store1Card').style.border = state.selectedStore === config.stores[0] ? '2px solid rgba(255,120,40,0.12)' : '1px solid rgba(255,255,255,0.02)';
-  document.getElementById('store2Card').style.border = state.selectedStore === config.stores[1] ? '2px solid rgba(255,120,40,0.12)' : '1px solid rgba(255,255,255,0.02)';
-  updateSummary();
-}
-
-/* WhatsApp enviar */
-btnSendWhats.addEventListener('click', ()=>{
-  if(!state.selectedStore) return alert('Selecione uma loja primeiro (localize seu CEP).');    }
-
-    .card{background:linear-gradient(180deg,#0e141b,#0c1218);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
-    .card h3{margin:0 0 10px 0;font-size:16px;color:#cfe0f4}
-    .muted{color:var(--muted)}
-    .hr{height:1px;background:var(--line);margin:10px 0}
-    .field{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
-    .field input,.field select,.field textarea{background:#0f1620;border:1px solid #1b2633;padding:10px 12px;border-radius:12px}
-    .field small{color:#91a3b8}
-
-    .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-    .tab-btn{padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:#0f1722;cursor:pointer}
-    .tab-btn.active{border-color:#39506b;background:#111b28}
-
-    .kpi{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-    @media(min-width:700px){.kpi{grid-template-columns:repeat(4,1fr)}}
-    .kpi .box{padding:12px;border:1px dashed #284055;border-radius:14px;background:#0e1823}
-    .kpi .val{font-size:22px}
-
-    table{width:100%;border-collapse:collapse}
-    th,td{border-bottom:1px solid #12202c;padding:10px 8px;text-align:left}
-    tr:hover td{background:#0f1520}
-
-    .chip{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border:1px solid #27405a;background:#0e1825;border-radius:999px;font-size:12px}
-    .progress{height:8px;background:#101a26;border:1px solid #203247;border-radius:999px;overflow:hidden}
-    .progress > span{display:block;height:100%;background:linear-gradient(90deg,var(--brand),var(--brand-2));width:0%}
-
-    .photo{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
-    .photo figure{border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:0;background:#0f1620}
-    .photo img{width:100%;display:block}
-    .photo figcaption{padding:8px;color:#b8c7d8}
-
-    .footer{opacity:.7;text-align:center;padding:20px 0}
-    .tip{font-size:12px;color:#9eb2c7}
-  </style>
-</head>
-<body>
-  <header>
-    <div class="wrap row">
-      <div class="brand grow">
-        <div class="logo" aria-hidden="true"></div>
-        <h1>Gestação+ <span class="muted">· offline e privado</span></h1>
-      </div>
-      <div class="toolbar">
-        <button id="btn-export" class="primary" title="Exportar backup (.json)">💾 Exportar</button>
-        <label class="chip" title="Importar backup (.json)">📥 Importar
-          <input id="file-import" type="file" accept="application/json" style="display:none" />
-        </label>
-        <button id="btn-reset" class="danger" title="Apagar tudo deste perfil">🗑️ Reset</button>
-      </div>
-    </div>
-  </header>
-
-  <main class="wrap grid">
-    <!-- Lateral: perfis e setup -->
-    <aside class="card" aria-label="Configurações e Perfis">
-      <h3>👤 Perfis</h3>
-      <div class="field">
-        <label for="perfilSelect">Selecionar perfil</label>
-        <select id="perfilSelect"></select>
-      </div>
-      <div class="row">
-        <button id="novoPerfil">➕ Novo</button>
-        <button id="renomearPerfil">✏️ Renomear</button>
-        <button id="removerPerfil" class="danger">➖ Remover</button>
-      </div>
-      <div class="hr"></div>
-
-      <h3>⚙️ Dados do casal</h3>
-      <div class="field">
-        <label>Nome da gestante</label>
-        <input id="mae" placeholder="Nome"/>
-      </div>
-      <div class="field">
-        <label>Nome do parceiro(a)</label>
-        <input id="parceiro" placeholder="Nome"/>
-      </div>
-      <div class="field">
-        <label>Contato do médico(a)</label>
-        <input id="medico" placeholder="Dr(a)., telefone"/>
-      </div>
-
-      <div class="hr"></div>
-      <h3>🗓️ Início da gestação</h3>
-      <div class="field"><label>
-        <input type="radio" name="baseData" value="dpp" checked> Tenho a DPP (data provável do parto)
-      </label></div>
-      <div class="field"><label>
-        <input type="radio" name="baseData" value="dum"> Tenho a DUM (data da última menstruação)
-      </label></div>
-
-      <div class="field" id="boxDPP">
-        <label>📅 DPP</label>
-        <input id="dpp" type="date" />
-        <small>Se você sabe a DPP, o app calcula o restante.</small>
-      </div>
-      <div class="field" id="boxDUM" style="display:none">
-        <label>📅 DUM</label>
-        <input id="dum" type="date" />
-        <small>Se você tem a DUM, a DPP será estimada (DUM + 280 dias).</small>
-      </div>
-
-      <div class="hr"></div>
-      <div class="tip">Privacidade: tudo fica somente no seu navegador. Você também pode <b>exportar</b> um backup e <b>importar</b> depois para continuar.</div>
-    </aside>
-
-    <!-- Conteúdo principal -->
-    <section>
-      <div class="card">
-        <div class="kpi">
-          <div class="box">
-            <div class="muted">Semana</div>
-            <div class="val" id="kpiSemana">–</div>
-          </div>
-          <div class="box">
-            <div class="muted">Dias de gestação</div>
-            <div class="val" id="kpiDias">–</div>
-          </div>
-          <div class="box">
-            <div class="muted">Falta</div>
-            <div class="val" id="kpiFalta">–</div>
-          </div>
-          <div class="box">
-            <div class="muted">DPP</div>
-            <div class="val" id="kpiDPP">–</div>
-          </div>
-        </div>
-        <div class="hr"></div>
-        <div class="progress"><span id="barra"></span></div>
-        <div class="tip" id="textoTrimestre" style="margin-top:8px">—</div>
-      </div>
-
-      <div class="card">
-        <div class="tabs" role="tablist">
-          <button class="tab-btn active" data-tab="anotacoes">📝 Anotações</button>
-          <button class="tab-btn" data-tab="consultas">📅 Consultas</button>
-          <button class="tab-btn" data-tab="sintomas">💬 Sintomas</button>
-          <button class="tab-btn" data-tab="medidas">⚖️ Medidas</button>
-          <button class="tab-btn" data-tab="ultra">🖼️ Ultrassons</button>
-          <button class="tab-btn" data-tab="tarefas">✅ Tarefas</button>
-          <button class="tab-btn" data-tab="vacinas">💉 Vacinas</button>
-          <button class="tab-btn" data-tab="resumo">📦 Backup & Resumo</button>
-        </div>
-
-        <!-- TAB: Anotações -->
-        <div class="tab" id="tab-anotacoes">
-          <div class="field"><label>Título</label><input id="noteTitulo" placeholder="Ex.: Primeiros chutes"/></div>
-          <div class="field"><label>Texto</label><textarea id="noteTexto" rows="5" placeholder="Escreva aqui o que aconteceu hoje..."></textarea></div>
-          <div class="row"><button id="addNota" class="primary">Adicionar anotação</button></div>
-          <div class="hr"></div>
-          <div id="listaNotas"></div>
-        </div>
-
-        <!-- TAB: Consultas -->
-        <div class="tab" id="tab-consultas" style="display:none">
-          <div class="row">
-            <div class="field grow"><label>Data</label><input id="cData" type="date"></div>
-            <div class="field grow"><label>Hora</label><input id="cHora" type="time"></div>
-          </div>
-          <div class="field"><label>Local / Profissional</label><input id="cLocal" placeholder="Clínica, endereço"></div>
-          <div class="field"><label>Observações</label><input id="cObs" placeholder="Trazer exames, jejum..."></div>
-          <button id="addConsulta" class="primary">Adicionar consulta</button>
-          <div class="hr"></div>
-          <table id="tConsultas"><thead><tr><th>Quando</th><th>Local</th><th>Obs</th><th></th></tr></thead><tbody></tbody></table>
-        </div>
-
-        <!-- TAB: Sintomas -->
-        <div class="tab" id="tab-sintomas" style="display:none">
-          <div class="row">
-            <div class="field grow"><label>Data</label><input id="sData" type="date"></div>
-            <div class="field grow"><label>Intensidade</label>
-              <select id="sInt"><option>Leve</option><option>Médio</option><option>Forte</option></select>
-            </div>
-          </div>
-          <div class="field"><label>Descrição</label><input id="sDesc" placeholder="Ex.: enjoo pela manhã"></div>
-          <button id="addSintoma" class="primary">Adicionar</button>
-          <div class="hr"></div>
-          <table id="tSintomas"><thead><tr><th>Data</th><th>Intensidade</th><th>Descrição</th><th></th></tr></thead><tbody></tbody></table>
-        </div>
-
-        <!-- TAB: Medidas -->
-        <div class="tab" id="tab-medidas" style="display:none">
-          <div class="row">
-            <div class="field grow"><label>Data</label><input id="mData" type="date"></div>
-            <div class="field grow"><label>Peso (kg)</label><input id="mPeso" type="number" step="0.01" placeholder="Ex.: 62.5"></div>
-            <div class="field grow"><label>Barriga (cm)</label><input id="mBarriga" type="number" step="0.1" placeholder="Opcional"></div>
-          </div>
-          <button id="addMedida" class="primary">Adicionar</button>
-          <div class="hr"></div>
-          <table id="tMedidas"><thead><tr><th>Data</th><th>Peso</th><th>Barriga</th><th></th></tr></thead><tbody></tbody></table>
-        </div>
-
-        <!-- TAB: Ultrasons -->
-        <div class="tab" id="tab-ultra" style="display:none">
-          <div class="row">
-            <div class="field grow"><label>Data</label><input id="uData" type="date"></div>
-            <div class="field grow"><label>Observações</label><input id="uObs" placeholder="Ex.: 12 semanas, TN ok"></div>
-          </div>
-          <div class="field"><label>Foto do exame (opcional)</label><input id="uFoto" type="file" accept="image/*"></div>
-          <button id="addUltra" class="primary">Adicionar ultrassom</button>
-          <div class="hr"></div>
-          <div class="photo" id="galeria"></div>
-        </div>
-
-        <!-- TAB: Tarefas -->
-        <div class="tab" id="tab-tarefas" style="display:none">
-          <div class="row">
-            <div class="field grow"><label>Nova tarefa</label><input id="tNova" placeholder="Ex.: Comprar cadeirinha"></div>
-            <button id="addTarefa" class="primary">Adicionar</button>
-          </div>
-          <div id="listaTarefas"></div>
-        </div>
-
-        <!-- TAB: Vacinas -->
-        <div class="tab" id="tab-vacinas" style="display:none">
-          <div class="row">
-            <div class="field grow"><label>Vacina</label><input id="vNome" placeholder="Ex.: dTpa, Influenza"></div>
-            <div class="field grow"><label>Data</label><input id="vData" type="date"></div>
-          </div>
-          <button id="addVacina" class="primary">Adicionar</button>
-          <div class="hr"></div>
-          <table id="tVacinas"><thead><tr><th>Vacina</th><th>Data</th><th></th></tr></thead><tbody></tbody></table>
-        </div>
-
-        <!-- TAB: Resumo -->
-        <div class="tab" id="tab-resumo" style="display:none">
-          <div class="row">
-            <button id="btnBaixarTXT">Baixar diário (.txt)</button>
-            <button id="btnBaixarCSV">Medidas (.csv)</button>
-          </div>
-          <p class="tip">Dica: você pode imprimir esta página (Ctrl/Cmd+P) para gerar um PDF do momento atual. 😉</p>
-          <pre id="previewResumo" style="white-space:pre-wrap;background:#0f1722;border:1px solid #1b2a3a;border-radius:12px;padding:12px;max-height:300px;overflow:auto"></pre>
-        </div>
-      </div>
-
-      <div class="footer muted">Feito com ❤️. Tudo que você criar fica salvo somente no seu navegador (LocalStorage). Exporte para garantir um backup.</div>
-    </section>
-  </main>
-
-  <script>
-  // ===== Utilidades =====
-  const $ = (sel, root=document) => root.querySelector(sel);
-  const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
-  const fmt = (d) => new Date(d).toLocaleDateString('pt-BR',{timeZone:'UTC'});
-  const todayISO = () => new Date().toISOString().slice(0,10);
-  const clamp = (v,a,b)=>Math.max(a,Math.min(b,v));
-
-  // ===== Persistência (multi-perfis) =====
-  const LS_KEY = 'gestacao_plus_v1';
-  const defaultProfile = () => ({
-    id: crypto.randomUUID(),
-    nome: 'Meu perfil',
-    mae:'', parceiro:'', medico:'',
-    base:'dpp', dpp:'', dum:'',
-    notas:[], consultas:[], sintomas:[], medidas:[], ultras:[], tarefas:[], vacinas:[],
-    createdAt: Date.now()
+function usarGPS() {
+  navigator.geolocation.getCurrentPosition(pos=>{
+    const {latitude, longitude} = pos.coords;
+    const dist1 = Math.hypot(latitude - lojas[0].lat, longitude - lojas[0].lon);
+    const dist2 = Math.hypot(latitude - lojas[1].lat, longitude - lojas[1].lon);
+    loja = dist1 < dist2 ? lojas[0] : lojas[1];
+    document.getElementById('lojaEscolhida').textContent = `✅ ${loja.nome}`;
   });
+}
 
-  function loadAll(){
-    try{ return JSON.parse(localStorage.getItem(LS_KEY)) || {ativos:[], ativoId:null}; }
-    catch(e){ return {ativos:[], ativoId:null}; }
-  }
-  function saveAll(state){ localStorage.setItem(LS_KEY, JSON.stringify(state)); }
-
-  let state = loadAll();
-  if(!state.ativos.length){
-    const p = defaultProfile(); state.ativos.push(p); state.ativoId = p.id; saveAll(state);
-  }
-
-  function getAtivo(){ return state.ativos.find(p=>p.id===state.ativoId); }
-  function setAtivo(id){ state.ativoId=id; saveAll(state); renderEverything(); }
-  function up(cb){ const p=getAtivo(); cb(p); saveAll(state); renderEverything(); }
-
-  // ===== UI: perfis =====
-  function renderPerfis(){
-    const sel = $('#perfilSelect'); sel.innerHTML='';
-    state.ativos.sort((a,b)=>a.createdAt-b.createdAt).forEach(p=>{
-      const o = document.createElement('option'); o.value=p.id; o.textContent=p.nome; if(p.id===state.ativoId) o.selected=true; sel.appendChild(o);
-    });
-  }
-
-  $('#perfilSelect').addEventListener('change', e=> setAtivo(e.target.value));
-  $('#novoPerfil').addEventListener('click', ()=>{
-    const nome = prompt('Nome do novo perfil?', 'Perfil ' + (state.ativos.length+1)); if(!nome) return;
-    const p = defaultProfile(); p.nome = nome; state.ativos.push(p); state.ativoId=p.id; saveAll(state); renderEverything();
-  });
-  $('#renomearPerfil').addEventListener('click', ()=>{
-    const p=getAtivo(); const nome = prompt('Novo nome do perfil:', p.nome); if(!nome) return; p.nome=nome; saveAll(state); renderPerfis();
-  });
-  $('#removerPerfil').addEventListener('click', ()=>{
-    if(!confirm('Remover este perfil e todos os dados dele?')) return;
-    state.ativos = state.ativos.filter(p=>p.id!==state.ativoId);
-    if(!state.ativos.length){ const p=defaultProfile(); state.ativos=[p]; state.ativoId=p.id; }
-    else { state.ativoId = state.ativos[0].id; }
-    saveAll(state); renderEverything();
-  });
-
-  // ===== Setup (DPP/DUM) =====
-  $$('input[name="baseData"]').forEach(r=> r.addEventListener('change', e=>{
-    const v=e.target.value; up(p=>{p.base=v});
-    $('#boxDPP').style.display = v==='dpp'? 'block':'none';
-    $('#boxDUM').style.display = v==='dum'? 'block':'none';
-  }));
-  $('#dpp').addEventListener('change', e=> up(p=>{p.dpp=e.target.value}));
-  $('#dum').addEventListener('change', e=> up(p=>{p.dum=e.target.value}));
-  $('#mae').addEventListener('input', e=> up(p=>{p.mae=e.target.value}));
-  $('#parceiro').addEventListener('input', e=> up(p=>{p.parceiro=e.target.value}));
-  $('#medico').addEventListener('input', e=> up(p=>{p.medico=e.target.value}));
-
-  // ===== Cálculos de gestação =====
-  function calcInfo(p){
-    let dpp = p.dpp;
-    if(p.base==='dum' && p.dum){ // DUM + 280 dias
-      const t = new Date(p.dum+'T00:00:00Z'); t.setUTCDate(t.getUTCDate()+280); dpp = t.toISOString().slice(0,10);
-    }
-    if(!dpp) return {dpp:null, dias:0, semana:"–", falta:"–", perc:0, trimestre:""};
-
-    const tHoje = new Date();
-    const dtDPP = new Date(dpp+'T00:00:00');
-    const gestLen = 280; // dias aproximados
-    const dtConcepcao = new Date(dtDPP); dtConcepcao.setDate(dtConcepcao.getDate()-gestLen);
-
-    const dias = Math.floor((tHoje - dtConcepcao)/(1000*60*60*24));
-    const semana = Math.floor(dias/7);
-    const falta = Math.max(0, gestLen - dias);
-    const perc = clamp((dias/gestLen)*100, 0, 100);
-    let trimestre = '';
-    if(semana<=12) trimestre = '1º trimestre'; else if(semana<=27) trimestre='2º trimestre'; else trimestre='3º trimestre';
-
-    return {dpp, dias: clamp(dias,0,gestLen), semana: semana+"ª", falta, perc, trimestre};
-  }
-
-  // ===== Render KPIs =====
-  function renderKPI(){
-    const p=getAtivo(); const info=calcInfo(p);
-    $('#kpiSemana').textContent = info.semana;
-    $('#kpiDias').textContent = Number.isFinite(info.dias)? info.dias : '–';
-    $('#kpiFalta').textContent = Number.isFinite(info.falta)? info.falta+ 'd' : '–';
-    $('#kpiDPP').textContent = info.dpp? fmt(info.dpp): '–';
-    $('#barra').style.width = info.perc+'%';
-    $('#textoTrimestre').textContent = info.trimestre? `Você está no ${info.trimestre}. Progresso aproximado de ${info.perc.toFixed(1)}%.` : 'Informe DPP ou DUM para iniciar.';
-  }
-
-  // ===== Tabs =====
-  $$('.tab-btn').forEach(btn=> btn.addEventListener('click', ()=>{
-    $$('.tab-btn').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    const id = 'tab-'+btn.dataset.tab; $$('.tab').forEach(t=> t.style.display = (t.id===id?'block':'none'));
-    if(id==='tab-resumo') renderResumo();
-  }));
-
-  // ===== Anotações =====
-  $('#addNota').addEventListener('click', ()=>{
-    const t = $('#noteTitulo').value.trim(); const x = $('#noteTexto').value.trim();
-    if(!t && !x) return; up(p=>{ p.notas.unshift({id:crypto.randomUUID(), titulo:t, texto:x, data: todayISO()}) });
-    $('#noteTitulo').value=''; $('#noteTexto').value='';
-  });
-  function renderNotas(){
-    const box = $('#listaNotas'); box.innerHTML=''; const p=getAtivo();
-    if(!p.notas.length){ box.innerHTML = '<div class="muted">Sem anotações ainda.</div>'; return; }
-    p.notas.forEach(n=>{
-      const div = document.createElement('div');
-      div.className='card';
-      div.innerHTML = `<div class="row" style="justify-content:space-between;align-items:center">
-        <div><b>${n.titulo||'Sem título'}</b><div class="tip">${fmt(n.data)}</div></div>
-        <button data-id="${n.id}" class="ghost danger">Apagar</button>
-      </div>
-      <div style="margin-top:8px">${(n.texto||'').replace(/</g,'&lt;')}</div>`;
-      div.querySelector('button').addEventListener('click',()=> up(p=>{p.notas=p.notas.filter(i=>i.id!==n.id)}));
-      box.appendChild(div);
-    });
-  }
-
-  // ===== Consultas =====
-  $('#addConsulta').addEventListener('click', ()=>{
-    const item={id:crypto.randomUUID(), data:$('#cData').value, hora:$('#cHora').value, local:$('#cLocal').value.trim(), obs:$('#cObs').value.trim()};
-    if(!item.data) return alert('Informe a data.');
-    up(p=>{ p.consultas.push(item); });
-    ['#cData','#cHora','#cLocal','#cObs'].forEach(s=>$(s).value='');
-  });
-  function renderConsultas(){
-    const tb = $('#tConsultas tbody'); tb.innerHTML=''; const p=getAtivo();
-    p.consultas.sort((a,b)=>(a.data+a.hora).localeCompare(b.data+b.hora)).forEach(c=>{
-      const tr = document.createElement('tr');
-      tr.innerHTML=`<td>${fmt(c.data)} ${c.hora||''}</td><td>${(c.local||'')}</td><td>${(c.obs||'')}</td><td><button class="ghost danger" data-id="${c.id}">Apagar</button></td>`;
-      tr.querySelector('button').addEventListener('click',()=> up(p=>{p.consultas=p.consultas.filter(i=>i.id!==c.id)}));
-      tb.appendChild(tr);
-    });
-  }
-
-  // ===== Sintomas =====
-  $('#addSintoma').addEventListener('click', ()=>{
-    const item={id:crypto.randomUUID(), data:$('#sData').value||todayISO(), intensidade:$('#sInt').value, desc:$('#sDesc').value.trim()};
-    if(!item.desc) return; up(p=>{p.sintomas.unshift(item)});
-    $('#sDesc').value='';
-  });
-  function renderSintomas(){
-    const tb = $('#tSintomas tbody'); tb.innerHTML=''; const p=getAtivo();
-    p.sintomas.forEach(s=>{
-      const tr=document.createElement('tr');
-      tr.innerHTML=`<td>${fmt(s.data)}</td><td>${s.intensidade}</td><td>${s.desc}</td><td><button class="ghost danger">Apagar</button></td>`;
-      tr.querySelector('button').addEventListener('click',()=> up(p=>{p.sintomas=p.sintomas.filter(i=>i.id!==s.id)}));
-      tb.appendChild(tr);
-    });
-  }
-
-  // ===== Medidas =====
-  $('#addMedida').addEventListener('click', ()=>{
-    const item={id:crypto.randomUUID(), data:$('#mData').value||todayISO(), peso:parseFloat($('#mPeso').value||''), barriga:$('#mBarriga').value? parseFloat($('#mBarriga').value): null};
-    if(!item.peso){ return alert('Informe o peso.'); }
-    up(p=>{p.medidas.push(item)});
-    ['#mData','#mPeso','#mBarriga'].forEach(s=>$(s).value='');
-  });
-  function renderMedidas(){
-    const tb = $('#tMedidas tbody'); tb.innerHTML=''; const p=getAtivo();
-    p.medidas.sort((a,b)=> (a.data).localeCompare(b.data)).forEach(m=>{
-      const tr=document.createElement('tr');
-      tr.innerHTML=`<td>${fmt(m.data)}</td><td>${m.peso.toFixed(2)} kg</td><td>${m.barriga? m.barriga.toFixed(1)+' cm' : '—'}</td><td><button class="ghost danger">Apagar</button></td>`;
-      tr.querySelector('button').addEventListener('click',()=> up(p=>{p.medidas=p.medidas.filter(i=>i.id!==m.id)}));
-      tb.appendChild(tr);
-    });
-  }
-
-  // ===== Ultras =====
-  $('#addUltra').addEventListener('click', async ()=>{
-    const data = $('#uData').value||todayISO(); const obs=$('#uObs').value.trim(); const f=$('#uFoto').files[0];
-    let fotoData=null;
-    if(f){ fotoData = await fileToDataURL(f); }
-    up(p=>{p.ultras.unshift({id:crypto.randomUUID(), data, obs, foto: fotoData})});
-    $('#uObs').value=''; $('#uFoto').value='';
-  });
-  function fileToDataURL(file){
-    return new Promise(res=>{ const r=new FileReader(); r.onload=()=>res(r.result); r.readAsDataURL(file); });
-  }
-  function renderUltras(){
-    const g=$('#galeria'); g.innerHTML=''; const p=getAtivo();
-    if(!p.ultras.length){ g.innerHTML='<div class="muted">Sem ultrassons ainda.</div>'; return; }
-    p.ultras.forEach(u=>{
-      const fig=document.createElement('figure');
-      fig.innerHTML=`${u.foto? `<img src="${u.foto}" alt="Ultrassom ${fmt(u.data)}">` : ''}<figcaption><b>${fmt(u.data)}</b><br>${u.obs||''}<div style="margin-top:6px"><button class="ghost danger">Apagar</button></div></figcaption>`;
-      fig.querySelector('button').addEventListener('click',()=> up(p=>{p.ultras=p.ultras.filter(i=>i.id!==u.id)}));
-      g.appendChild(fig);
-    });
-  }
-
-  // ===== Tarefas =====
-  $('#addTarefa').addEventListener('click', ()=>{
-    const t=$('#tNova').value.trim(); if(!t) return; up(p=>{p.tarefas.unshift({id:crypto.randomUUID(), txt:t, done:false})}); $('#tNova').value='';
-  });
-  function renderTarefas(){
-    const box=$('#listaTarefas'); box.innerHTML=''; const p=getAtivo();
-    if(!p.tarefas.length){ box.innerHTML='<div class="muted">Nenhuma tarefa. Que tal criar uma lista de enxoval? 🧺</div>'; return; }
-    p.tarefas.forEach(t=>{
-      const line=document.createElement('div'); line.className='row'; line.style.alignItems='center'; line.style.justifyContent='space-between';
-      const left=document.createElement('label'); left.className='chip';
-      const cb=document.createElement('input'); cb.type='checkbox'; cb.checked=t.done; cb.addEventListener('change',()=> up(p=>{const it=p.tarefas.find(i=>i.id===t.id); if(it) it.done=cb.checked;}));
-      left.appendChild(cb); left.append(' '+t.txt);
-      const del=document.createElement('button'); del.className='ghost danger'; del.textContent='Apagar'; del.addEventListener('click',()=> up(p=>{p.tarefas=p.tarefas.filter(i=>i.id!==t.id)}));
-      line.append(left, del); box.appendChild(line);
-    });
-  }
-
-  // ===== Vacinas =====
-  $('#addVacina').addEventListener('click', ()=>{
-    const nome=$('#vNome').value.trim(); const data=$('#vData').value; if(!nome || !data) return;
-    up(p=>{p.vacinas.push({id:crypto.randomUUID(), nome, data})}); $('#vNome').value=''; $('#vData').value='';
-  });
-  function renderVacinas(){
-    const tb=$('#tVacinas tbody'); tb.innerHTML=''; const p=getAtivo();
-    p.vacinas.sort((a,b)=>a.data.localeCompare(b.data)).forEach(v=>{
-      const tr=document.createElement('tr'); tr.innerHTML=`<td>${v.nome}</td><td>${fmt(v.data)}</td><td><button class="ghost danger">Apagar</button></td>`;
-      tr.querySelector('button').addEventListener('click',()=> up(p=>{p.vacinas=p.vacinas.filter(i=>i.id!==v.id)}));
-      tb.appendChild(tr);
-    });
-  }
-
-  // ===== Exportar / Importar =====
-  $('#btn-export').addEventListener('click', ()=>{
-    const nome = (getAtivo().nome||'perfil') + '-' + new Date().toISOString().slice(0,10) + '.gestacao.json';
-    const blob = new Blob([JSON.stringify(state,null,2)], {type:'application/json'});
-    const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=nome; a.click(); URL.revokeObjectURL(a.href);
-  });
-  $('#file-import').addEventListener('change', async (e)=>{
-    const f=e.target.files[0]; if(!f) return; const txt=await f.text();
-    try{ const data=JSON.parse(txt); if(!data.ativos) throw new Error('formato'); state=data; saveAll(state); renderEverything(); alert('Backup importado com sucesso!'); }
-    catch(err){ alert('Arquivo inválido.'); }
-    e.target.value='';
-  });
-  $('#btn-reset').addEventListener('click', ()=>{
-    if(!confirm('Tem certeza? Isso apagará todos os dados deste perfil.')) return;
-    up(p=>{ p.notas=[]; p.consultas=[]; p.sintomas=[]; p.medidas=[]; p.ultras=[]; p.tarefas=[]; p.vacinas=[]; p.dpp=''; p.dum=''; });
-  });
-
-  // ===== Resumo / Downloads rápidos =====
-  function gerarDiarioTXT(){
-    const p=getAtivo(); const info=calcInfo(p);
-    let out = [];
-    out.push(`# Gestação+ — Diário de ${p.nome}`);
-    out.push(`Gestante: ${p.mae||'-'} | Parceiro(a): ${p.parceiro||'-'} | Médico(a): ${p.medico||'-'}`);
-    out.push(`Base: ${p.base==='dpp'? 'DPP' : 'DUM'} | DPP: ${info.dpp? fmt(info.dpp):'-'} | Semana: ${info.semana} | Progresso: ${info.perc.toFixed(1)}%`);
-    out.push('\n== Anotações =='); p.notas.forEach(n=> out.push(`- [${fmt(n.data)}] ${n.titulo||'Sem título'} — ${n.texto}`));
-    out.push('\n== Consultas =='); p.consultas.forEach(c=> out.push(`- ${fmt(c.data)} ${c.hora||''} @ ${c.local||''} — ${c.obs||''}`));
-    out.push('\n== Sintomas =='); p.sintomas.forEach(s=> out.push(`- ${fmt(s.data)} | ${s.intensidade}: ${s.desc}`));
-    out.push('\n== Medidas =='); p.medidas.forEach(m=> out.push(`- ${fmt(m.data)} | ${m.peso.toFixed(2)} kg${m.barriga? ' | '+m.barriga.toFixed(1)+' cm':''}`));
-    out.push('\n== Vacinas =='); p.vacinas.forEach(v=> out.push(`- ${fmt(v.data)} | ${v.nome}`));
-    out.push('\n== Tarefas =='); p.tarefas.forEach(t=> out.push(`- [${t.done?'x':' '}] ${t.txt}`));
-    return out.join('\n');
-  }
-  function download(filename, text){ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([text],{type:'text/plain'})); a.download=filename; a.click(); URL.revokeObjectURL(a.href); }
-
-  $('#btnBaixarTXT').addEventListener('click', ()=>{
-    download((getAtivo().nome||'perfil')+'-diario.txt', gerarDiarioTXT());
-  });
-
-  $('#btnBaixarCSV').addEventListener('click', ()=>{
-    const p=getAtivo();
-    let csv = 'data,peso,barriga\n'; p.medidas.forEach(m=> csv += `${m.data},${m.peso},${m.barriga??''}\n`);
-    download((p.nome||'perfil')+'-medidas.csv', csv);
-  });
-
-  function renderResumo(){ $('#previewResumo').textContent = gerarDiarioTXT(); }
-
-  // ===== Render geral =====
-  function renderEverything(){
-    renderPerfis();
-    const p=getAtivo();
-    // preencher inputs
-    $('#mae').value=p.mae||''; $('#parceiro').value=p.parceiro||''; $('#medico').value=p.medico||'';
-    $$('input[name="baseData"]').forEach(r=> r.checked = (r.value===p.base));
-    $('#boxDPP').style.display = p.base==='dpp'? 'block':'none';
-    $('#boxDUM').style.display = p.base==='dum'? 'block':'none';
-    $('#dpp').value=p.dpp||''; $('#dum').value=p.dum||'';
-
-    renderKPI();
-    renderNotas();
-    renderConsultas();
-    renderSintomas();
-    renderMedidas();
-    renderUltras();
-    renderTarefas();
-    renderVacinas();
-  }
-
-  // Init
-  renderEverything();
-  </script>
+function finalizar() {
+  if (!loja.tel) return alert('Escolha sua loja primeiro');
+  let msg = `*Pedido Parada Carioca*\n\n`;
+  carrinho.forEach(i=> msg += `${i.nome} - R$${i.preco.toFixed(2)}\n`);
+  msg += `\nTotal: R$${document.getElementById('total').textContent}\n`;
+  msg += `Pagamento: ${document.getElementById('pagamento').value}\n`;
+  msg += `Modo: ${document.getElementById('entrega').value}\n`;
+  const cupom = document.getElementById('cupom').value;
+  if (cupom) msg += `Cupom: ${cupom}\n`;
+  const url = `https://wa.me/${loja.tel}?text=${encodeURIComponent(msg)}`;
+  window.open(url, '_blank');
+}
+</script>
 </body>
 </html>
