@@ -1,615 +1,1210 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Parada Carioca — Pedido Rápido</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg: #0b0b0b;
-    --card: #111111;
-    --muted: #dfe6ea;
-    --accent: #ff7a2f;      /* laranja principal */
-    --accent-dark: #ff5a1a; /* laranja escuro */
-    --brand-yellow: #ffd24a; 
-    --danger: #e64545;
-    --glass: rgba(255,255,255,0.03);
-    --radius: 14px;
-    color-scheme: dark;
-    font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  }
-  *{box-sizing:border-box}
-  html,body{height:100%;margin:0;background: linear-gradient(180deg,#070606 0%, #0b0b0b 100%);color:var(--muted);}
-  .wrap{max-width:1100px;margin:18px auto;padding:14px;display:grid;grid-template-columns:1fr 390px;gap:18px}
-  header{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:10px}
-  .brand{display:flex;align-items:center;gap:12px}
-  .logo-sq{width:56px;height:56px;border-radius:12px;background:linear-gradient(180deg,var(--brand-yellow),#ffb94d);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 22px rgba(255,120,40,0.12)}
-  .logo-sq strong{color:#111;padding:4px 6px;border-radius:8px}
-  h1{font-size:20px;margin:0}
-  .subtitle{font-size:13px;color:#bfcbd2}
-  .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:16px; border-radius:var(--radius); border:1px solid rgba(255,255,255,0.03); box-shadow: 0 8px 30px rgba(0,0,0,0.6)}
-  .left .controls{display:flex;gap:10px;align-items:end}
-  input[type="text"], input[type="number"], select{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:10px;border-radius:10px;color:var(--muted);outline:none;width:100%}
-  button{cursor:pointer}
-  .btn{background:var(--accent);border:none;color:#111;padding:10px 12px;border-radius:10px;font-weight:700}
-  .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);padding:10px 12px;border-radius:10px}
-  .stores{display:flex;gap:12px;margin-top:12px}
-  .store-card{flex:1;padding:10px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border:1px solid rgba(255,255,255,0.02)}
-  .store-card h4{margin:0 0 6px 0}
-  .muted{color:#bfcbd2;font-size:13px}
-  .menu-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px}
-  .section{background:rgba(255,255,255,0.01);padding:12px;border-radius:10px}
-  .item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px dashed rgba(255,255,255,0.03)}
-  .item:last-child{border-bottom:none}
-  .price{font-weight:800}
-  .cart{position:sticky;top:18px}
-  .cart .title{display:flex;align-items:center;justify-content:space-between}
-  .cart-list{max-height:420px;overflow:auto;margin-top:12px}
-  .cart-row{display:flex;justify-content:space-between;align-items:center;padding:8px;border-radius:8px;background:rgba(255,255,255,0.01);margin-bottom:8px}
-  .qty{display:flex;gap:8px;align-items:center}
-  .small{font-size:13px;color:#bfcbd2}
-  .summary{margin-top:12px;background:linear-gradient(180deg, rgba(0,0,0,0.15), rgba(0,0,0,0.08));padding:12px;border-radius:10px}
-  .flex{display:flex;align-items:center;justify-content:space-between}
-  .whatsapp{background:#25D366;color:#031013;padding:10px;border-radius:10px;border:none;font-weight:800}
-  .pix{background:transparent;border:2px dashed rgba(255,255,255,0.06);padding:10px;border-radius:10px;color:var(--accent-dark);font-weight:700}
-  .tag{display:inline-block;padding:6px 8px;border-radius:999px;background:rgba(0,0,0,0.4);color:var(--brand-yellow);font-weight:700}
-  footer{grid-column:1/-1;text-align:center;color:#9fb1b8;margin-top:12px;font-size:13px}
-  @media(max-width:980px){
-    .wrap{grid-template-columns:1fr;padding:12px}
-    .cart{position:relative;top:0}
-    .menu-grid{grid-template-columns:1fr}
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍔 Parada Carioca - Hamburgueria</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #FF6B00;
+            --primary-light: #FFA366;
+            --primary-dark: #CC5500;
+            --secondary: #2C2C2C;
+            --accent: #D32F2F;
+            --light: #F8F8F8;
+            --text: #333333;
+            --text-light: #666666;
+            --success: #4CAF50;
+            --background: #FFFFFF;
+            --card-bg: #FFFFFF;
+            --border: #E0E0E0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: var(--background);
+            color: var(--text);
+            padding: 20px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            background: var(--light);
+            padding: 10px;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(255, 107, 0, 0.2);
+        }
+        
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--secondary);
+        }
+        
+        .logo-text span {
+            color: var(--primary);
+        }
+        
+        .tagline {
+            font-size: 1rem;
+            color: var(--text-light);
+        }
+        
+        .section {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            border: 1px solid var(--border);
+        }
+        
+        h2 {
+            color: var(--secondary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        h2 i {
+            color: var(--primary);
+        }
+        
+        h3 {
+            color: var(--secondary);
+            margin: 20px 0 15px;
+            padding-left: 10px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .promo-banner {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(255, 107, 0, 0.3);
+        }
+        
+        .promo-banner i {
+            margin-right: 10px;
+        }
+        
+        .cep-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .cep-input {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 14px 15px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border 0.3s;
+            background-color: var(--light);
+        }
+        
+        input:focus, select:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(255, 107, 0, 0.2);
+        }
+        
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #1a1a1a;
+        }
+        
+        .btn-success {
+            background-color: var(--success);
+        }
+        
+        .btn-success:hover {
+            background-color: #3d8b40;
+        }
+        
+        .store-info {
+            margin-top: 15px;
+        }
+        
+        .store-card {
+            background-color: var(--light);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+            transition: transform 0.3s;
+        }
+        
+        .store-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .store-name {
+            font-weight: bold;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .store-address {
+            margin-bottom: 15px;
+            color: var(--text-light);
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+        
+        .store-phone {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: #25D366;
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+        
+        .whatsapp-btn:hover {
+            background-color: #128C7E;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .menu-navigation {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .menu-nav-btn {
+            white-space: nowrap;
+            padding: 10px 20px;
+            background-color: var(--light);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .menu-nav-btn.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .menu-category {
+            margin-bottom: 40px;
+        }
+        
+        .menu-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .menu-item {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid var(--border);
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        
+        .item-image {
+            height: 180px;
+            background-color: #f0f0f0;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .item-image::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: linear-gradient(to top, rgba(0,0,0,0.1), transparent);
+        }
+        
+        .item-details {
+            padding: 20px;
+        }
+        
+        .item-name {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            color: var(--secondary);
+        }
+        
+        .item-description {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            min-height: 40px;
+        }
+        
+        .item-price {
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+        
+        .add-to-cart {
+            width: 100%;
+            background-color: var(--secondary);
+        }
+        
+        .add-to-cart:hover {
+            background-color: #1a1a1a;
+        }
+        
+        .order-summary {
+            background-color: var(--light);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .order-total {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            font-weight: bold;
+            font-size: 1.3rem;
+            border-top: 2px solid var(--secondary);
+            margin-top: 10px;
+        }
+        
+        .delivery-option, .payment-option {
+            margin-bottom: 25px;
+        }
+        
+        .option-label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            cursor: pointer;
+            padding: 12px;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+        
+        .option-label:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .option-label input {
+            width: auto;
+            margin-right: 12px;
+        }
+        
+        .delivery-fee {
+            color: var(--accent);
+            font-weight: bold;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #FFEBEE;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .cupom-section {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .cupom-input {
+            flex: 1;
+        }
+        
+        .checkout-btn {
+            width: 100%;
+            padding: 18px;
+            font-size: 1.2rem;
+            margin-top: 20px;
+        }
+        
+        .distance-info {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #E3F2FD;
+            border-radius: 8px;
+            color: #1565C0;
+            font-weight: bold;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            background-color: var(--success);
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .menu-items {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .cep-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            button {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <div class="brand">
-      <div class="logo-sq"><strong>PC</strong></div>
-      <div>
-        <h1>Parada Carioca</h1>
-        <div class="subtitle">Peça online — Comer na loja ou Entrega</div>
-      </div>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">🍔</div>
+                    <div>
+                        <div class="logo-text">Parada <span>Carioca</span></div>
+                        <div class="tagline">O melhor hambúrguer do Rio de Janeiro!</div>
+                    </div>
+                </div>
+                <div class="contact-info">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>(21) 99116-6886</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <!-- Banner de Promoção -->
+        <div class="promo-banner">
+            <i class="fas fa-tags"></i>
+            <strong>PROMOÇÃO ESPECIAL:</strong> Segunda a Quarta - 2 X-Tudo + 2 Guaraná Antarctica por apenas R$ 25,00!
+        </div>
+        
+        <!-- Seção de Localização -->
+        <section class="section">
+            <h2><i class="fas fa-map-marker-alt"></i> Encontre a loja mais próxima</h2>
+            <div class="cep-section">
+                <div class="cep-input">
+                    <label for="cep">Digite seu CEP:</label>
+                    <input type="text" id="cep" placeholder="00000-000" maxlength="9">
+                </div>
+                <button id="find-store">
+                    <i class="fas fa-search"></i> Encontrar Loja
+                </button>
+                <button id="get-location" class="btn-secondary">
+                    <i class="fas fa-location-arrow"></i> Usar Minha Localização
+                </button>
+            </div>
+            
+            <div class="store-info" id="store-info">
+                <!-- Apenas a loja mais próxima será exibida -->
+            </div>
+            
+            <div class="loading" id="location-loading">
+                <div class="loading-spinner"></div>
+                <p>Detectando sua localização...</p>
+            </div>
+        </section>
+        
+        <!-- Seção do Cardápio -->
+        <section class="section" id="menu-section" style="display: none;">
+            <h2><i class="fas fa-utensils"></i> Cardápio</h2>
+            
+            <!-- Navegação por seções -->
+            <div class="menu-navigation">
+                <div class="menu-nav-btn active" data-category="combos">Combos</div>
+                <div class="menu-nav-btn" data-category="lanches">Lanches</div>
+                <div class="menu-nav-btn" data-category="bebidas">Bebidas</div>
+                <div class="menu-nav-btn" data-category="caldos">Caldos</div>
+            </div>
+            
+            <!-- Combos -->
+            <div class="menu-category" id="combos-category">
+                <h3><i class="fas fa-box"></i> Combos</h3>
+                <div class="menu-items" id="combos">
+                    <!-- Itens serão preenchidos via JavaScript -->
+                </div>
+            </div>
+            
+            <!-- Lanches Avulsos -->
+            <div class="menu-category" id="lanches-category" style="display: none;">
+                <h3><i class="fas fa-hamburger"></i> Lanches Avulsos</h3>
+                <div class="menu-items" id="lanches">
+                    <!-- Itens serão preenchidos via JavaScript -->
+                </div>
+            </div>
+            
+            <!-- Bebidas -->
+            <div class="menu-category" id="bebidas-category" style="display: none;">
+                <h3><i class="fas fa-wine-glass-alt"></i> Bebidas</h3>
+                <div class="menu-items" id="bebidas">
+                    <!-- Itens serão preenchidos via JavaScript -->
+                </div>
+            </div>
+            
+            <!-- Caldos -->
+            <div class="menu-category" id="caldos-category" style="display: none;">
+                <h3><i class="fas fa-bowl-food"></i> Caldos</h3>
+                <div class="menu-items" id="caldos">
+                    <!-- Itens serão preenchidos via JavaScript -->
+                </div>
+            </div>
+        </section>
+        
+        <!-- Seção do Pedido -->
+        <section class="section" id="order-section" style="display: none;">
+            <h2><i class="fas fa-shopping-cart"></i> Seu Pedido</h2>
+            
+            <div class="order-summary" id="order-summary">
+                <p>Seu carrinho está vazio</p>
+            </div>
+            
+            <!-- Opções de Entrega -->
+            <div class="delivery-option">
+                <h3><i class="fas fa-truck"></i> Como deseja receber?</h3>
+                <label class="option-label">
+                    <input type="radio" name="delivery" value="eat-in" checked>
+                    <span><i class="fas fa-store"></i> Comer na loja</span>
+                </label>
+                <label class="option-label">
+                    <input type="radio" name="delivery" value="delivery">
+                    <span><i class="fas fa-home"></i> Entrega em casa</span>
+                </label>
+                <div id="delivery-fee" class="delivery-fee">
+                    <!-- Taxa de entrega será calculada dinamicamente -->
+                </div>
+                <div id="distance-info" class="distance-info" style="display: none;">
+                    <!-- Informações de distância serão preenchidas via JavaScript -->
+                </div>
+            </div>
+            
+            <!-- Métodos de Pagamento -->
+            <div class="payment-option">
+                <h3><i class="fas fa-credit-card"></i> Forma de Pagamento</h3>
+                <label class="option-label">
+                    <input type="radio" name="payment" value="debit" checked>
+                    <span><i class="fas fa-credit-card"></i> Cartão de Débito</span>
+                </label>
+                <label class="option-label">
+                    <input type="radio" name="payment" value="credit">
+                    <span><i class="fas fa-credit-card"></i> Cartão de Crédito</span>
+                </label>
+                <label class="option-label">
+                    <input type="radio" name="payment" value="pix">
+                    <span><i class="fas fa-qrcode"></i> PIX</span>
+                </label>
+                <label class="option-label">
+                    <input type="radio" name="payment" value="pix-whatsapp">
+                    <span><i class="fab fa-whatsapp"></i> PIX via WhatsApp</span>
+                </label>
+            </div>
+            
+            <!-- Cupom de Desconto -->
+            <div class="cupom-section">
+                <div class="cupom-input">
+                    <label for="cupom">Cupom de desconto (opcional):</label>
+                    <input type="text" id="cupom" placeholder="Digite seu cupom">
+                </div>
+                <button id="apply-cupom" class="btn-secondary">
+                    <i class="fas fa-tag"></i> Aplicar
+                </button>
+            </div>
+            
+            <button class="checkout-btn" id="checkout-btn">
+                <i class="fas fa-check-circle"></i> Finalizar Pedido
+            </button>
+        </section>
     </div>
-    <div style="text-align:right">
-      <div class="tag">Entrega ≥ 6km → taxa 7%/km</div>
-      <div style="font-size:12px;color:#9fb1b8;margin-top:6px">Pagamento: Débito • Crédito • Pix</div>
-    </div>
-  </header>
 
-  <!-- LEFT: busca / menu -->
-  <main class="left">
-    <div class="card">
-      <div style="display:flex;gap:12px;align-items:center">
-        <div style="flex:1">
-          <label class="small">Endereço / CEP</label>
-          <input id="cepInput" type="text" placeholder="Digite o CEP (ou permita localização)" />
-        </div>
-        <div style="width:160px">
-          <label class="small">Modo</label>
-          <select id="mode">
-            <option value="delivery">Entrega</option>
-            <option value="dinein">Comer na loja</option>
-          </select>
-        </div>
-        <div style="width:130px;display:flex;flex-direction:column;justify-content:flex-end">
-          <button id="btnLocate" class="btn">Localizar</button>
-          <button id="btnGeo" class="btn-ghost" style="margin-top:8px;font-size:12px">Usar GPS</button>
-        </div>
-      </div>
-
-      <div class="stores">
-        <div class="store-card" id="store1Card">
-          <h4>Loja 1 — Parada Carioca</h4>
-          <div class="muted" id="s1Addr">Rua Santa Luz, nº 2 — em frente ao Brizolão do Cristo</div>
-          <div class="small">CEP: <span id="s1Cep">23056-030</span></div>
-          <div style="margin-top:6px"><strong>WhatsApp:</strong> <a id="s1Whats" href="#" target="_blank">+55 21 99116-6886</a></div>
-          <div class="muted" id="s1Dist">Distância: —</div>
-        </div>
-
-        <div class="store-card" id="store2Card">
-          <h4>Loja 2 — Projetada Cinco</h4>
-          <div class="muted" id="s2Addr">R. Projetada Cinco, 31 (foto)</div>
-          <div class="small">CEP: <span id="s2Cep">23055-000</span></div>
-          <div style="margin-top:6px"><strong>WhatsApp:</strong> <a id="s2Whats" href="#" target="_blank" style="opacity:0.6;pointer-events:none">—</a></div>
-          <div class="muted" id="s2Dist">Distância: —</div>
-        </div>
-      </div>
-
-      <div style="display:flex;gap:8px;margin-top:12px">
-        <button id="chooseS1" class="btn">Selecionar Loja 1</button>
-        <button id="chooseS2" class="btn-ghost">Selecionar Loja 2</button>
-        <div style="margin-left:auto" class="small">Loja selecionada: <span id="selectedLabel">—</span></div>
-      </div>
+    <div class="notification" id="notification">
+        <!-- Notificações serão exibidas aqui -->
     </div>
 
-    <!-- cardápio -->
-    <div class="card" style="margin-top:12px">
-      <h3 style="margin:0 0 8px 0">Cardápio</h3>
-      <div class="menu-grid">
-        <div class="section">
-          <h4>Combos</h4>
-          <div id="combosList"></div>
-        </div>
+    <script>
+        // Dados das lojas
+        const stores = [
+            {
+                id: 1,
+                name: "Parada Carioca - Cristo",
+                address: "Rua Santa Luz, nº 2 — em frente ao Brizolão do Cristo",
+                cep: "23056-030",
+                phone: "+55 21 99116-6886",
+                coordinates: { lat: -22.9245, lng: -43.4358 } // Coordenadas aproximadas
+            },
+            {
+                id: 2,
+                name: "Parada Carioca - Rua Projetada",
+                address: "Rua Projetada Cinco, nº 31",
+                cep: "23055-000",
+                phone: "+55 21 99116-6886",
+                coordinates: { lat: -22.9180, lng: -43.4400 } // Coordenadas aproximadas
+            }
+        ];
 
-        <div class="section">
-          <h4>Lanches avulsos</h4>
-          <div id="sandesList"></div>
-        </div>
+        // Cardápio
+        const menu = {
+            combos: [
+                { id: 1, name: "Combo X-Tudo", description: "X-Tudo + Batata Frita + Refrigerante 350ml", price: 29.90, image: "https://via.placeholder.com/300x180/FF6B00/FFFFFF?text=Combo+X-Tudo" },
+                { id: 2, name: "Combo X-Bacon", description: "X-Bacon + Batata Frita + Refrigerante 350ml", price: 27.90, image: "https://via.placeholder.com/300x180/E55A00/FFFFFF?text=Combo+X-Bacon" },
+                { id: 3, name: "Combo X-Salada", description: "X-Salada + Batata Frita + Refrigerante 350ml", price: 25.90, image: "https://via.placeholder.com/300x180/D32F2F/FFFFFF?text=Combo+X-Salada" },
+                { id: 4, name: "Combo X-Egg", description: "X-Egg + Batata Frita + Refrigerante 350ml", price: 26.90, image: "https://via.placeholder.com/300x180/2C2C2C/FFFFFF?text=Combo+X-Egg" },
+                { id: 5, name: "Combo X-Frango", description: "X-Frango + Batata Frita + Refrigerante 350ml", price: 24.90, image: "https://via.placeholder.com/300x180/FF6B00/FFFFFF?text=Combo+X-Frango" },
+                { id: 6, name: "PROMOÇÃO: 2 X-Tudo + 2 Guaraná", description: "Válido de segunda a quarta-feira", price: 25.00, image: "https://via.placeholder.com/300x180/4CAF50/FFFFFF?text=Promoção+2X-Tudo" }
+            ],
+            lanches: [
+                { id: 7, name: "X-Tudo", description: "Pão, 2 carnes, queijo, presunto, bacon, ovo, alface, tomate, milho, batata palha", price: 18.90, image: "https://via.placeholder.com/300x180/FF6B00/FFFFFF?text=X-Tudo" },
+                { id: 8, name: "X-Bacon", description: "Pão, carne, queijo, bacon, alface, tomate", price: 16.90, image: "https://via.placeholder.com/300x180/E55A00/FFFFFF?text=X-Bacon" },
+                { id: 9, name: "X-Salada", description: "Pão, carne, queijo, alface, tomate, milho", price: 14.90, image: "https://via.placeholder.com/300x180/D32F2F/FFFFFF?text=X-Salada" },
+                { id: 10, name: "X-Egg", description: "Pão, carne, queijo, ovo, alface, tomate", price: 15.90, image: "https://via.placeholder.com/300x180/2C2C2C/FFFFFF?text=X-Egg" },
+                { id: 11, name: "X-Frango", description: "Pão, frango desfiado, queijo, alface, tomate", price: 14.90, image: "https://via.placeholder.com/300x180/FF6B00/FFFFFF?text=X-Frango" },
+                { id: 12, name: "X-Calabresa", description: "Pão, carne, calabresa, queijo, alface, tomate", price: 16.90, image: "https://via.placeholder.com/300x180/E55A00/FFFFFF?text=X-Calabresa" },
+                { id: 13, name: "Cheeseburguer", description: "Pão, carne, queijo, alface, tomate", price: 12.90, image: "https://via.placeholder.com/300x180/D32F2F/FFFFFF?text=Cheeseburguer" },
+                { id: 14, name: "Misto Quente", description: "Pão, queijo, presunto", price: 8.90, image: "https://via.placeholder.com/300x180/2C2C2C/FFFFFF?text=Misto+Quente" }
+            ],
+            bebidas: [
+                { id: 15, name: "Coca-Cola 350ml", description: "Lata 350ml", price: 6.90, image: "https://via.placeholder.com/300x180/FF6B00/FFFFFF?text=Coca-Cola+350ml" },
+                { id: 16, name: "Guaraná Antarctica 350ml", description: "Lata 350ml", price: 5.90, image: "https://via.placeholder.com/300x180/E55A00/FFFFFF?text=Guaraná+350ml" },
+                { id: 17, name: "Fanta Laranja 350ml", description: "Lata 350ml", price: 5.90, image: "https://via.placeholder.com/300x180/D32F2F/FFFFFF?text=Fanta+Laranja" },
+                { id: 18, name: "Sprite 350ml", description: "Lata 350ml", price: 5.90, image: "https://via.placeholder.com/300x180/2C2C2C/FFFFFF?text=Sprite+350ml" },
+                { id: 19, name: "Coca-Cola 600ml", description: "Garrafa 600ml", price: 9.90, image: "https://via.placeholder.com/300x180/FF6B00/FFFFFF?text=Coca-Cola+600ml" },
+                { id: 20, name: "Guaraná Antarctica 600ml", description: "Garrafa 600ml", price: 8.90, image: "https://via.placeholder.com/300x180/E55A00/FFFFFF?text=Guaraná+600ml" },
+                { id: 21, name: "Água Mineral 500ml", description: "Com ou sem gás", price: 4.90, image: "https://via.placeholder.com/300x180/D32F2F/FFFFFF?text=Água+Mineral" },
+                { id: 22, name: "Suco Natural 500ml", description: "Laranja, limão ou abacaxi", price: 7.90, image: "https://via.placeholder.com/300x180/2C2C2C/FFFFFF?text=Suco+Natural" }
+            ],
+            caldos: [
+                { id: 23, name: "Caldo Verde", description: "Tradicional caldo verde com linguiça", price: 9.90, image: "https://via.placeholder.com/300x180/FF6B00/FFFFFF?text=Caldo+Verde" },
+                { id: 24, name: "Caldo de Mocotó", description: "Rico em colágeno, temperado com cheiro verde", price: 12.90, image: "https://via.placeholder.com/300x180/E55A00/FFFFFF?text=Caldo+Mocotó" },
+                { id: 25, name: "Caldo de Feijão", description: "Cremoso caldo de feijão com bacon", price: 8.90, image: "https://via.placeholder.com/300x180/D32F2F/FFFFFF?text=Caldo+Feijão" },
+                { id: 26, name: "Caldo de Mandioquinha", description: "Creme de mandioquinha com croutons", price: 10.90, image: "https://via.placeholder.com/300x180/2C2C2C/FFFFFF?text=Caldo+Mandioquinha" },
+                { id: 27, name: "Caldo de Carne", description: "Caldo de carne com legumes", price: 11.90, image: "https://via.placeholder.com/300x180/FF6B00/FFFFFF?text=Caldo+Carne" },
+                { id: 28, name: "Caldo de Ervilha", description: "Cremoso caldo de ervilha com bacon", price: 9.90, image: "https://via.placeholder.com/300x180/E55A00/FFFFFF?text=Caldo+Ervilha" }
+            ]
+        };
 
-        <div class="section">
-          <h4>Bebidas</h4>
-          <div id="drinksList"></div>
-        </div>
+        // Estado da aplicação
+        let selectedStore = null;
+        let cart = [];
+        let deliveryFee = 0;
+        let cupomDiscount = 0;
+        let userDistance = 0;
 
-        <div class="section">
-          <h4>Caldos</h4>
-          <div id="caldosList"></div>
-        </div>
-      </div>
-    </div>
-  </main>
+        // Elementos DOM
+        const cepInput = document.getElementById('cep');
+        const findStoreBtn = document.getElementById('find-store');
+        const getLocationBtn = document.getElementById('get-location');
+        const storeInfoDiv = document.getElementById('store-info');
+        const menuSection = document.getElementById('menu-section');
+        const orderSection = document.getElementById('order-section');
+        const orderSummaryDiv = document.getElementById('order-summary');
+        const deliveryFeeDiv = document.getElementById('delivery-fee');
+        const distanceInfoDiv = document.getElementById('distance-info');
+        const checkoutBtn = document.getElementById('checkout-btn');
+        const applyCupomBtn = document.getElementById('apply-cupom');
+        const cupomInput = document.getElementById('cupom');
+        const locationLoading = document.getElementById('location-loading');
+        const notification = document.getElementById('notification');
+        const menuNavBtns = document.querySelectorAll('.menu-nav-btn');
 
-  <!-- RIGHT: carrinho -->
-  <aside class="cart">
-    <div class="card">
-      <div class="title">
-        <div>
-          <h3 style="margin:0">Carrinho</h3>
-          <div class="small">Itens adicionados aparecerão aqui</div>
-        </div>
-        <div style="text-align:right">
-          <div style="font-weight:800" id="subtotalTop">R$ 0,00</div>
-        </div>
-      </div>
+        // Formatação do CEP
+        cepInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 5) {
+                value = value.substring(0,5) + '-' + value.substring(5,8);
+            }
+            e.target.value = value;
+        });
 
-      <div class="cart-list" id="cartList">
-        <div class="small muted">Carrinho vazio</div>
-      </div>
+        // Encontrar loja pelo CEP
+        findStoreBtn.addEventListener('click', findStoreByCEP);
+        
+        // Usar localização atual
+        getLocationBtn.addEventListener('click', getCurrentLocation);
 
-      <div style="margin-top:10px" class="summary">
-        <div class="flex"><div class="small">Subtotal</div><div id="subtotal">R$ 0,00</div></div>
-        <div class="flex"><div class="small">Taxa de entrega</div><div id="deliveryFee">R$ 0,00</div></div>
-        <div class="flex"><div class="small">Desconto</div><div id="couponDisc">R$ 0,00</div></div>
-        <div style="height:1px;background:rgba(255,255,255,0.03);margin:8px 0;border-radius:6px"></div>
-        <div class="flex"><div style="font-weight:900">Total</div><div id="total" style="font-size:18px;font-weight:900">R$ 0,00</div></div>
-      </div>
+        // Aplicar cupom
+        applyCupomBtn.addEventListener('click', applyCupom);
 
-      <div style="margin-top:10px;display:flex;gap:8px">
-        <input id="couponInput" placeholder="Cupom (opcional)" style="flex:1;border-radius:10px;padding:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--muted)">
-        <button id="applyCoupon" class="btn-ghost">Aplicar</button>
-      </div>
+        // Alternar entre entrega e retirada
+        document.querySelectorAll('input[name="delivery"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.value === 'delivery') {
+                    deliveryFeeDiv.style.display = 'block';
+                    distanceInfoDiv.style.display = 'block';
+                    calculateDeliveryFee();
+                } else {
+                    deliveryFeeDiv.style.display = 'none';
+                    distanceInfoDiv.style.display = 'none';
+                    deliveryFee = 0;
+                    updateOrderSummary();
+                }
+            });
+        });
 
-      <div style="margin-top:12px">
-        <div class="small">Pagamento na entrega</div>
-        <div style="display:flex;gap:8px;margin-top:6px">
-          <label style="font-weight:700"><input type="radio" name="pay" value="debito" checked/> Débito</label>
-          <label style="font-weight:700"><input type="radio" name="pay" value="credito"/> Crédito</label>
-          <label style="font-weight:700"><input type="radio" name="pay" value="pix"/> Pix</label>
-        </div>
+        // Finalizar pedido
+        checkoutBtn.addEventListener('click', finalizeOrder);
 
-        <div style="display:flex;gap:8px;margin-top:12px">
-          <button id="btnSendWhats" class="whatsapp" style="flex:1">Enviar pedido via WhatsApp</button>
-          <button id="btnPixWhats" class="pix" style="width:140px">Pix via WhatsApp</button>
-        </div>
-      </div>
+        // Navegação entre categorias
+        menuNavBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Remover classe active de todos os botões
+                menuNavBtns.forEach(b => b.classList.remove('active'));
+                
+                // Adicionar classe active ao botão clicado
+                this.classList.add('active');
+                
+                // Ocultar todas as categorias
+                document.querySelectorAll('.menu-category').forEach(cat => {
+                    cat.style.display = 'none';
+                });
+                
+                // Mostrar a categoria selecionada
+                const category = this.getAttribute('data-category');
+                document.getElementById(`${category}-category`).style.display = 'block';
+            });
+        });
 
-      <div style="margin-top:10px" class="small muted">
-        Observação: a loja selecionada recebe o pedido por WhatsApp. Caso queira, edite telefones ou endereços no topo do script.
-      </div>
-    </div>
-  </aside>
-
-  <footer>Prototipo — Parada Carioca • Edite telefones/CEPs no script conforme necessário.</footer>
-</div>
-
-<script>
-/* ====== CONFIG (edite aqui) ======
- - Atualize phones, endereços e coordenadas caso queira fixar valores
- - Loja2 phone está vazio por padrão, você pode preencher.
-*/
-const config = {
-  stores: [
-    {
-      id: 'loja1',
-      name: 'Parada Carioca',
-      phone: '5521991166886', // formato wa.me = country + ddd + number (55 21 99116-6886)
-      address: 'Rua Santa Luz, 2 - em frente ao Brizolão do Cristo',
-      cep: '23056030',
-      // coords: opcional (se souber, coloque lat/lon; se não, geocode será usado)
-      coords: { lat: -22.9068, lon: -43.1729 } // EXEMPLO (substitua se souber)
-    },
-    {
-      id: 'loja2',
-      name: 'R. Projetada Cinco, 31',
-      phone: '', // coloque aqui se tiver
-      address: 'R. Projetada Cinco, 31',
-      cep: '23055000',
-      coords: null
-    }
-  ],
-  thresholdKm: 6,
-  percentPerKm: 0.07 // 7% por km extra
-};
-
-/* ====== Menu (edite preços/itens) ====== */
-const menu = {
-  combos: [
-    { id:'c1', name:'Combo X-Burg + Fritas + Refri (M)', price: 34.00 },
-    { id:'c2', name:'Combo Chicken Crispy + Onion Rings + Refri', price: 36.50 }
-  ],
-  sandes: [
-    { id:'s1', name:'X-Burg Simples', price: 19.00 },
-    { id:'s2', name:'X-Burg Bacon', price: 24.00 },
-    { id:'s3', name:'Veggie Burger', price: 21.00 }
-  ],
-  drinks: [
-    { id:'d1', name:'Refrigerante 350ml', price: 6.50 },
-    { id:'d2', name:'Suco Natural 300ml', price: 8.50 },
-    { id:'d3', name:'Água 500ml', price: 4.00 }
-  ],
-  caldos: [
-    { id:'cal1', name:'Caldo de Feijão (p.)', price: 10.00 },
-    { id:'cal2', name:'Caldo Verde (p.)', price: 11.50 }
-  ]
-};
-
-/* CUPONS */
-const coupons = {
-  'PROMO10': { type:'percent', value:10 },
-  'FIX5': { type:'fixed', value:5 }
-};
-
-/* estado */
-let state = {
-  userCoords: null,
-  selectedStore: null,
-  distances: {},
-  cart: {},
-  coupon: null
-};
-
-/* helpers */
-function money(v){ return 'R$ ' + v.toFixed(2).replace('.',','); }
-function round2(n){ return Math.round(n*100)/100; }
-function haversine(lat1,lon1,lat2,lon2){
-  const toRad = x => x * Math.PI / 180;
-  const R = 6371;
-  const dLat = toRad(lat2-lat1);
-  const dLon = toRad(lon2-lon1);
-  const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLon/2)**2;
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-  return R * c;
-}
-
-/* DOM refs */
-const cepInput = document.getElementById('cepInput');
-const btnLocate = document.getElementById('btnLocate');
-const btnGeo = document.getElementById('btnGeo');
-const s1Addr = document.getElementById('s1Addr');
-const s2Addr = document.getElementById('s2Addr');
-const s1Whats = document.getElementById('s1Whats');
-const s2Whats = document.getElementById('s2Whats');
-const s1Dist = document.getElementById('s1Dist');
-const s2Dist = document.getElementById('s2Dist');
-const chooseS1 = document.getElementById('chooseS1');
-const chooseS2 = document.getElementById('chooseS2');
-const combosList = document.getElementById('combosList');
-const sandesList = document.getElementById('sandesList');
-const drinksList = document.getElementById('drinksList');
-const caldosList = document.getElementById('caldosList');
-const cartList = document.getElementById('cartList');
-const subtotalEl = document.getElementById('subtotal');
-const deliveryFeeEl = document.getElementById('deliveryFee');
-const totalEl = document.getElementById('total');
-const subtotalTop = document.getElementById('subtotalTop');
-const couponInput = document.getElementById('couponInput');
-const applyCouponBtn = document.getElementById('applyCoupon');
-const btnSendWhats = document.getElementById('btnSendWhats');
-const btnPixWhats = document.getElementById('btnPixWhats');
-const selectedLabel = document.getElementById('selectedLabel');
-const modeSelect = document.getElementById('mode');
-const couponDiscEl = document.getElementById('couponDisc');
-
-/* inicializar UI lojas */
-function initStoresUI(){
-  s1Addr.textContent = config.stores[0].address;
-  document.getElementById('s1Cep').textContent = formatCep(config.stores[0].cep);
-  s1Whats.href = config.stores[0].phone ? `https://wa.me/${config.stores[0].phone}` : '#';
-  s1Whats.textContent = formatPhone(config.stores[0].phone) || '—';
-  s2Addr.textContent = config.stores[1].address;
-  document.getElementById('s2Cep').textContent = formatCep(config.stores[1].cep);
-  s2Whats.href = config.stores[1].phone ? `https://wa.me/${config.stores[1].phone}` : '#';
-  s2Whats.textContent = formatPhone(config.stores[1].phone) || '—';
-  s1Dist.textContent = 'Distância: —';
-  s2Dist.textContent = 'Distância: —';
-}
-function formatCep(c){ if(!c) return '—'; const s = (''+c).replace(/\D/g,''); return s.slice(0,5)+'-'+s.slice(5); }
-function formatPhone(p){
-  if(!p) return '';
-  const s = p.replace(/\D/g,'');
-  if(s.length>=12){ const dd = s.slice(2,4), num = s.slice(4); return `+${s.slice(0,2)} (${dd}) ${num.slice(0,5)}-${num.slice(5)}`; }
-  return p;
-}
-
-/* render menu */
-function mkItem(item){
-  const div = document.createElement('div');
-  div.className = 'item';
-  div.innerHTML = `<div>
-      <div style="font-weight:700">${item.name}</div>
-      <div class="small">ID: ${item.id}</div>
-    </div>
-    <div style="text-align:right">
-      <div class="price">${money(item.price)}</div>
-      <div style="margin-top:8px"><button class="btn" onclick="addToCart('${item.id}')">Adicionar</button></div>
-    </div>`;
-  return div;
-}
-function renderMenu(){
-  menu.combos.forEach(i=>combosList.appendChild(mkItem(i)));
-  menu.sandes.forEach(i=>sandesList.appendChild(mkItem(i)));
-  menu.drinks.forEach(i=>drinksList.appendChild(mkItem(i)));
-  menu.caldos.forEach(i=>caldosList.appendChild(mkItem(i)));
-}
-
-/* achar item */
-function findMenuItem(id){
-  return [...menu.combos,...menu.sandes,...menu.drinks,...menu.caldos].find(x=>x.id===id);
-}
-
-/* CART */
-window.addToCart = function(itemId){
-  const it = findMenuItem(itemId);
-  if(!it) return alert('Item não encontrado');
-  if(!state.cart[itemId]) state.cart[itemId] = {...it, qty:0};
-  state.cart[itemId].qty++;
-  renderCart();
-};
-function changeQty(itemId, delta){
-  if(!state.cart[itemId]) return;
-  state.cart[itemId].qty += delta;
-  if(state.cart[itemId].qty <= 0) delete state.cart[itemId];
-  renderCart();
-}
-function renderCart(){
-  cartList.innerHTML = '';
-  const keys = Object.keys(state.cart);
-  if(keys.length === 0){
-    cartList.innerHTML = `<div class="small muted">Carrinho vazio</div>`;
-  } else {
-    keys.forEach(k=>{
-      const it = state.cart[k];
-      const row = document.createElement('div');
-      row.className = 'cart-row';
-      row.innerHTML = `<div>
-          <div style="font-weight:700">${it.name}</div>
-          <div class="small">x${it.qty} • ${money(it.price)} cada</div>
-        </div>
-        <div style="text-align:right">
-          <div style="font-weight:800">${money(it.price*it.qty)}</div>
-          <div class="qty" style="margin-top:8px">
-            <button onclick="changeQty('${k}',-1)" class="btn-ghost" style="padding:6px">-</button>
-            <div class="small">${it.qty}</div>
-            <button onclick="changeQty('${k}',1)" class="btn-ghost" style="padding:6px">+</button>
-          </div>
-        </div>`;
-      cartList.appendChild(row);
-    });
-  }
-  updateSummary();
-}
-
-/* resumo */
-function calcSubtotal(){ return round2(Object.values(state.cart).reduce((s,it)=>s + it.price*it.qty,0)); }
-function calcDeliveryFee(){
-  if(modeSelect.value === 'dinein') return 0;
-  if(!state.userCoords || !state.selectedStore) return 0;
-  const dist = state.distances[state.selectedStore.id] ?? 0;
-  if(dist <= config.thresholdKm) return 0;
-  const extraKm = Math.max(0, dist - config.thresholdKm);
-  const subtotal = calcSubtotal();
-  const fee = round2(subtotal * config.percentPerKm * extraKm);
-  return fee;
-}
-function applyCouponAmount(subtotal){
-  if(!state.coupon) return {discount:0};
-  const c = state.coupon;
-  if(c.type === 'percent'){
-    const disc = round2(subtotal * (c.value/100));
-    return {discount: disc};
-  } else {
-    return {discount: Math.min(c.value, subtotal)};
-  }
-}
-function updateSummary(){
-  const subtotal = calcSubtotal();
-  const fee = calcDeliveryFee();
-  const {discount} = applyCouponAmount(subtotal);
-  const total = round2(Math.max(0, subtotal + fee - discount));
-  subtotalEl.textContent = money(subtotal);
-  subtotalTop.textContent = money(subtotal);
-  deliveryFeeEl.textContent = money(fee);
-  couponDiscEl.textContent = money(discount);
-  totalEl.textContent = money(total);
-}
-
-/* cupom */
-applyCouponBtn.addEventListener('click', ()=>{
-  const code = (couponInput.value || '').trim().toUpperCase();
-  if(!code){ state.coupon = null; updateSummary(); return alert('Insira um cupom ou deixe em branco.'); }
-  if(coupons[code]){ state.coupon = coupons[code]; alert('Cupom aplicado: ' + code); }
-  else { state.coupon = null; alert('Cupom inválido'); }
-  updateSummary();
-});
-
-/* selecionar loja */
-chooseS1.addEventListener('click', ()=> selectStore(config.stores[0].id, true));
-chooseS2.addEventListener('click', ()=> selectStore(config.stores[1].id, true));
-
-function selectStore(storeId, manual=false){
-  const s = config.stores.find(x=>x.id === storeId) || config.stores[0];
-  state.selectedStore = s;
-  highlightSelected();
-  if(!manual) console.log('Loja selecionada automaticamente:', s.name);
-}
-function highlightSelected(){
-  selectedLabel.textContent = state.selectedStore ? state.selectedStore.name : '—';
-  document.getElementById('store1Card').style.border = state.selectedStore === config.stores[0] ? '2px solid rgba(255,120,40,0.12)' : '1px solid rgba(255,255,255,0.02)';
-  document.getElementById('store2Card').style.border = state.selectedStore === config.stores[1] ? '2px solid rgba(255,120,40,0.12)' : '1px solid rgba(255,255,255,0.02)';
-  updateSummary();
-}
-
-/* WhatsApp enviar */
-btnSendWhats.addEventListener('click', ()=>{
-  if(!state.selectedStore) return alert('Selecione uma loja primeiro (localize seu CEP).');
-  if(calcSubtotal() <= 0) return alert('Adicione ao menos um item.');
-  const store = state.selectedStore;
-  const pay = document.querySelector('input[name="pay"]:checked').value;
-  const mode = modeSelect.value;
-  const subtotal = calcSubtotal();
-  const fee = calcDeliveryFee();
-  const {discount} = applyCouponAmount(subtotal);
-  const total = round2(Math.max(0, subtotal + fee - discount));
-  const lines = [];
-  lines.push(`*Pedido — ${store.name}*`);
-  lines.push(`Modo: ${mode === 'delivery' ? 'Entrega' : 'Comer na loja'}`);
-  lines.push('');
-  lines.push('Itens:');
-  Object.values(state.cart).forEach(it=> lines.push(`${it.qty}x ${it.name} — ${money(it.price*it.qty)}`));
-  lines.push('');
-  lines.push(`Subtotal: ${money(subtotal)}`);
-  if(fee>0) lines.push(`Taxa de entrega: ${money(fee)} (dist: ${state.distances[store.id]?.toFixed(2) ?? '—'} km)`);
-  if(discount>0) lines.push(`Desconto: -${money(discount)}`);
-  lines.push(`*Total: ${money(total)}*`);
-  lines.push(`Pagamento na entrega: ${pay}`);
-  if(mode==='delivery') lines.push(`Endereço (CEP): ${cepInput.value || '—'}`);
-  lines.push('');
-  lines.push('Por favor confirme o pedido e envie o PIX/QR.');
-
-  const text = encodeURIComponent(lines.join('\n'));
-  if(!store.phone) return alert('Número da loja não definido. Edite config.stores[1].phone no script.');
-  const wa = `https://wa.me/${store.phone}?text=${text}`;
-  window.open(wa,'_blank');
-});
-
-/* Pix via WhatsApp */
-btnPixWhats.addEventListener('click', ()=>{
-  if(!state.selectedStore) return alert('Selecione uma loja primeiro.');
-  const store = state.selectedStore;
-  const lines = [`Olá ${store.name}, preciso das informações para pagamento via PIX (chave/QR).`];
-  const text = encodeURIComponent(lines.join('\n'));
-  if(!store.phone) return alert('Número da loja não definido. Edite config.stores[1].phone no script.');
-  const wa = `https://wa.me/${store.phone}?text=${text}`;
-  window.open(wa,'_blank');
-});
-
-/* ===== CEP -> geocode workflow =====
- strategy:
- 1) tentar geolocalização do navegador se o usuário clicar (btnGeo)
- 2) caso contrário, pegar CEP digitado, validar via Viacep e fazer geocoding Nominatim
- 3) calcular distâncias para todas as lojas; escolher a mais próxima automaticamente
-*/
-btnGeo.addEventListener('click', async ()=>{
-  if(!navigator.geolocation) return alert('Geolocalização não suportada neste navegador.');
-  btnGeo.textContent = 'Localizando...';
-  navigator.geolocation.getCurrentPosition(async pos=>{
-    btnGeo.textContent = 'Usar GPS';
-    const lat = pos.coords.latitude, lon = pos.coords.longitude;
-    state.userCoords = {lat, lon};
-    await computeDistancesAndSelect();
-    alert('Localização definida via GPS.');
-  }, err=>{
-    btnGeo.textContent = 'Usar GPS';
-    alert('Erro ao obter localização: ' + (err.message || err.code));
-  }, {timeout:15000});
-});
-
-btnLocate.addEventListener('click', locateByCep);
-
-async function locateByCep(){
-  const raw = (cepInput.value || '').replace(/\D/g,'');
-  if(!raw || raw.length < 8) return alert('Informe um CEP válido (8 dígitos).');
-  cepInput.value = raw.slice(0,5) + '-' + raw.slice(5);
-  try{
-    // ViaCEP valida e retorna logradouro/cidade/uf
-    const via = await fetch(`https://viacep.com.br/ws/${raw}/json/`).then(r=>r.json());
-    if(via.erro) {
-      if(!confirm('CEP não encontrado no ViaCEP. Deseja tentar geocoding mesmo assim?')) return;
-    } else {
-      // usamos endereço do viaCep para geocoding melhor se precisar
-      console.log('ViaCEP:', via);
-    }
-
-    // geocoding por Nominatim: query = cep, Brasil
-    const q = encodeURIComponent(`${raw}, Brasil`);
-    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${q}&limit=1&addressdetails=1`;
-    const res = await fetch(url, {headers:{'Accept-Language':'pt-BR'}});
-    const arr = await res.json();
-    if(!arr || arr.length===0) {
-      alert('Não foi possível obter coordenadas do CEP. Tente permitir GPS ou informar outro CEP.');
-      return;
-    }
-    const lat = parseFloat(arr[0].lat), lon = parseFloat(arr[0].lon);
-    state.userCoords = {lat, lon};
-    await computeDistancesAndSelect();
-    alert(`Localização obtida: ${arr[0].display_name}.`);
-  } catch(err){
-    console.error(err);
-    alert('Erro ao localizar CEP: ' + (err.message || err));
-  }
-}
-
-/* compute distances using known store coords or geocode store address if coords missing */
-async function computeDistancesAndSelect(){
-  // se alguma loja não tiver coords, tentar geocode ela via nominatim
-  for(const s of config.stores){
-    if(!s.coords){
-      try{
-        const q = encodeURIComponent(`${s.address}, Brasil`);
-        const url = `https://nominatim.openstreetmap.org/search?format=json&q=${q}&limit=1&addressdetails=1`;
-        const res = await fetch(url, {headers:{'Accept-Language':'pt-BR'}});
-        const arr = await res.json();
-        if(arr && arr.length>0){
-          s.coords = { lat: parseFloat(arr[0].lat), lon: parseFloat(arr[0].lon) };
+        // Função para encontrar loja pelo CEP
+        function findStoreByCEP() {
+            const cep = cepInput.value.replace(/\D/g, '');
+            
+            if (cep.length !== 8) {
+                showNotification('Por favor, digite um CEP válido.', 'error');
+                return;
+            }
+            
+            // Simulação de busca por CEP
+            locationLoading.style.display = 'block';
+            
+            setTimeout(() => {
+                // Em uma aplicação real, isso seria feito com uma API de geolocalização
+                const distanceToStore1 = Math.floor(Math.random() * 10) + 1; // 1-10 km
+                const distanceToStore2 = Math.floor(Math.random() * 10) + 1; // 1-10 km
+                
+                // Determinar a loja mais próxima
+                selectedStore = distanceToStore1 <= distanceToStore2 ? stores[0] : stores[1];
+                userDistance = Math.min(distanceToStore1, distanceToStore2);
+                
+                locationLoading.style.display = 'none';
+                displayStore(selectedStore);
+                showMenu();
+                showNotification(`Loja mais próxima encontrada! Distância: ${userDistance} km`, 'success');
+            }, 1500);
         }
-      }catch(e){
-        console.warn('Geocode loja falhou', s.name, e);
-      }
-    }
-  }
 
-  // calcular distâncias
-  if(!state.userCoords) return;
-  config.stores.forEach(s=>{
-    if(s.coords){
-      const d = haversine(state.userCoords.lat, state.userCoords.lon, s.coords.lat, s.coords.lon);
-      state.distances[s.id] = round2(d);
-    } else {
-      state.distances[s.id] = Infinity;
-    }
-  });
+        // Função para obter localização atual
+        function getCurrentLocation() {
+            if (navigator.geolocation) {
+                locationLoading.style.display = 'block';
+                
+                navigator.geolocation.getCurrentPosition(
+                    position => {
+                        const userLat = position.coords.latitude;
+                        const userLng = position.coords.longitude;
+                        
+                        // Calcular distância para cada loja
+                        const distances = stores.map(store => {
+                            return {
+                                store: store,
+                                distance: calculateDistance(
+                                    userLat, userLng, 
+                                    store.coordinates.lat, store.coordinates.lng
+                                )
+                            };
+                        });
+                        
+                        // Encontrar a loja mais próxima
+                        const closestStore = distances.reduce((prev, current) => 
+                            prev.distance < current.distance ? prev : current
+                        ).store;
+                        
+                        userDistance = Math.min(...distances.map(d => d.distance));
+                        selectedStore = closestStore;
+                        
+                        locationLoading.style.display = 'none';
+                        displayStore(selectedStore);
+                        showMenu();
+                        showNotification(`Localização detectada! Loja mais próxima: ${selectedStore.name}`, 'success');
+                    },
+                    error => {
+                        locationLoading.style.display = 'none';
+                        showNotification('Não foi possível obter sua localização. Por favor, digite seu CEP manualmente.', 'error');
+                        console.error('Erro de geolocalização:', error);
+                    }
+                );
+            } else {
+                showNotification('Geolocalização não é suportada pelo seu navegador. Por favor, digite seu CEP manualmente.', 'error');
+            }
+        }
 
-  // atualizar UI distâncias
-  s1Dist.textContent = `Distância: ${isFinite(state.distances[config.stores[0].id]) ? state.distances[config.stores[0].id] + ' km' : '—'}`;
-  s2Dist.textContent = `Distância: ${isFinite(state.distances[config.stores[1].id]) ? state.distances[config.stores[1].id] + ' km' : '—'}`;
+        // Função para calcular distância entre coordenadas (fórmula de Haversine)
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371; // Raio da Terra em km
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = 
+                Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+                Math.sin(dLon/2) * Math.sin(dLon/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return Math.round(R * c * 10) / 10; // Distância em km com uma casa decimal
+        }
 
-  // escolher a mais próxima
-  const nearest = config.stores.reduce((a,b)=> (state.distances[a.id] <= state.distances[b.id]) ? a : b);
-  selectStore(nearest.id);
-}
+        // Exibir apenas a loja mais próxima
+        function displayStore(selectedStore) {
+            storeInfoDiv.innerHTML = '';
+            
+            const storeCard = document.createElement('div');
+            storeCard.className = 'store-card';
+            
+            storeCard.innerHTML = `
+                <div class="store-name">
+                    <i class="fas fa-store"></i>
+                    ${selectedStore.name}
+                </div>
+                <div class="store-address">
+                    <i class="fas fa-map-marker-alt"></i>
+                    ${selectedStore.address}
+                </div>
+                <div class="store-phone">
+                    <i class="fas fa-phone-alt"></i>
+                    ${selectedStore.phone}
+                </div>
+                <a href="https://wa.me/${selectedStore.phone.replace(/\D/g, '')}" class="whatsapp-btn" target="_blank">
+                    <i class="fab fa-whatsapp"></i> Falar no WhatsApp
+                </a>
+            `;
+            
+            storeInfoDiv.appendChild(storeCard);
+            
+            // Atualizar informações de distância
+            if (userDistance > 0) {
+                distanceInfoDiv.innerHTML = `
+                    <i class="fas fa-road"></i> Distância até a loja: ${userDistance} km
+                    ${userDistance > 6 ? `<br><i class="fas fa-exclamation-triangle"></i> Taxa de entrega aplicada para distâncias acima de 6 km` : ''}
+                `;
+            }
+        }
 
-/* init */
-(function init(){
-  // garantir ids
-  config.stores = config.stores.map((s,i)=> ({...s, id: s.id || ('loja'+(i+1))}));
-  initStoresUI();
-  renderMenu();
-  renderCart();
-})();
-</script>
+        // Mostrar cardápio
+        function showMenu() {
+            menuSection.style.display = 'block';
+            orderSection.style.display = 'block';
+            
+            // Preencher combos
+            const combosDiv = document.getElementById('combos');
+            combosDiv.innerHTML = '';
+            menu.combos.forEach(item => {
+                combosDiv.appendChild(createMenuItem(item));
+            });
+            
+            // Preencher lanches
+            const lanchesDiv = document.getElementById('lanches');
+            lanchesDiv.innerHTML = '';
+            menu.lanches.forEach(item => {
+                lanchesDiv.appendChild(createMenuItem(item));
+            });
+            
+            // Preencher bebidas
+            const bebidasDiv = document.getElementById('bebidas');
+            bebidasDiv.innerHTML = '';
+            menu.bebidas.forEach(item => {
+                bebidasDiv.appendChild(createMenuItem(item));
+            });
+            
+            // Preencher caldos
+            const caldosDiv = document.getElementById('caldos');
+            caldosDiv.innerHTML = '';
+            menu.caldos.forEach(item => {
+                caldosDiv.appendChild(createMenuItem(item));
+            });
+        }
+
+        // Criar elemento de item do menu
+        function createMenuItem(item) {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'menu-item';
+            
+            itemDiv.innerHTML = `
+                <div class="item-image" style="background-image: url('${item.image}')"></div>
+                <div class="item-details">
+                    <div class="item-name">${item.name}</div>
+                    <div class="item-description">${item.description}</div>
+                    <div class="item-price">R$ ${item.price.toFixed(2)}</div>
+                    <button class="add-to-cart" data-id="${item.id}">
+                        <i class="fas fa-cart-plus"></i> Adicionar ao Carrinho
+                    </button>
+                </div>
+            `;
+            
+            // Adicionar evento de clique ao botão
+            itemDiv.querySelector('.add-to-cart').addEventListener('click', () => {
+                addToCart(item);
+            });
+            
+            return itemDiv;
+        }
+
+        // Adicionar item ao carrinho
+        function addToCart(item) {
+            const existingItem = cart.find(cartItem => cartItem.id === item.id);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: item.id,
+                    name: item.name,
+                    price: item.price,
+                    quantity: 1
+                });
+            }
+            
+            updateOrderSummary();
+            showNotification(`${item.name} adicionado ao carrinho!`, 'success');
+        }
+
+        // Atualizar resumo do pedido
+        function updateOrderSummary() {
+            if (cart.length === 0) {
+                orderSummaryDiv.innerHTML = '<p>Seu carrinho está vazio</p>';
+                return;
+            }
+            
+            let html = '';
+            let subtotal = 0;
+            
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                subtotal += itemTotal;
+                
+                html += `
+                    <div class="order-item">
+                        <div>${item.name} x${item.quantity}</div>
+                        <div>R$ ${itemTotal.toFixed(2)}</div>
+                    </div>
+                `;
+            });
+            
+            const total = subtotal + deliveryFee - cupomDiscount;
+            
+            html += `
+                <div class="order-item">
+                    <div>Subtotal</div>
+                    <div>R$ ${subtotal.toFixed(2)}</div>
+                </div>
+            `;
+            
+            if (deliveryFee > 0) {
+                html += `
+                    <div class="order-item">
+                        <div>Taxa de entrega</div>
+                        <div>R$ ${deliveryFee.toFixed(2)}</div>
+                    </div>
+                `;
+            }
+            
+            if (cupomDiscount > 0) {
+                html += `
+                    <div class="order-item">
+                        <div>Desconto</div>
+                        <div>- R$ ${cupomDiscount.toFixed(2)}</div>
+                    </div>
+                `;
+            }
+            
+            html += `
+                <div class="order-total">
+                    <div>Total</div>
+                    <div>R$ ${total.toFixed(2)}</div>
+                </div>
+            `;
+            
+            orderSummaryDiv.innerHTML = html;
+        }
+
+        // Calcular taxa de entrega
+        function calculateDeliveryFee() {
+            if (userDistance <= 6) {
+                deliveryFee = 0;
+                deliveryFeeDiv.innerHTML = '<i class="fas fa-check-circle"></i> Entrega gratuita!';
+            } else {
+                // 7% do valor do pedido por km adicional
+                const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                const additionalKm = userDistance - 6;
+                deliveryFee = subtotal * 0.07 * additionalKm;
+                deliveryFeeDiv.innerHTML = `<i class="fas fa-truck"></i> Taxa de entrega: R$ ${deliveryFee.toFixed(2)} (7% por km adicional após 6 km)`;
+            }
+            
+            updateOrderSummary();
+        }
+
+        // Aplicar cupom de desconto
+        function applyCupom() {
+            const cupom = cupomInput.value.trim().toUpperCase();
+            
+            if (cupom === '') {
+                showNotification('Por favor, digite um código de cupom.', 'error');
+                return;
+            }
+            
+            // Simulação de validação de cupom
+            if (cupom === 'DESC10') {
+                const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                cupomDiscount = subtotal * 0.1;
+                showNotification('Cupom aplicado com sucesso! 10% de desconto.', 'success');
+                updateOrderSummary();
+            } else if (cupom === 'FRETEGRATIS') {
+                deliveryFee = 0;
+                deliveryFeeDiv.innerHTML = '<i class="fas fa-check-circle"></i> Frete grátis aplicado!';
+                showNotification('Cupom aplicado com sucesso! Frete grátis.', 'success');
+                updateOrderSummary();
+            } else if (cupom === 'CARIOCA15') {
+                const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                cupomDiscount = subtotal * 0.15;
+                showNotification('Cupom aplicado com sucesso! 15% de desconto.', 'success');
+                updateOrderSummary();
+            } else {
+                showNotification('Cupom inválido ou expirado.', 'error');
+            }
+        }
+
+        // Finalizar pedido
+        function finalizeOrder() {
+            if (cart.length === 0) {
+                showNotification('Seu carrinho está vazio. Adicione itens antes de finalizar o pedido.', 'error');
+                return;
+            }
+            
+            if (!selectedStore) {
+                showNotification('Por favor, selecione uma loja primeiro.', 'error');
+                return;
+            }
+            
+            const deliveryOption = document.querySelector('input[name="delivery"]:checked').value;
+            const paymentOption = document.querySelector('input[name="payment"]:checked').value;
+            
+            // Calcular total
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const total = subtotal + deliveryFee - cupomDiscount;
+            
+            // Montar mensagem para WhatsApp
+            let message = `Olá, gostaria de fazer um pedido na Parada Carioca!\n\n`;
+            message += `*Loja:* ${selectedStore.name}\n`;
+            message += `*Endereço:* ${selectedStore.address}\n\n`;
+            message += `*Itens do pedido:*\n`;
+            
+            cart.forEach(item => {
+                message += `- ${item.name} x${item.quantity} - R$ ${(item.price * item.quantity).toFixed(2)}\n`;
+            });
+            
+            message += `\n*Subtotal:* R$ ${subtotal.toFixed(2)}\n`;
+            
+            if (deliveryFee > 0) {
+                message += `*Taxa de entrega:* R$ ${deliveryFee.toFixed(2)}\n`;
+            }
+            
+            if (cupomDiscount > 0) {
+                message += `*Desconto:* R$ ${cupomDiscount.toFixed(2)}\n`;
+            }
+            
+            message += `*Total:* R$ ${total.toFixed(2)}\n\n`;
+            message += `*Opção de entrega:* ${deliveryOption === 'eat-in' ? 'Comer na loja' : 'Entrega em casa'}\n`;
+            message += `*Forma de pagamento:* `;
+            
+            switch(paymentOption) {
+                case 'debit':
+                    message += 'Cartão de Débito';
+                    break;
+                case 'credit':
+                    message += 'Cartão de Crédito';
+                    break;
+                case 'pix':
+                    message += 'PIX';
+                    break;
+                case 'pix-whatsapp':
+                    message += 'PIX via WhatsApp';
+                    break;
+            }
+            
+            if (deliveryOption === 'delivery') {
+                message += `\n*Distância:* ${userDistance} km`;
+            }
+            
+            // Codificar mensagem para URL
+            const encodedMessage = encodeURIComponent(message);
+            
+            // Abrir WhatsApp com a mensagem
+            window.open(`https://wa.me/${selectedStore.phone.replace(/\D/g, '')}?text=${encodedMessage}`, '_blank');
+            
+            // Limpar carrinho após pedido
+            cart = [];
+            cupomDiscount = 0;
+            cupomInput.value = '';
+            updateOrderSummary();
+            
+            showNotification('Pedido enviado! Em breve entraremos em contato para confirmar.', 'success');
+        }
+
+        // Mostrar notificação
+        function showNotification(message, type) {
+            notification.textContent = message;
+            notification.style.backgroundColor = type === 'success' ? 'var(--success)' : 'var(--accent)';
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 4000);
+        }
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tentar detectar localização automaticamente ao carregar a página
+            getCurrentLocation();
+        });
+    </script>
 </body>
 </html>
