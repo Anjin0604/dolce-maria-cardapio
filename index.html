@@ -104,6 +104,7 @@
             margin: 4px 12px;
             border-radius: var(--border-radius);
             white-space: nowrap;
+            cursor: pointer;
         }
 
         .nav-item:hover {
@@ -420,8 +421,7 @@
             border-radius: var(--border-radius);
             background: rgba(255,255,255,0.05);
             color: var(--text-primary);
-            font-family: 'Libre Barcode 128', monospace;
-            font-size: 1.5rem;
+            font-size: 1rem;
         }
 
         .barcode-btn {
@@ -1029,6 +1029,16 @@
         ::-webkit-scrollbar-thumb:hover {
             background: var(--primary-light);
         }
+
+        /* ========== SEÇÕES ========== */
+        .section {
+            display: none;
+            height: 100%;
+        }
+
+        .section.active {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -1341,6 +1351,70 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Gestão de Produtos -->
+                <div class="section" id="productsSection">
+                    <div class="card">
+                        <h3 style="margin-bottom: 20px; color: var(--primary-light);">
+                            <i class="fas fa-boxes"></i> Gestão de Produtos
+                        </h3>
+                        <div id="productsListContent">
+                            <p style="text-align: center; color: var(--text-secondary); padding: 40px;">
+                                <i class="fas fa-box-open" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.3;"></i>
+                                <br>
+                                Módulo de gestão de produtos
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Histórico de Vendas -->
+                <div class="section" id="salesSection">
+                    <div class="card">
+                        <h3 style="margin-bottom: 20px; color: var(--primary-light);">
+                            <i class="fas fa-receipt"></i> Histórico de Vendas
+                        </h3>
+                        <div id="salesHistoryContent">
+                            <p style="text-align: center; color: var(--text-secondary); padding: 40px;">
+                                <i class="fas fa-receipt" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.3;"></i>
+                                <br>
+                                Histórico completo de vendas
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Relatórios -->
+                <div class="section" id="reportsSection">
+                    <div class="card">
+                        <h3 style="margin-bottom: 20px; color: var(--primary-light);">
+                            <i class="fas fa-chart-bar"></i> Relatórios
+                        </h3>
+                        <div id="reportsContent">
+                            <p style="text-align: center; color: var(--text-secondary); padding: 40px;">
+                                <i class="fas fa-chart-pie" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.3;"></i>
+                                <br>
+                                Relatórios e análises de vendas
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Controle de Caixa -->
+                <div class="section" id="cashSection">
+                    <div class="card">
+                        <h3 style="margin-bottom: 20px; color: var(--primary-light);">
+                            <i class="fas fa-cash-register"></i> Controle de Caixa
+                        </h3>
+                        <div id="cashControlContent">
+                            <p style="text-align: center; color: var(--text-secondary); padding: 40px;">
+                                <i class="fas fa-cash-register" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.3;"></i>
+                                <br>
+                                Controle de abertura e fechamento de caixa
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -1513,6 +1587,190 @@
             }
         }
 
+        // ========== SISTEMA DE BANCO DE DADOS ==========
+        class Database {
+            constructor() {
+                this.dbName = 'autopdv_pro';
+                this.version = 2;
+            }
+
+            async init() {
+                return new Promise((resolve, reject) => {
+                    const request = indexedDB.open(this.dbName, this.version);
+                    
+                    request.onupgradeneeded = (e) => {
+                        const db = e.target.result;
+                        
+                        if (!db.objectStoreNames.contains('products')) {
+                            const store = db.createObjectStore('products', { keyPath: 'id' });
+                            store.createIndex('name', 'name', { unique: false });
+                            store.createIndex('category', 'category', { unique: false });
+                        }
+                        
+                        if (!db.objectStoreNames.contains('sales')) {
+                            const store = db.createObjectStore('sales', { keyPath: 'id', autoIncrement: true });
+                            store.createIndex('date', 'date', { unique: false });
+                            store.createIndex('total', 'total', { unique: false });
+                        }
+                        
+                        if (!db.objectStoreNames.contains('users')) {
+                            db.createObjectStore('users', { keyPath: 'id' });
+                        }
+                    };
+                    
+                    request.onsuccess = (e) => {
+                        this.db = e.target.result;
+                        resolve(this.db);
+                    };
+                    
+                    request.onerror = (e) => reject(e.target.error);
+                });
+            }
+
+            async get(storeName, key) {
+                return new Promise((resolve, reject) => {
+                    const transaction = this.db.transaction([storeName], 'readonly');
+                    const store = transaction.objectStore(storeName);
+                    const request = key ? store.get(key) : store.getAll();
+                    
+                    request.onsuccess = () => resolve(request.result);
+                    request.onerror = () => reject(request.error);
+                });
+            }
+
+            async set(storeName, data) {
+                return new Promise((resolve, reject) => {
+                    const transaction = this.db.transaction([storeName], 'readwrite');
+                    const store = transaction.objectStore(storeName);
+                    const request = store.put(data);
+                    
+                    request.onsuccess = () => resolve(request.result);
+                    request.onerror = () => reject(request.error);
+                });
+            }
+        }
+
+        // ========== SISTEMA DE CAIXA ==========
+        class CashManagement {
+            constructor() {
+                this.isOpen = false;
+                this.openingBalance = 0;
+                this.currentBalance = 0;
+                this.transactions = [];
+            }
+
+            open(initialAmount) {
+                this.isOpen = true;
+                this.openingBalance = initialAmount;
+                this.currentBalance = initialAmount;
+                this.transactions = [];
+                
+                this.addTransaction(initialAmount, 'opening', 'Abertura de caixa');
+                return true;
+            }
+
+            addTransaction(amount, type, description) {
+                const transaction = {
+                    id: Date.now(),
+                    amount,
+                    type,
+                    description,
+                    timestamp: new Date(),
+                    user: system.currentUser.name
+                };
+                
+                this.transactions.push(transaction);
+                
+                if (type === 'sale') {
+                    this.currentBalance += amount;
+                } else if (type === 'expense') {
+                    this.currentBalance -= amount;
+                }
+                
+                return transaction;
+            }
+
+            close() {
+                if (!this.isOpen) return null;
+                
+                const report = {
+                    opening: this.openingBalance,
+                    closing: this.currentBalance,
+                    totalSales: this.transactions
+                        .filter(t => t.type === 'sale')
+                        .reduce((sum, t) => sum + t.amount, 0),
+                    totalExpenses: this.transactions
+                        .filter(t => t.type === 'expense')
+                        .reduce((sum, t) => sum + t.amount, 0),
+                    transactions: this.transactions,
+                    timestamp: new Date()
+                };
+                
+                this.isOpen = false;
+                return report;
+            }
+        }
+
+        // ========== SISTEMA DE PROMOÇÕES ==========
+        class PromotionManager {
+            constructor() {
+                this.promotions = [];
+            }
+
+            addPromotion(productId, type, value, startDate, endDate) {
+                const promotion = {
+                    id: Date.now(),
+                    productId,
+                    type,
+                    value,
+                    startDate: new Date(startDate),
+                    endDate: new Date(endDate),
+                    active: true
+                };
+                
+                this.promotions.push(promotion);
+                return promotion;
+            }
+
+            getActivePromotions() {
+                const now = new Date();
+                return this.promotions.filter(p => 
+                    p.active && 
+                    now >= p.startDate && 
+                    now <= p.endDate
+                );
+            }
+
+            applyPromotion(product, quantity) {
+                const activePromos = this.getActivePromotions();
+                const promotion = activePromos.find(p => p.productId === product.id);
+                
+                if (!promotion) return { original: product.price * quantity, final: product.price * quantity };
+                
+                let finalPrice = product.price * quantity;
+                
+                switch(promotion.type) {
+                    case 'percentage':
+                        finalPrice *= (1 - promotion.value / 100);
+                        break;
+                    case 'fixed':
+                        finalPrice -= promotion.value * quantity;
+                        break;
+                    case 'bundle':
+                        // Ex: leve 3 pague 2
+                        const paidItems = Math.ceil(quantity / promotion.value.buy) * promotion.value.pay;
+                        finalPrice = paidItems * product.price;
+                        break;
+                }
+                
+                return {
+                    original: product.price * quantity,
+                    final: Math.max(0, finalPrice),
+                    promotion: promotion
+                };
+            }
+        }
+
         // ========== SISTEMA DE IMPRESSÃO ==========
         class PrinterService {
             static printReceipt(saleData) {
@@ -1593,27 +1851,41 @@ FORMA PGTO: ${saleData.payment}
                 return;
             }
 
-            // Simulação de autenticação
+            // CORREÇÃO: Sistema de autenticação funcional
+            const validUsers = {
+                'admin': { password: '123456', role: 'admin', name: 'Administrador' },
+                'caixa': { password: '123456', role: 'caixa', name: 'Operador de Caixa' }
+            };
+
+            const user = validUsers[username];
+            
+            if (!user || user.password !== password) {
+                showNotification("Usuário ou senha inválidos!", "error");
+                return;
+            }
+
+            // CORREÇÃO: Definir usuário corretamente
             system.currentUser = {
-                name: username,
-                role: userType,
+                name: user.name,
+                role: user.role,
                 avatar: username.charAt(0).toUpperCase()
             };
 
-            system.isAdmin = userType === 'admin';
+            system.isAdmin = user.role === 'admin';
 
+            // CORREÇÃO: Transição suave entre telas
             document.getElementById('loginScreen').style.display = 'none';
             document.getElementById('appContainer').style.display = 'flex';
             
             // Atualizar interface do usuário
             document.getElementById('userName').textContent = system.currentUser.name;
-            document.getElementById('userRole').textContent = userType === 'admin' ? 'Administrador' : 'Operador de Caixa';
+            document.getElementById('userRole').textContent = user.role === 'admin' ? 'Administrador' : 'Operador de Caixa';
             document.getElementById('userAvatar').textContent = system.currentUser.avatar;
             
             // Aplicar permissões
             system.applyUserPermissions();
 
-            showNotification(`Bem-vindo, ${username}!`, "success");
+            showNotification(`Bem-vindo, ${system.currentUser.name}!`, "success");
             system.initialize();
 
             // Focar no PDV se for caixa
@@ -1633,22 +1905,27 @@ FORMA PGTO: ${saleData.payment}
         }
 
         function showSection(sectionName) {
-            // Esconder todas as seções
+            // CORREÇÃO: Esconder todas as seções corretamente
             document.querySelectorAll('.section').forEach(section => {
                 section.classList.remove('active');
             });
             
-            // Mostrar seção selecionada
+            // CORREÇÃO: Mostrar seção selecionada
             const targetSection = document.getElementById(sectionName + 'Section');
             if (targetSection) {
                 targetSection.classList.add('active');
             }
             
-            // Atualizar menu
+            // CORREÇÃO: Atualizar menu navigation
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.classList.remove('active');
             });
-            event.target.classList.add('active');
+            
+            // CORREÇÃO: Encontrar o item correto do menu
+            const activeNavItem = document.querySelector(`.nav-item[onclick="showSection('${sectionName}')"]`);
+            if (activeNavItem) {
+                activeNavItem.classList.add('active');
+            }
         }
 
         function toggleSidebar() {
