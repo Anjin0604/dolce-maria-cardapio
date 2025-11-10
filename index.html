@@ -1,1138 +1,506 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel de Controle e Estoque</title>
-    <style>
-        :root {
-            --primary-color: #2a9d8f;
-            --secondary-color: #264653;
-            --background-color: #1e293b;
-            --card-color: #334155;
-            --text-color: #f8fafc;
-            --danger-color: #e76f51;
-            --success-color: #2a9d8f;
-            --warning-color: #e9c46a;
-            --border-radius: 8px;
-            --transition: all 0.3s ease;
-        }
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>StockPro — Painel (virgem)</title>
+<style>
+  /* ===== Theme & Reset ===== */
+  :root{
+    --bg:#071427;
+    --panel: rgba(255,255,255,0.03);
+    --glass: rgba(255,255,255,0.04);
+    --muted:#9fb1bf;
+    --accent:#17a2a6;
+    --success:#22c55e;
+    --danger:#ff6b6b;
+    --radius:12px;
+    --shadow: 0 10px 30px rgba(2,6,23,0.6);
+    --glass-strong: rgba(255,255,255,0.06);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;font-family:Inter,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial}
+  html,body,#app{height:100%}
+  body{
+    min-height:100vh;
+    background: radial-gradient(1200px 600px at 10% 10%, rgba(23,162,166,0.06), transparent 5%),
+                linear-gradient(180deg, #071427 0%, #031021 100%);
+    color:#e6f0f5;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    padding:20px;
+  }
 
-        .light-theme {
-            --primary-color: #2a9d8f;
-            --secondary-color: #e9ecef;
-            --background-color: #f8f9fa;
-            --card-color: #ffffff;
-            --text-color: #212529;
-            --danger-color: #dc3545;
-            --success-color: #28a745;
-            --warning-color: #ffc107;
-        }
+  /* ===== Layout ===== */
+  .app{display:grid;grid-template-columns:260px 1fr;gap:20px;align-items:start;max-width:1200px;margin:0 auto}
+  @media(max-width:920px){.app{grid-template-columns:1fr;padding:12px} .sidebar{position:static;height:auto}}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+  /* ===== Sidebar ===== */
+  .sidebar{
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:var(--radius);padding:18px;height:calc(100vh - 40px);position:sticky;top:20px;box-shadow:var(--shadow)
+  }
+  .brand{display:flex;gap:12px;align-items:center;margin-bottom:16px}
+  .logo{width:50px;height:50px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#204a57);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px}
+  .brand h1{font-size:16px}
+  .brand p{color:var(--muted);font-size:12px;margin-top:2px}
 
-        body {
-            background-color: var(--background-color);
-            color: var(--text-color);
-            transition: var(--transition);
-            display: flex;
-            min-height: 100vh;
-        }
+  .nav{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+  .nav button{display:flex;gap:10px;align-items:center;padding:10px;border-radius:10px;border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:14px}
+  .nav button:hover{color:#fff;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01))}
+  .nav button.active{color:#06121a;background:var(--accent);box-shadow:0 6px 20px rgba(23,162,166,0.12)}
 
-        /* Sidebar */
-        .sidebar {
-            width: 250px;
-            background-color: var(--secondary-color);
-            padding: 20px 0;
-            transition: var(--transition);
-            position: fixed;
-            height: 100vh;
-            overflow-y: auto;
-            z-index: 1000;
-        }
+  .nav .icon{width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;opacity:0.95}
 
-        .logo {
-            text-align: center;
-            padding: 20px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            margin-bottom: 20px;
-        }
+  .sidebar .meta{margin-top:18px;color:var(--muted);font-size:13px}
 
-        .logo h1 {
-            font-size: 1.5rem;
-            color: var(--primary-color);
-        }
+  /* ===== Main ===== */
+  .main{display:flex;flex-direction:column;gap:16px}
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .search{flex:1;display:flex;gap:8px;align-items:center}
+  .search input{flex:1;padding:10px 12px;border-radius:10px;border:0;background:var(--glass);color:#e9fbff}
+  .controls{display:flex;gap:8px;align-items:center}
+  .btn{padding:8px 12px;border-radius:10px;border:0;background:transparent;color:var(--muted);cursor:pointer}
+  .btn.primary{background:var(--accent);color:#06121a;font-weight:700}
+  .chip{background:var(--glass);padding:6px 10px;border-radius:999px;color:var(--muted);font-size:13px}
 
-        .menu {
-            list-style: none;
-        }
+  /* ===== Dashboard Cards ===== */
+  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  @media(max-width:1100px){.cards{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:600px){.cards{grid-template-columns:1fr}}
+  .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:16px;border-radius:12px;box-shadow:var(--shadow)}
+  .card h3{margin:0;font-size:13px;color:var(--muted)}
+  .card .value{font-size:20px;font-weight:800;margin-top:6px;color:#fff}
+  .placeholder{color:var(--muted);font-weight:600}
 
-        .menu-item {
-            padding: 12px 20px;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+  /* ===== Content layout ===== */
+  .content{display:grid;grid-template-columns:1fr 360px;gap:16px}
+  @media(max-width:1000px){.content{grid-template-columns:1fr}}
 
-        .menu-item:hover, .menu-item.active {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-left: 4px solid var(--primary-color);
-        }
+  /* left: lists & tables */
+  .panel{background:var(--panel);padding:14px;border-radius:12px;box-shadow:var(--shadow)}
+  table{width:100%;border-collapse:collapse;color:#dbeefe}
+  th,td{padding:10px;text-align:left;border-bottom:1px dashed rgba(255,255,255,0.03);font-size:14px}
+  th{color:var(--muted);font-weight:600}
+  .empty{padding:24px;text-align:center;color:var(--muted)}
 
-        .menu-item i {
-            width: 20px;
-            text-align: center;
-        }
+  /* right: form */
+  .side-form{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));padding:14px;border-radius:12px;box-shadow:var(--shadow)}
+  .side-form h3{margin-bottom:8px;color:var(--muted)}
+  label{display:block;font-size:13px;color:var(--muted);margin-top:8px}
+  input,select{width:100%;padding:10px;border-radius:8px;border:0;background:transparent;color:#e6f0f5}
 
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            margin-left: 250px;
-            padding: 20px;
-            transition: var(--transition);
-        }
+  /* small helpers */
+  .muted{color:var(--muted)}
+  .tiny{font-size:12px;color:var(--muted)}
+  .actions{display:flex;gap:8px}
+  .footer{opacity:0.7;font-size:13px;color:var(--muted);margin-top:6px}
 
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
+  /* subtle animation */
+  .fade-up{animation:fadeUp .4s ease both}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
-        .page-title {
-            font-size: 1.8rem;
-            font-weight: 600;
-        }
-
-        .theme-toggle {
-            background: none;
-            border: none;
-            color: var(--text-color);
-            cursor: pointer;
-            font-size: 1.2rem;
-        }
-
-        /* Cards */
-        .cards-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .card {
-            background-color: var(--card-color);
-            border-radius: var(--border-radius);
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .card-title {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 10px;
-        }
-
-        .card-value {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: var(--primary-color);
-        }
-
-        /* Forms */
-        .form-container {
-            background-color: var(--card-color);
-            border-radius: var(--border-radius);
-            padding: 20px;
-            margin-bottom: 30px;
-        }
-
-        .form-title {
-            margin-bottom: 20px;
-            font-size: 1.3rem;
-            color: var(--primary-color);
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 10px;
-            border-radius: var(--border-radius);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            background-color: rgba(255, 255, 255, 0.1);
-            color: var(--text-color);
-            transition: var(--transition);
-        }
-
-        input:focus, select:focus {
-            outline: none;
-            border-color: var(--primary-color);
-        }
-
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: var(--border-radius);
-            cursor: pointer;
-            font-weight: 500;
-            transition: var(--transition);
-        }
-
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: #21867a;
-        }
-
-        .btn-danger {
-            background-color: var(--danger-color);
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background-color: #d65c3e;
-        }
-
-        /* Tables */
-        .table-container {
-            background-color: var(--card-color);
-            border-radius: var(--border-radius);
-            padding: 20px;
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        th {
-            color: var(--primary-color);
-            font-weight: 600;
-        }
-
-        .low-stock {
-            color: var(--danger-color);
-            font-weight: bold;
-        }
-
-        .action-btn {
-            background: none;
-            border: none;
-            color: var(--primary-color);
-            cursor: pointer;
-            margin-right: 10px;
-        }
-
-        .action-btn.delete {
-            color: var(--danger-color);
-        }
-
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background-color: var(--card-color);
-            border-radius: var(--border-radius);
-            padding: 30px;
-            width: 90%;
-            max-width: 500px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .modal-title {
-            font-size: 1.3rem;
-            color: var(--primary-color);
-        }
-
-        .close-modal {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: var(--text-color);
-            cursor: pointer;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 70px;
-            }
-            
-            .sidebar .logo h1, .sidebar .menu-item span {
-                display: none;
-            }
-            
-            .main-content {
-                margin-left: 70px;
-            }
-            
-            .cards-container {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .main-content {
-                padding: 10px;
-            }
-            
-            .sidebar {
-                width: 0;
-                overflow: hidden;
-            }
-            
-            .main-content {
-                margin-left: 0;
-            }
-            
-            .mobile-menu-toggle {
-                display: block;
-                position: fixed;
-                top: 15px;
-                left: 15px;
-                z-index: 1001;
-                background-color: var(--primary-color);
-                color: white;
-                border: none;
-                border-radius: 50%;
-                width: 40px;
-                height: 40px;
-                font-size: 1.2rem;
-                cursor: pointer;
-            }
-        }
-
-        .mobile-menu-toggle {
-            display: none;
-        }
-
-        .section {
-            display: none;
-        }
-
-        .section.active {
-            display: block;
-        }
-
-        .alert {
-            padding: 10px 15px;
-            border-radius: var(--border-radius);
-            margin-bottom: 15px;
-        }
-
-        .alert-success {
-            background-color: rgba(42, 157, 143, 0.2);
-            color: var(--success-color);
-            border-left: 4px solid var(--success-color);
-        }
-
-        .alert-danger {
-            background-color: rgba(231, 111, 81, 0.2);
-            color: var(--danger-color);
-            border-left: 4px solid var(--danger-color);
-        }
-    </style>
+  /* tooltips minimal */
+  .tooltip{position:relative}
+  .tooltip[data-tip]:hover::after{
+    content:attr(data-tip);
+    position:absolute;background:#031021;padding:6px 8px;border-radius:6px;top:-36px;left:50%;transform:translateX(-50%);font-size:12px;color:var(--muted);white-space:nowrap;box-shadow:var(--shadow)
+  }
+</style>
 </head>
 <body>
-    <!-- Mobile Menu Toggle -->
-    <button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
-
-    <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
-        <div class="logo">
-            <h1>Controle Estoque</h1>
+  <div id="app" class="app fade-up">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">SP</div>
+        <div>
+          <h1 style="font-size:15px">StockPro</h1>
+          <p style="margin-top:4px;font-size:12px;color:var(--muted)">Gestão · Estoque</p>
         </div>
-        <ul class="menu">
-            <li class="menu-item active" data-target="dashboard">
-                <i>📊</i> <span>Dashboard</span>
-            </li>
-            <li class="menu-item" data-target="products">
-                <i>📦</i> <span>Produtos</span>
-            </li>
-            <li class="menu-item" data-target="sales">
-                <i>💰</i> <span>Vendas</span>
-            </li>
-            <li class="menu-item" data-target="stock">
-                <i>📋</i> <span>Estoque</span>
-            </li>
-            <li class="menu-item" data-target="settings">
-                <i>⚙️</i> <span>Configurações</span>
-            </li>
-        </ul>
-    </div>
+      </div>
 
-    <!-- Main Content -->
-    <div class="main-content">
-        <div class="header">
-            <h1 class="page-title" id="pageTitle">Dashboard</h1>
-            <button class="theme-toggle" id="themeToggle">🌙</button>
+      <nav class="nav" role="navigation" aria-label="menu principal">
+        <button class="active" data-view="dashboard"><span class="icon">🏠</span> Dashboard</button>
+        <button data-view="estoque"><span class="icon">📦</span> Estoque</button>
+        <button data-view="vendas"><span class="icon">💳</span> Vendas</button>
+        <button data-view="relatorios"><span class="icon">📈</span> Relatórios</button>
+        <button data-view="config"><span class="icon">⚙️</span> Configurações</button>
+      </nav>
+
+      <div class="meta">
+        <div style="margin-top:12px" class="tiny">Pronto para venda • Arquivo único HTML</div>
+        <div style="margin-top:8px" class="tiny">Nenhum dado foi carregado — ambiente limpo</div>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+      <!-- Topbar -->
+      <div class="topbar">
+        <div class="search">
+          <input id="q" placeholder="Buscar (produto, categoria) — vazio por padrão">
         </div>
+        <div class="controls">
+          <button class="btn" id="installBtn" style="display:none" title="Instalar">⬇️ Instalar</button>
+          <div class="chip">Olá, Cliente</div>
+        </div>
+      </div>
 
-        <!-- Dashboard Section -->
-        <div class="section active" id="dashboard">
-            <div class="cards-container">
-                <div class="card">
-                    <div class="card-title">Total de Produtos</div>
-                    <div class="card-value" id="totalProducts">0</div>
-                </div>
-                <div class="card">
-                    <div class="card-title">Total de Vendas</div>
-                    <div class="card-value" id="totalSales">0</div>
-                </div>
-                <div class="card">
-                    <div class="card-title">Lucro Total</div>
-                    <div class="card-value" id="totalProfit">R$ 0,00</div>
-                </div>
-                <div class="card">
-                    <div class="card-title">Produtos em Falta</div>
-                    <div class="card-value" id="lowStockCount">0</div>
-                </div>
-            </div>
-
-            <div class="table-container">
-                <h2>Produtos com Estoque Baixo</h2>
-                <table id="lowStockTable">
-                    <thead>
-                        <tr>
-                            <th>Produto</th>
-                            <th>Estoque Atual</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Low stock products will be populated here -->
-                    </tbody>
-                </table>
-            </div>
+      <!-- Cards -->
+      <section class="cards" aria-label="Métricas principais">
+        <div class="card">
+          <h3>Total de produtos</h3>
+          <div class="value" id="totalProducts"><span class="placeholder">—</span></div>
+          <div class="tiny">Salvo localmente no navegador</div>
         </div>
 
-        <!-- Products Section -->
-        <div class="section" id="products">
-            <div class="form-container">
-                <h2 class="form-title">Cadastrar Produto</h2>
-                <form id="productForm">
-                    <div class="form-group">
-                        <label for="productName">Nome do Produto</label>
-                        <input type="text" id="productName" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="productQuantity">Quantidade em Estoque</label>
-                        <input type="number" id="productQuantity" min="0" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="productCost">Preço de Custo (R$)</label>
-                        <input type="number" id="productCost" min="0" step="0.01" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="productPrice">Preço de Venda (R$)</label>
-                        <input type="number" id="productPrice" min="0" step="0.01" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Salvar Produto</button>
-                </form>
-            </div>
-
-            <div class="table-container">
-                <h2>Produtos Cadastrados</h2>
-                <table id="productsTable">
-                    <thead>
-                        <tr>
-                            <th>Nome</th>
-                            <th>Estoque</th>
-                            <th>Preço Custo</th>
-                            <th>Preço Venda</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Products will be populated here -->
-                    </tbody>
-                </table>
-            </div>
+        <div class="card">
+          <h3>Vendas (R$)</h3>
+          <div class="value" id="totalSales"><span class="placeholder">—</span></div>
+          <div class="tiny">Nenhuma venda registrada</div>
         </div>
 
-        <!-- Sales Section -->
-        <div class="section" id="sales">
-            <div class="form-container">
-                <h2 class="form-title">Registrar Venda</h2>
-                <form id="saleForm">
-                    <div class="form-group">
-                        <label for="saleProduct">Produto</label>
-                        <select id="saleProduct" required>
-                            <option value="">Selecione um produto</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="saleQuantity">Quantidade</label>
-                        <input type="number" id="saleQuantity" min="1" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Registrar Venda</button>
-                </form>
-            </div>
-
-            <div class="table-container">
-                <h2>Histórico de Vendas</h2>
-                <table id="salesTable">
-                    <thead>
-                        <tr>
-                            <th>Data</th>
-                            <th>Produto</th>
-                            <th>Quantidade</th>
-                            <th>Lucro</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Sales will be populated here -->
-                    </tbody>
-                </table>
-            </div>
+        <div class="card">
+          <h3>Lucro estimado</h3>
+          <div class="value" id="profit"><span class="placeholder">—</span></div>
+          <div class="tiny">—</div>
         </div>
 
-        <!-- Stock Section -->
-        <div class="section" id="stock">
-            <div class="table-container">
-                <h2>Controle de Estoque</h2>
-                <table id="stockTable">
-                    <thead>
-                        <tr>
-                            <th>Produto</th>
-                            <th>Estoque Atual</th>
-                            <th>Status</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Stock will be populated here -->
-                    </tbody>
-                </table>
+        <div class="card">
+          <h3>Produtos com estoque baixo</h3>
+          <div class="value" id="lowStock"><span class="placeholder">—</span></div>
+          <div class="tiny">Configure o mínimo em Configurações</div>
+        </div>
+      </section>
+
+      <!-- Main content area -->
+      <div class="content">
+        <!-- Left: Views -->
+        <div>
+          <div id="view-dashboard" class="panel view" aria-hidden="false">
+            <h2 style="margin-bottom:10px">Visão Geral</h2>
+            <div class="empty">Painel limpo — sem dados. Adicione produtos no formulário à direita.</div>
+          </div>
+
+          <div id="view-estoque" class="panel view" style="display:none" aria-hidden="true">
+            <h2 style="margin-bottom:10px">Estoque</h2>
+            <div id="table-estoque">
+              <div class="empty">Nenhum produto cadastrado. Use o formulário ao lado para adicionar.</div>
             </div>
+          </div>
+
+          <div id="view-vendas" class="panel view" style="display:none" aria-hidden="true">
+            <h2 style="margin-bottom:10px">Vendas</h2>
+            <div class="empty">Nenhuma venda registrada. Crie vendas a partir do produto no estoque depois de cadastrar.</div>
+          </div>
+
+          <div id="view-relatorios" class="panel view" style="display:none" aria-hidden="true">
+            <h2 style="margin-bottom:10px">Relatórios</h2>
+            <div class="empty">Sem dados para gerar relatórios.</div>
+          </div>
+
+          <div id="view-config" class="panel view" style="display:none" aria-hidden="true">
+            <h2 style="margin-bottom:10px">Configurações</h2>
+            <label>Nome do negócio</label>
+            <input id="bizName" placeholder="Ex: Padaria do João">
+            <label style="margin-top:8px">Estoque mínimo padrão</label>
+            <input id="minStock" type="number" value="2" min="0">
+            <div style="margin-top:12px;display:flex;gap:8px">
+              <button class="btn primary" id="saveConfig">Salvar</button>
+              <button class="btn" id="resetAll">Limpar tudo</button>
+            </div>
+            <div class="footer">As configurações ficam salvas localmente no navegador.</div>
+          </div>
         </div>
 
-        <!-- Settings Section -->
-        <div class="section" id="settings">
-            <div class="form-container">
-                <h2 class="form-title">Configurações</h2>
-                <div class="form-group">
-                    <label for="lowStockThreshold">Limite de Estoque Baixo</label>
-                    <input type="number" id="lowStockThreshold" min="1" value="5">
-                </div>
-                <button class="btn btn-primary" id="saveSettings">Salvar Configurações</button>
-            </div>
+        <!-- Right: Form -->
+        <aside class="side-form">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <h3>Novo produto</h3>
+            <div class="tiny muted">Salvar localmente</div>
+          </div>
 
-            <div class="form-container">
-                <h2 class="form-title">Gerenciamento de Dados</h2>
-                <p class="alert alert-danger">Atenção: Esta ação não pode ser desfeita!</p>
-                <button class="btn btn-danger" id="clearData">Limpar Todos os Dados</button>
-            </div>
-        </div>
-    </div>
+          <label>Nome</label>
+          <input id="p-name" placeholder="Nome do produto">
 
-    <!-- Edit Product Modal -->
-    <div class="modal" id="editProductModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Editar Produto</h3>
-                <button class="close-modal">&times;</button>
-            </div>
-            <form id="editProductForm">
-                <input type="hidden" id="editProductId">
-                <div class="form-group">
-                    <label for="editProductName">Nome do Produto</label>
-                    <input type="text" id="editProductName" required>
-                </div>
-                <div class="form-group">
-                    <label for="editProductQuantity">Quantidade em Estoque</label>
-                    <input type="number" id="editProductQuantity" min="0" required>
-                </div>
-                <div class="form-group">
-                    <label for="editProductCost">Preço de Custo (R$)</label>
-                    <input type="number" id="editProductCost" min="0" step="0.01" required>
-                </div>
-                <div class="form-group">
-                    <label for="editProductPrice">Preço de Venda (R$)</label>
-                    <input type="number" id="editProductPrice" min="0" step="0.01" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Atualizar Produto</button>
-            </form>
-        </div>
-    </div>
+          <label>Estoque inicial</label>
+          <input id="p-stock" type="number" min="0" value="0">
 
-    <!-- Restock Modal -->
-    <div class="modal" id="restockModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Repor Estoque</h3>
-                <button class="close-modal">&times;</button>
-            </div>
-            <form id="restockForm">
-                <input type="hidden" id="restockProductId">
-                <div class="form-group">
-                    <label for="restockProductName">Produto</label>
-                    <input type="text" id="restockProductName" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="restockQuantity">Quantidade a Adicionar</label>
-                    <input type="number" id="restockQuantity" min="1" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Repor Estoque</button>
-            </form>
-        </div>
-    </div>
+          <label>Custo (R$)</label>
+          <input id="p-cost" type="number" min="0" step="0.01" value="0">
 
-    <script>
-        // Data Models
-        let products = JSON.parse(localStorage.getItem('products')) || [];
-        let sales = JSON.parse(localStorage.getItem('sales')) || [];
-        let settings = JSON.parse(localStorage.getItem('settings')) || { 
-            theme: 'dark', 
-            lowStockThreshold: 5 
-        };
+          <label>Preço de venda (R$)</label>
+          <input id="p-price" type="number" min="0" step="0.01" value="0">
 
-        // DOM Elements
-        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-        const sidebar = document.getElementById('sidebar');
-        const themeToggle = document.getElementById('themeToggle');
-        const pageTitle = document.getElementById('pageTitle');
-        const sections = document.querySelectorAll('.section');
-        const menuItems = document.querySelectorAll('.menu-item');
+          <label>Categoria</label>
+          <input id="p-cat" placeholder="Ex: Bebidas">
 
-        // Forms
-        const productForm = document.getElementById('productForm');
-        const saleForm = document.getElementById('saleForm');
-        const editProductForm = document.getElementById('editProductForm');
-        const restockForm = document.getElementById('restockForm');
+          <div style="margin-top:12px;display:flex;gap:8px">
+            <button class="btn primary" id="addProduct">Adicionar</button>
+            <button class="btn" id="clearForm">Limpar</button>
+          </div>
 
-        // Modals
-        const editProductModal = document.getElementById('editProductModal');
-        const restockModal = document.getElementById('restockModal');
-        const closeModalButtons = document.querySelectorAll('.close-modal');
+          <hr style="margin:12px 0;border:none;border-top:1px solid rgba(255,255,255,0.03)">
 
-        // Settings
-        const lowStockThreshold = document.getElementById('lowStockThreshold');
-        const saveSettings = document.getElementById('saveSettings');
-        const clearData = document.getElementById('clearData');
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <button class="btn" id="exportBtn">Exportar JSON</button>
+            <input id="importFile" type="file" accept="application/json" style="display:none">
+            <button class="btn" id="importBtn">Importar JSON</button>
+            <button class="btn" id="sampleBtn" style="display:none">(opcional) Adicionar exemplos</button>
+          </div>
 
-        // Initialize the application
-        function init() {
-            // Apply saved theme
-            if (settings.theme === 'light') {
-                document.body.classList.add('light-theme');
-                themeToggle.textContent = '☀️';
-            }
-            
-            // Apply saved settings
-            lowStockThreshold.value = settings.lowStockThreshold || 5;
-            
-            // Load initial data
-            updateDashboard();
-            renderProducts();
-            renderSales();
-            renderStock();
-            populateProductSelect();
-            
-            // Set up event listeners
-            setupEventListeners();
-        }
+          <div style="margin-top:10px;font-size:13px;color:var(--muted)">
+            <div><strong>Observação:</strong> Este arquivo é standalone — todos os dados são salvos no navegador do cliente.</div>
+          </div>
+        </aside>
+      </div>
 
-        // Set up all event listeners
-        function setupEventListeners() {
-            // Mobile menu toggle
-            mobileMenuToggle.addEventListener('click', () => {
-                sidebar.style.width = sidebar.style.width === '250px' ? '0' : '250px';
-            });
+      <div class="footer tiny" style="margin-top:6px">StockPro • Protótipo virgem • Arquivo único</div>
+    </main>
+  </div>
 
-            // Theme toggle
-            themeToggle.addEventListener('click', toggleTheme);
+<script>
+/* ===== Simple app state (virgem por padrão) =====
+   - All data stored in localStorage under key STOCKPRO_V1
+   - On first load, state is empty (no products, no sales)
+*/
+const STORAGE_KEY = 'STOCKPRO_V1';
 
-            // Menu navigation
-            menuItems.forEach(item => {
-                item.addEventListener('click', () => {
-                    const target = item.getAttribute('data-target');
-                    navigateToSection(target);
-                    
-                    // Update active menu item
-                    menuItems.forEach(i => i.classList.remove('active'));
-                    item.classList.add('active');
-                });
-            });
+// default empty state
+const defaultState = {
+  products: [],   // { id, name, stock, cost, price, category }
+  sales: [],      // { id, date, productId, qty, total, cost, price }
+  config: { bizName: '', minStock: 2 }
+};
 
-            // Form submissions
-            productForm.addEventListener('submit', handleProductSubmit);
-            saleForm.addEventListener('submit', handleSaleSubmit);
-            editProductForm.addEventListener('submit', handleEditProductSubmit);
-            restockForm.addEventListener('submit', handleRestockSubmit);
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : JSON.parse(JSON.stringify(defaultState));
+  }catch(e){
+    console.error('load error', e);
+    return JSON.parse(JSON.stringify(defaultState));
+  }
+}
+function saveState(s){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
+}
 
-            // Modal close buttons
-            closeModalButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    editProductModal.style.display = 'none';
-                    restockModal.style.display = 'none';
-                });
-            });
+/* ===== UI helpers ===== */
+function $(sel){return document.querySelector(sel)}
+function $all(sel){return Array.from(document.querySelectorAll(sel))}
 
-            // Settings
-            saveSettings.addEventListener('click', saveSettingsHandler);
-            clearData.addEventListener('click', clearAllData);
+/* ===== Initial setup ===== */
+let state = loadState(); // starts "virgem" if nothing saved
 
-            // Close modals when clicking outside
-            window.addEventListener('click', (e) => {
-                if (e.target === editProductModal) {
-                    editProductModal.style.display = 'none';
-                }
-                if (e.target === restockModal) {
-                    restockModal.style.display = 'none';
-                }
-            });
-        }
+// Views nav
+$all('.nav button').forEach(btn=>{
+  btn.addEventListener('click', (e)=>{
+    $all('.nav button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const view = btn.dataset.view;
+    showView(view);
+  });
+});
 
-        // Navigation function
-        function navigateToSection(sectionId) {
-            sections.forEach(section => {
-                section.classList.remove('active');
-            });
-            
-            document.getElementById(sectionId).classList.add('active');
-            
-            // Update page title
-            const titles = {
-                dashboard: 'Dashboard',
-                products: 'Produtos',
-                sales: 'Vendas',
-                stock: 'Estoque',
-                settings: 'Configurações'
-            };
-            
-            pageTitle.textContent = titles[sectionId];
-        }
+function showView(name){
+  const views = ['dashboard','estoque','vendas','relatorios','config'];
+  views.forEach(v=>{
+    const el = document.getElementById('view-'+v);
+    if(!el) return;
+    if(v === name){
+      el.style.display = ''; el.setAttribute('aria-hidden','false');
+    } else {
+      el.style.display = 'none'; el.setAttribute('aria-hidden','true');
+    }
+  });
+}
 
-        // Theme toggle function
-        function toggleTheme() {
-            if (document.body.classList.contains('light-theme')) {
-                document.body.classList.remove('light-theme');
-                themeToggle.textContent = '🌙';
-                settings.theme = 'dark';
-            } else {
-                document.body.classList.add('light-theme');
-                themeToggle.textContent = '☀️';
-                settings.theme = 'light';
-            }
-            
-            saveSettingsToStorage();
-        }
+// Fill config inputs
+$('#bizName').value = state.config.bizName || '';
+$('#minStock').value = state.config.minStock ?? 2;
 
-        // Product form handler
-        function handleProductSubmit(e) {
-            e.preventDefault();
-            
-            const product = {
-                id: Date.now().toString(),
-                name: document.getElementById('productName').value,
-                quantity: parseInt(document.getElementById('productQuantity').value),
-                cost: parseFloat(document.getElementById('productCost').value),
-                price: parseFloat(document.getElementById('productPrice').value)
-            };
-            
-            products.push(product);
-            saveProductsToStorage();
-            renderProducts();
-            populateProductSelect();
-            updateDashboard();
-            renderStock();
-            
-            // Show success message
-            showAlert('Produto cadastrado com sucesso!', 'success');
-            
-            // Reset form
-            productForm.reset();
-        }
+// placeholders on dashboard
+function refreshDashboard(){
+  const totalProducts = state.products.length;
+  $('#totalProducts').innerHTML = totalProducts ? totalProducts : '<span class="placeholder">—</span>';
 
-        // Sale form handler
-        function handleSaleSubmit(e) {
-            e.preventDefault();
-            
-            const productId = document.getElementById('saleProduct').value;
-            const quantity = parseInt(document.getElementById('saleQuantity').value);
-            
-            const product = products.find(p => p.id === productId);
-            
-            if (!product) {
-                showAlert('Produto não encontrado!', 'danger');
-                return;
-            }
-            
-            if (product.quantity < quantity) {
-                showAlert('Estoque insuficiente para esta venda!', 'danger');
-                return;
-            }
-            
-            // Update product quantity
-            product.quantity -= quantity;
-            
-            // Calculate profit
-            const profit = (product.price - product.cost) * quantity;
-            
-            // Record sale
-            const sale = {
-                id: Date.now().toString(),
-                productId: productId,
-                productName: product.name,
-                quantity: quantity,
-                date: new Date().toLocaleString('pt-BR'),
-                profit: profit
-            };
-            
-            sales.push(sale);
-            
-            saveProductsToStorage();
-            saveSalesToStorage();
-            renderSales();
-            renderProducts();
-            populateProductSelect();
-            updateDashboard();
-            renderStock();
-            
-            // Show success message
-            showAlert('Venda registrada com sucesso!', 'success');
-            
-            // Reset form
-            saleForm.reset();
-        }
+  // total sales and profit placeholders when empty
+  if(state.sales.length === 0){
+    $('#totalSales').innerHTML = '<span class="placeholder">—</span>';
+    $('#profit').innerHTML = '<span class="placeholder">—</span>';
+  } else {
+    const totalSales = state.sales.reduce((s,x)=>s + (x.total || 0),0);
+    const profit = state.sales.reduce((s,x)=>s + ((x.price - x.cost) * x.qty),0);
+    $('#totalSales').textContent = totalSales.toFixed(2);
+    $('#profit').textContent = 'R$ ' + profit.toFixed(2);
+  }
 
-        // Edit product form handler
-        function handleEditProductSubmit(e) {
-            e.preventDefault();
-            
-            const productId = document.getElementById('editProductId').value;
-            const product = products.find(p => p.id === productId);
-            
-            if (product) {
-                product.name = document.getElementById('editProductName').value;
-                product.quantity = parseInt(document.getElementById('editProductQuantity').value);
-                product.cost = parseFloat(document.getElementById('editProductCost').value);
-                product.price = parseFloat(document.getElementById('editProductPrice').value);
-                
-                saveProductsToStorage();
-                renderProducts();
-                populateProductSelect();
-                updateDashboard();
-                renderStock();
-                
-                // Show success message
-                showAlert('Produto atualizado com sucesso!', 'success');
-                
-                // Close modal
-                editProductModal.style.display = 'none';
-            }
-        }
+  const lowCount = state.products.filter(p => p.stock <= (state.config.minStock ?? 2)).length;
+  $('#lowStock').innerHTML = lowCount ? lowCount : '<span class="placeholder">—</span>';
+}
 
-        // Restock form handler
-        function handleRestockSubmit(e) {
-            e.preventDefault();
-            
-            const productId = document.getElementById('restockProductId').value;
-            const quantity = parseInt(document.getElementById('restockQuantity').value);
-            
-            const product = products.find(p => p.id === productId);
-            
-            if (product) {
-                product.quantity += quantity;
-                
-                saveProductsToStorage();
-                renderProducts();
-                populateProductSelect();
-                updateDashboard();
-                renderStock();
-                
-                // Show success message
-                showAlert('Estoque reposto com sucesso!', 'success');
-                
-                // Close modal
-                restockModal.style.display = 'none';
-            }
-        }
+// Render estoque table (virgin -> show empty)
+function renderEstoque(){
+  const container = $('#table-estoque');
+  if(state.products.length === 0){
+    container.innerHTML = '<div class="empty">Nenhum produto cadastrado. Use o formulário ao lado para adicionar.</div>';
+    return;
+  }
+  let html = '<table><thead><tr><th>Produto</th><th>Estoque</th><th>Custo</th><th>Venda</th><th>Categoria</th><th></th></tr></thead><tbody>';
+  state.products.forEach(p=>{
+    html += `<tr data-id="${p.id}"><td>${escapeHtml(p.name)}</td><td>${p.stock}</td><td>R$ ${Number(p.cost).toFixed(2)}</td><td>R$ ${Number(p.price).toFixed(2)}</td><td>${escapeHtml(p.category||'-')}</td><td><button class="btn" data-action="sell">Vender</button> <button class="btn" data-action="del">Excluir</button></td></tr>`;
+  });
+  html += '</tbody></table>';
+  container.innerHTML = html;
 
-        // Open edit product modal
-        function openEditProductModal(productId) {
-            const product = products.find(p => p.id === productId);
-            
-            if (product) {
-                document.getElementById('editProductId').value = product.id;
-                document.getElementById('editProductName').value = product.name;
-                document.getElementById('editProductQuantity').value = product.quantity;
-                document.getElementById('editProductCost').value = product.cost;
-                document.getElementById('editProductPrice').value = product.price;
-                
-                editProductModal.style.display = 'flex';
-            }
-        }
+  // attach row actions
+  container.querySelectorAll('button[data-action]').forEach(b=>{
+    b.addEventListener('click', (e)=>{
+      const row = e.target.closest('tr');
+      const id = row.dataset.id;
+      const action = e.target.dataset.action;
+      if(action === 'sell'){ openSellDialog(id) }
+      if(action === 'del'){ if(confirm('Deseja excluir este produto?')){ deleteProduct(id); } }
+    });
+  });
+}
 
-        // Open restock modal
-        function openRestockModal(productId) {
-            const product = products.find(p => p.id === productId);
-            
-            if (product) {
-                document.getElementById('restockProductId').value = product.id;
-                document.getElementById('restockProductName').value = product.name;
-                document.getElementById('restockQuantity').value = 1;
-                
-                restockModal.style.display = 'flex';
-            }
-        }
+function escapeHtml(s){ if(!s) return ''; return String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 
-        // Delete product
-        function deleteProduct(productId) {
-            if (confirm('Tem certeza que deseja excluir este produto?')) {
-                products = products.filter(p => p.id !== productId);
-                saveProductsToStorage();
-                renderProducts();
-                populateProductSelect();
-                updateDashboard();
-                renderStock();
-                
-                // Show success message
-                showAlert('Produto excluído com sucesso!', 'success');
-            }
-        }
+/* ===== Product actions ===== */
+function addProductFromForm(){
+  const name = $('#p-name').value.trim();
+  const stock = Number($('#p-stock').value || 0);
+  const cost = Number($('#p-cost').value || 0);
+  const price = Number($('#p-price').value || 0);
+  const category = $('#p-cat').value.trim();
 
-        // Save settings
-        function saveSettingsHandler() {
-            settings.lowStockThreshold = parseInt(lowStockThreshold.value);
-            saveSettingsToStorage();
-            
-            // Update dashboard and stock view
-            updateDashboard();
-            renderStock();
-            
-            // Show success message
-            showAlert('Configurações salvas com sucesso!', 'success');
-        }
+  if(!name){
+    alert('Preencha o nome do produto.');
+    return;
+  }
 
-        // Clear all data
-        function clearAllData() {
-            if (confirm('Tem certeza que deseja limpar todos os dados? Esta ação não pode ser desfeita!')) {
-                products = [];
-                sales = [];
-                settings = { theme: 'dark', lowStockThreshold: 5 };
-                
-                saveProductsToStorage();
-                saveSalesToStorage();
-                saveSettingsToStorage();
-                
-                // Update UI
-                renderProducts();
-                renderSales();
-                updateDashboard();
-                renderStock();
-                populateProductSelect();
-                
-                // Reset settings form
-                lowStockThreshold.value = 5;
-                
-                // Show success message
-                showAlert('Todos os dados foram limpos!', 'success');
-            }
-        }
+  const id = 'p_' + Date.now();
+  const prod = { id, name, stock, cost, price, category };
+  state.products.push(prod);
+  saveState(state);
+  renderEstoque(); refreshDashboard();
+  clearForm();
+  alert('Produto adicionado (arquivo limpo, salvo localmente).');
+}
 
-        // Render products table
-        function renderProducts() {
-            const tbody = document.querySelector('#productsTable tbody');
-            tbody.innerHTML = '';
-            
-            products.forEach(product => {
-                const row = document.createElement('tr');
-                
-                row.innerHTML = `
-                    <td>${product.name}</td>
-                    <td>${product.quantity}</td>
-                    <td>R$ ${product.cost.toFixed(2)}</td>
-                    <td>R$ ${product.price.toFixed(2)}</td>
-                    <td>
-                        <button class="action-btn" onclick="openEditProductModal('${product.id}')">✏️</button>
-                        <button class="action-btn delete" onclick="deleteProduct('${product.id}')">🗑️</button>
-                    </td>
-                `;
-                
-                tbody.appendChild(row);
-            });
-        }
+function clearForm(){
+  $('#p-name').value = '';
+  $('#p-stock').value = 0;
+  $('#p-cost').value = 0;
+  $('#p-price').value = 0;
+  $('#p-cat').value = '';
+}
 
-        // Render sales table
-        function renderSales() {
-            const tbody = document.querySelector('#salesTable tbody');
-            tbody.innerHTML = '';
-            
-            // Sort sales by date (newest first)
-            const sortedSales = [...sales].sort((a, b) => new Date(b.date) - new Date(a.date));
-            
-            sortedSales.forEach(sale => {
-                const row = document.createElement('tr');
-                
-                row.innerHTML = `
-                    <td>${sale.date}</td>
-                    <td>${sale.productName}</td>
-                    <td>${sale.quantity}</td>
-                    <td>R$ ${sale.profit.toFixed(2)}</td>
-                `;
-                
-                tbody.appendChild(row);
-            });
-        }
+function deleteProduct(id){
+  state.products = state.products.filter(p=>p.id !== id);
+  saveState(state); renderEstoque(); refreshDashboard();
+}
 
-        // Render stock table
-        function renderStock() {
-            const tbody = document.querySelector('#stockTable tbody');
-            tbody.innerHTML = '';
-            
-            products.forEach(product => {
-                const isLowStock = product.quantity <= settings.lowStockThreshold;
-                const status = isLowStock ? 
-                    `<span class="low-stock">Estoque Baixo</span>` : 
-                    `<span style="color: var(--success-color)">Normal</span>`;
-                
-                const row = document.createElement('tr');
-                
-                row.innerHTML = `
-                    <td>${product.name}</td>
-                    <td>${product.quantity}</td>
-                    <td>${status}</td>
-                    <td>
-                        <button class="action-btn" onclick="openRestockModal('${product.id}')">📥 Repor</button>
-                    </td>
-                `;
-                
-                tbody.appendChild(row);
-            });
-        }
+/* ===== Sell flow (simple prompt modal) ===== */
+function openSellDialog(productId){
+  const product = state.products.find(p=>p.id===productId);
+  if(!product) return alert('Produto não encontrado.');
+  const qty = Number(prompt(`Vender quantas unidades de "${product.name}"? (estoque atual: ${product.stock})`, '1'));
+  if(!qty || qty <= 0) return;
+  if(qty > product.stock) return alert('Estoque insuficiente.');
+  // create sale
+  const sale = { id:'s_'+Date.now(), date:Date.now(), productId, qty, total: Number((qty * product.price).toFixed(2)), cost: product.cost, price: product.price };
+  state.sales.push(sale);
+  product.stock -= qty;
+  saveState(state); renderEstoque(); refreshDashboard();
+  alert('Venda registrada e salva localmente.');
+}
 
-        // Populate product select for sales
-        function populateProductSelect() {
-            const select = document.getElementById('saleProduct');
-            select.innerHTML = '<option value="">Selecione um produto</option>';
-            
-            products.forEach(product => {
-                const option = document.createElement('option');
-                option.value = product.id;
-                option.textContent = `${product.name} (Estoque: ${product.quantity})`;
-                select.appendChild(option);
-            });
-        }
+/* ===== Export / Import ===== */
+$('#exportBtn').addEventListener('click', ()=>{
+  const blob = new Blob([JSON.stringify(state, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'stockpro_backup.json'; a.click();
+  URL.revokeObjectURL(url);
+});
 
-        // Update dashboard
-        function updateDashboard() {
-            // Update cards
-            document.getElementById('totalProducts').textContent = products.length;
-            document.getElementById('totalSales').textContent = sales.length;
-            
-            const totalProfit = sales.reduce((sum, sale) => sum + sale.profit, 0);
-            document.getElementById('totalProfit').textContent = `R$ ${totalProfit.toFixed(2)}`;
-            
-            const lowStockCount = products.filter(p => p.quantity <= settings.lowStockThreshold).length;
-            document.getElementById('lowStockCount').textContent = lowStockCount;
-            
-            // Update low stock table
-            const lowStockTbody = document.querySelector('#lowStockTable tbody');
-            lowStockTbody.innerHTML = '';
-            
-            const lowStockProducts = products.filter(p => p.quantity <= settings.lowStockThreshold);
-            
-            lowStockProducts.forEach(product => {
-                const row = document.createElement('tr');
-                
-                row.innerHTML = `
-                    <td>${product.name}</td>
-                    <td class="low-stock">${product.quantity}</td>
-                    <td>
-                        <button class="action-btn" onclick="openRestockModal('${product.id}')">📥 Repor</button>
-                    </td>
-                `;
-                
-                lowStockTbody.appendChild(row);
-            });
-        }
+$('#importBtn').addEventListener('click', ()=>$('#importFile').click());
+$('#importFile').addEventListener('change', async (e)=>{
+  const f = e.target.files[0]; if(!f) return;
+  try{
+    const txt = await f.text(); const imported = JSON.parse(txt);
+    if(!imported || typeof imported !== 'object') throw new Error('JSON inválido');
+    // simple validation
+    imported.products = imported.products || [];
+    imported.sales = imported.sales || [];
+    imported.config = imported.config || defaultState.config;
+    state = imported;
+    saveState(state); renderEstoque(); refreshDashboard();
+    alert('Importação concluída.');
+  }catch(err){ alert('Erro ao importar: ' + err.message) }
+});
 
-        // Show alert message
-        function showAlert(message, type) {
-            // Remove existing alerts
-            const existingAlerts = document.querySelectorAll('.alert');
-            existingAlerts.forEach(alert => alert.remove());
-            
-            // Create new alert
-            const alert = document.createElement('div');
-            alert.className = `alert alert-${type}`;
-            alert.textContent = message;
-            
-            // Insert alert at the top of the current section
-            const currentSection = document.querySelector('.section.active');
-            currentSection.insertBefore(alert, currentSection.firstChild);
-            
-            // Auto remove after 5 seconds
-            setTimeout(() => {
-                if (alert.parentNode) {
-                    alert.parentNode.removeChild(alert);
-                }
-            }, 5000);
-        }
+/* ===== Config actions ===== */
+$('#saveConfig').addEventListener('click', ()=>{
+  state.config.bizName = $('#bizName').value.trim();
+  state.config.minStock = Number($('#minStock').value || 2);
+  saveState(state); refreshDashboard();
+  alert('Configurações salvas localmente.');
+});
 
-        // Save data to localStorage
-        function saveProductsToStorage() {
-            localStorage.setItem('products', JSON.stringify(products));
-        }
+$('#resetAll').addEventListener('click', ()=>{
+  if(!confirm('Limpar todos os dados salvos localmente?')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  state = JSON.parse(JSON.stringify(defaultState));
+  $('#bizName').value = state.config.bizName || '';
+  $('#minStock').value = state.config.minStock || 2;
+  renderEstoque(); refreshDashboard();
+  alert('Dados removidos. Arquivo permanece virgem.');
+});
 
-        function saveSalesToStorage() {
-            localStorage.setItem('sales', JSON.stringify(sales));
-        }
+/* ===== Form hooks ===== */
+$('#addProduct').addEventListener('click', addProductFromForm);
+$('#clearForm').addEventListener('click', clearForm);
 
-        function saveSettingsToStorage() {
-            localStorage.setItem('settings', JSON.stringify(settings));
-        }
+/* ===== Search (local filter) ===== */
+$('#q').addEventListener('input', (e)=>{
+  const q = e.target.value.trim().toLowerCase();
+  if(!q){ renderEstoque(); return; }
+  const container = $('#table-estoque');
+  if(state.products.length === 0){ container.innerHTML = '<div class="empty">Nenhum produto cadastrado.</div>'; return; }
+  const filtered = state.products.filter(p=> (p.name||'').toLowerCase().includes(q) || (p.category||'').toLowerCase().includes(q));
+  if(filtered.length === 0){ container.innerHTML = '<div class="empty">Nenhum produto encontrado.</div>'; return; }
+  let html = '<table><thead><tr><th>Produto</th><th>Estoque</th><th>Custo</th><th>Venda</th><th>Categoria</th><th></th></tr></thead><tbody>';
+  filtered.forEach(p=>{
+    html += `<tr data-id="${p.id}"><td>${escapeHtml(p.name)}</td><td>${p.stock}</td><td>R$ ${Number(p.cost).toFixed(2)}</td><td>R$ ${Number(p.price).toFixed(2)}</td><td>${escapeHtml(p.category||'-')}</td><td><button class="btn" data-action="sell">Vender</button></td></tr>`;
+  });
+  html += '</tbody></table>';
+  container.innerHTML = html;
+  container.querySelectorAll('button[data-action="sell"]').forEach(b=>b.addEventListener('click', (e)=>{ const row=e.target.closest('tr'); openSellDialog(row.dataset.id); }));
+});
 
-        // Initialize the app
-        init();
-    </script>
+/* ===== Row actions rebind after import/add/delete ===== */
+function rebindRowActions(){
+  document.querySelectorAll('#table-estoque button[data-action]').forEach(b=>{
+    b.removeEventListener('click', ()=>{}); // no-op safe
+  });
+}
+
+/* ===== Utilities ===== */
+function uid(prefix='id'){ return prefix + '_' + Math.random().toString(36).slice(2,9) }
+
+/* ===== Init render ===== */
+renderEstoque(); refreshDashboard(); showView('dashboard');
+
+/* ===== Accessibility small enhancements ===== */
+document.addEventListener('keydown', (e)=>{
+  // ctrl+f focuses search
+  if((e.ctrlKey||e.metaKey) && e.key.toLowerCase() === 'f'){ e.preventDefault(); $('#q').focus(); }
+});
+
+/* ===== End ===== */
+</script>
 </body>
 </html>
